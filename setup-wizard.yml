@@ -1,0 +1,11 @@
+version: "2"
+fields:
+  - id: walletpassword
+    target:
+      type: environment
+      name: WALLET_PASSWORD
+      service: rocketpool-testnet.public.dappnode.eth
+    title: Wallet password
+    secret: true
+    description: >-
+      Password to create or open the rocketpool wallet
