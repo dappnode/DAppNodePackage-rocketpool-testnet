@@ -10,11 +10,9 @@ services:
       - "rocketpool-testnet:/rocketpool"
     environment:
       - NETWORK=prater
-      - WALLET_PASSWORD=mydappnode12
+      - WALLET_PASSWORD=
       - "BRAIN_API=http://brain.web3signer-prater.dappnode:3000"
       - EXTRA_OPTS=
     restart: unless-stopped
-    ports:
-      - "3000:3000"
 volumes:
   rocketpool-testnet: {}
