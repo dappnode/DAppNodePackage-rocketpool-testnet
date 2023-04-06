@@ -94,6 +94,6 @@ interface IImportKeyResponseData {
   data: IImportKeyResponse[];
 }
 interface IImportKeyResponse {
-  status: Status;
+  status: string;
   message?: string;
 }
