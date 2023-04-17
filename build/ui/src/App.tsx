@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import TopBar from "./components/TopBar/TopBar";
 import Dashboard from "./Dashboard";
 import { RocketpoolProvider } from "./components/Providers/Context";
 
 function App() {
-  const [ activeTab, setActiveTab ] = useState<string>("Setup");
+  const [activeTab, setActiveTab] = useState<string>("Setup");
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
