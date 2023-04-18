@@ -1,11 +1,9 @@
 import Toolbar from "@mui/material/Toolbar";
-import { Box, Chip, Grid, Typography, ButtonGroup, Button } from "@mui/material";
-
-import { Network } from "../../types/Network";
-import { NodeSync } from "../../types/NodeSync";
+import { Box, Chip, ButtonGroup, Button, Tooltip } from "@mui/material";
+import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { RocketpoolData } from "../../types/RocketpoolData";
 
-const pages = [ "Setup", "Rewards", "Info" ];
+const pages = ["Setup", "Rewards", "Info"];
 
 export default function ToolBar({
   data,
@@ -22,6 +20,31 @@ export default function ToolBar({
     onTabClick(tab);
   };
 
+  function NotSyncedWarn() {
+    const shouldDisplayWarning = !ecSynced || !bcSynced;
+
+    function getNotSyncedMessage(): string {
+      if (!ecSynced && !bcSynced) {
+        return "Execution client and consensus client are not synced";
+      } else if (!ecSynced) {
+        return "Execution client is not synced";
+      } else if (!bcSynced) {
+        return "Consensus client is not synced";
+      }
+      return "";
+    }
+
+    return (
+      <>
+        {shouldDisplayWarning && (
+          <Tooltip title={getNotSyncedMessage()}>
+            <WarningRoundedIcon color="warning" fontSize="large" />
+          </Tooltip>
+        )}
+      </>
+    );
+  }
+
   return (
     <Toolbar>
       <div
@@ -29,7 +52,7 @@ export default function ToolBar({
           alignItems: "center",
           display: "flex",
           justifyContent: "center",
-          lineHeight: "50px",
+          lineHeight: "1.6rem",
         }}
       >
         <img src="/assets/rocketpool_logo.png" alt="logo" height={50} />
@@ -53,9 +76,7 @@ export default function ToolBar({
           }}
         >
           {pages.map((page) => (
-            <Button onClick={() => handleTabClick(page)}>
-            {page}
-          </Button>
+            <Button onClick={() => handleTabClick(page)}>{page}</Button>
           ))}
         </ButtonGroup>
       </div>
@@ -68,33 +89,7 @@ export default function ToolBar({
             alignItems: "center",
           }}
         >
-          <Grid container direction="column">
-            <Grid item>
-              <Grid container spacing={0.5}>
-                <Grid item>
-                  <Chip 
-                    label={`Execution client`}
-                    sx={{ backgroundColor: ecSynced ? "#81C784": "#E57373" }}
-                  />
-                </Grid>
-                <Grid item>
-                  <Chip 
-                    label={`Consensus client`} 
-                    sx={{ backgroundColor: bcSynced ? "#81C784": "#E57373" }}
-                  />
-                </Grid>
-                {data?.nodeStatus?.isAtlasDeployed && (
-                  <Grid item>
-                    <Chip
-                      label={`Atlas`}
-                      sx={{ backgroundColor: "#81C784" }}
-                    />
-                  </Grid>
-                )}
-              </Grid>
-            </Grid>
-            <Typography variant="body1"></Typography>
-          </Grid>
+          <NotSyncedWarn />
         </Box>
       </div>
     </Toolbar>
