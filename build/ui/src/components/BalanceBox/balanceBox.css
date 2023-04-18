@@ -1,0 +1,14 @@
+.dismissable-card {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999; /* Ensure the card is on top of other elements */
+  /*background-color: rgba(25, 118, 210, 1);*/
+}
+
+hr {
+  margin: 0 15px; /* adds some space above and below the line */
+  border: none; /* removes the default border */
+  height: 1px; /* sets the height of the line */
+  background-color: #dcdcdc; /* sets the background color to light gray */
+}

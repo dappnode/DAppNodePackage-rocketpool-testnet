@@ -1,27 +1,22 @@
 import React, { useState, useEffect } from "react";
-import {
-  Alert,
-  Box,
-  Card,
-  Chip,
-  CircularProgress,
-  Typography,
-} from "@mui/material";
+import { Alert, Box, Card, CircularProgress, Typography } from "@mui/material";
 import InfoTab from "./components/Info/InfoTab";
 import SetupTab from "./components/Setup/SetupTab";
 
 import { Network } from "./types/Network";
 import { AppService } from "./services/AppService";
 import { RocketpoolData } from "./types/RocketpoolData";
-import { toEtherString } from "./utils/Utils";
 
 import { RocketpoolContext } from "./components/Providers/Context";
 import RewardsTab from "./components/Rewards/RewardsTab";
+import BalanceBox from "./components/BalanceBox/BalanceBox";
+import BalanceButton from "./components/Buttons/BalanceButton";
 
 function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
   const { rocketpoolValue, updateRocketpoolValue } =
     React.useContext(RocketpoolContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [showBalanceBox, setShowBalanceBox] = useState(false);
 
   const [clientsSynced, setClientsSynced] = React.useState(
     rocketpoolValue?.nodeSync?.ecStatus.primaryEcStatus.isSynced &&
@@ -111,35 +106,10 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
       )}
       {rocketpoolValue?.walletStatus && (
         <>
-          {rocketpoolValue.walletStatus.walletInitialized && (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 1,
-              }}
-            >
-              <Chip
-                variant="outlined"
-                label={`Address: ${rocketpoolValue.walletStatus.accountAddress}`}
-              />
-              &nbsp;&nbsp;
-              <Chip
-                variant="outlined"
-                label={`${toEtherString(
-                  rocketpoolValue.nodeStatus?.accountBalances.eth ?? 0
-                )} ETH`}
-              />
-              &nbsp;&nbsp;
-              <Chip
-                variant="outlined"
-                label={`${toEtherString(
-                  rocketpoolValue.nodeStatus?.accountBalances.rpl ?? 0
-                )} RPL`}
-              />
-            </Box>
-          )}
+          {rocketpoolValue.walletStatus.walletInitialized &&
+            !showBalanceBox && (
+              <BalanceButton setShowBalanceBox={setShowBalanceBox} />
+            )}
           <Box
             sx={{
               margin: 8,
@@ -171,6 +141,9 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
               </Card>
             )}
           </Box>
+          {showBalanceBox && (
+            <BalanceBox setShowBalanceBox={setShowBalanceBox} />
+          )}
         </>
       )}
     </div>
