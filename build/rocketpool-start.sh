@@ -148,7 +148,7 @@ if [ -f "/rocketpool/data/wallet" ]; then
 fi
 if [ ! -f /rocketpool/data/password ]; then
     echo "${INFO} set-password"
-    /usr/local/bin/rocketpoold --settings /app/rocketpool/user-settings.yml api wallet set-password ${WALLET_PASSWORD}
+    /usr/local/bin/rocketpoold --settings /app/rocketpool/user-settings.yml api wallet set-password "${WALLET_PASSWORD}"
 fi
 echo "${INFO} Initializing Rocketpool service"
 exec /usr/local/bin/rocketpoold --settings /app/rocketpool/user-settings.yml node
