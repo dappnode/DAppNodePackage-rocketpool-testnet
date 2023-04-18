@@ -21,9 +21,15 @@ const SetupTab: React.FC<SetupTabProps> = ({
   useEffect(() => {
     if (!rocketpoolValue?.walletStatus?.walletInitialized) {
       handleActiveTab("WalletInit");
-    } else if (rocketpoolValue?.walletStatus?.walletInitialized && !rocketpoolValue?.nodeStatus?.registered) {
+    } else if (
+      rocketpoolValue?.walletStatus?.walletInitialized &&
+      !rocketpoolValue?.nodeStatus?.registered
+    ) {
       handleActiveTab("RegisterNode");
-    } else if (rocketpoolValue?.walletStatus?.walletInitialized && rocketpoolValue?.nodeStatus?.registered) {
+    } else if (
+      rocketpoolValue?.walletStatus?.walletInitialized &&
+      rocketpoolValue?.nodeStatus?.registered
+    ) {
       handleActiveTab("Minipools");
     }
   }, [rocketpoolValue]);
@@ -52,20 +58,23 @@ const SetupTab: React.FC<SetupTabProps> = ({
           Register node
         </div>
         <div
-          className={`menu-item ${
-            activeTab === "Minipools" ? "selected" : ""
-          }`}
+          className={`menu-item ${activeTab === "Minipools" ? "selected" : ""}`}
         >
           Minipools
         </div>
       </div>
       <Box className="detail">
         {activeTab === "WalletInit" && <WalletInit />}
-        {activeTab === "RegisterNode" && <RegisterNode data={rocketpoolValue} onRefreshRockpoolData={onRefreshRockpoolData} />}
+        {activeTab === "RegisterNode" && (
+          <RegisterNode
+            data={rocketpoolValue}
+            onRefreshRockpoolData={onRefreshRockpoolData}
+          />
+        )}
         {activeTab === "Minipools" && <Minipools data={rocketpoolValue} />}
       </Box>
     </div>
   );
-}
+};
 
 export default SetupTab;

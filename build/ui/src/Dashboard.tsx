@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Chip, CircularProgress, Typography } from "@mui/material";
+import { Alert, Box, Chip, CircularProgress, Typography } from "@mui/material";
 import InfoTab from "./components/Info/InfoTab";
 import SetupTab from "./components/Setup/SetupTab";
 
@@ -15,6 +15,11 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
   const { rocketpoolValue, updateRocketpoolValue } =
     React.useContext(RocketpoolContext);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [clientsSynced, setClientsSynced] = React.useState(
+    rocketpoolValue?.nodeSync?.ecStatus.primaryEcStatus.isSynced &&
+      rocketpoolValue?.nodeSync?.bcStatus.primaryEcStatus.isSynced
+  );
 
   const appService = new AppService();
   function fetchData() {
@@ -43,6 +48,13 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
         setIsLoading(false);
       });
   }
+
+  useEffect(() => {
+    setClientsSynced(
+      rocketpoolValue?.nodeSync?.ecStatus.primaryEcStatus.isSynced &&
+        rocketpoolValue?.nodeSync?.bcStatus.primaryEcStatus.isSynced
+    );
+  }, [rocketpoolValue]);
 
   useEffect(() => {
     fetchData();
@@ -129,23 +141,30 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
               padding: 3,
             }}
           >
-            <Box
-              sx={{
-                width: "80%",
-                maxWidth: 850,
-                borderRadius: "3em",
-                border: "1px solid black",
-                padding: 3,
-              }}
-            >
-              <div className="content">
-                {activeTab === "Setup" && (
-                  <SetupTab onRefreshRockpoolData={refreshRocketpoolData} />
-                )}
-                {activeTab === "Rewards" && <RewardsTab />}
-                {activeTab === "Info" && <InfoTab />}
-              </div>
-            </Box>
+            {!clientsSynced && activeTab !== "Info" ? (
+              <Alert severity="error" variant="filled">
+                You <b>cannot access </b> the tab {activeTab} <b>until</b> your
+                execution client and beacon chain client are <b>synced</b>.
+              </Alert>
+            ) : (
+              <Box
+                sx={{
+                  width: "80%",
+                  maxWidth: 850,
+                  borderRadius: "3em",
+                  border: "1px solid black",
+                  padding: 3,
+                }}
+              >
+                <div className="content">
+                  {activeTab === "Setup" && (
+                    <SetupTab onRefreshRockpoolData={refreshRocketpoolData} />
+                  )}
+                  {activeTab === "Rewards" && <RewardsTab />}
+                  {activeTab === "Info" && <InfoTab />}
+                </div>
+              </Box>
+            )}
           </Box>
         </>
       )}
