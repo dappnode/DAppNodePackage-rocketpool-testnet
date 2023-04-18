@@ -65,21 +65,6 @@ export default function ToolBar({
           </>
         )}
       </div>
-      <div style={{ paddingLeft: 20 }}>
-        <ButtonGroup
-          variant="contained"
-          aria-label="outlined primary button group"
-          sx={{
-            // Align center horizontally
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          {pages.map((page) => (
-            <Button onClick={() => handleTabClick(page)}>{page}</Button>
-          ))}
-        </ButtonGroup>
-      </div>
       <div style={{ marginLeft: "auto" }}>
         <Box
           sx={{
@@ -91,6 +76,23 @@ export default function ToolBar({
         >
           <NotSyncedWarn />
         </Box>
+      </div>
+      <div style={{ paddingLeft: 20 }}>
+        <ButtonGroup
+          variant="contained"
+          aria-label="outlined primary button group"
+          sx={{
+            // Align center horizontally
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          {pages.map((page, index) => (
+            <Button key={index} onClick={() => handleTabClick(page)}>
+              <b>{page}</b>
+            </Button>
+          ))}
+        </ButtonGroup>
       </div>
     </Toolbar>
   );
