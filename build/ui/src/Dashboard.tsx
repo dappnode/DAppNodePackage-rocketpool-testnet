@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Alert, Box, Chip, CircularProgress, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Card,
+  Chip,
+  CircularProgress,
+  Typography,
+} from "@mui/material";
 import InfoTab from "./components/Info/InfoTab";
 import SetupTab from "./components/Setup/SetupTab";
 
@@ -135,10 +142,10 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
           )}
           <Box
             sx={{
+              margin: 8,
               display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: 3,
+              flexDirection: "column",
+              alignItems: "left",
             }}
           >
             {!clientsSynced && activeTab !== "Info" ? (
@@ -147,13 +154,11 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
                 execution client and beacon chain client are <b>synced</b>.
               </Alert>
             ) : (
-              <Box
+              <Card
                 sx={{
-                  width: "80%",
-                  maxWidth: 850,
-                  borderRadius: "3em",
-                  border: "1px solid black",
-                  padding: 3,
+                  padding: 4,
+                  borderRadius: 2,
+                  boxShadow: 4,
                 }}
               >
                 <div className="content">
@@ -163,7 +168,7 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
                   {activeTab === "Rewards" && <RewardsTab />}
                   {activeTab === "Info" && <InfoTab />}
                 </div>
-              </Box>
+              </Card>
             )}
           </Box>
         </>
