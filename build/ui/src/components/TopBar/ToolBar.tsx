@@ -52,33 +52,20 @@ export default function ToolBar({
           alignItems: "center",
           display: "flex",
           justifyContent: "center",
-          lineHeight: "1.6rem",
+          lineHeight: "1rem",
         }}
       >
-        <img src="/assets/rocketpool_logo.png" alt="logo" height={50} />
+        <img src="/assets/rocketpool_logo.png" alt="logo" height={40} />
         &nbsp;&nbsp;
-        <p>Rocket Pool</p>
+        <p>
+          <b>Rocket Pool</b>
+        </p>
         {data?.network && (
           <>
             &nbsp;&nbsp;
             <Chip color="secondary" label={data?.network} />
           </>
         )}
-      </div>
-      <div style={{ paddingLeft: 20 }}>
-        <ButtonGroup
-          variant="contained"
-          aria-label="outlined primary button group"
-          sx={{
-            // Align center horizontally
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          {pages.map((page) => (
-            <Button onClick={() => handleTabClick(page)}>{page}</Button>
-          ))}
-        </ButtonGroup>
       </div>
       <div style={{ marginLeft: "auto" }}>
         <Box
@@ -91,6 +78,23 @@ export default function ToolBar({
         >
           <NotSyncedWarn />
         </Box>
+      </div>
+      <div style={{ paddingLeft: 20 }}>
+        <ButtonGroup
+          variant="contained"
+          aria-label="outlined primary button group"
+          sx={{
+            // Align center horizontally
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          {pages.map((page, index) => (
+            <Button key={index} onClick={() => handleTabClick(page)}>
+              <b>{page}</b>
+            </Button>
+          ))}
+        </ButtonGroup>
       </div>
     </Toolbar>
   );
