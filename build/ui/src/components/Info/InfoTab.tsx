@@ -9,7 +9,10 @@ const InfoTab: React.FC<InfoTabProps> = (): JSX.Element => {
 
   return (
     <Box>
-      <Typography variant="h5">Info</Typography>
+      <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+        Node Info
+      </Typography>
+
       <Typography variant="body1" sx={{ marginTop: 2 }}>
         <b>Network:</b> {rocketpoolValue?.network}
         <br />
