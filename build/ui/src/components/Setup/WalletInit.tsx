@@ -1,29 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { Typography, Button, TextField, Box, Link, CircularProgress } from "@mui/material";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import React, { useState } from "react";
+import { Typography, Button, TextField, CircularProgress } from "@mui/material";
 import CopyToClipboardButton from "../Buttons/CopyToClipboardButton";
+import PublishIcon from "@mui/icons-material/Publish";
+import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import { AppService } from "../../services/AppService";
 import { RocketpoolData } from "../../types/RocketpoolData";
 import { RocketpoolContext } from "../Providers/Context";
+import "./walletInit.css";
 
-interface WalletInitProps {}
-
-const WalletInit: React.FC<WalletInitProps> = (): JSX.Element => {
+function WalletInit(): JSX.Element {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isRecoverEnabled, setIsRecoverEnabled] = useState<boolean>(false);
   const [mnemonic, setMnemonic] = useState<string>();
   const [mnemonicEntered, setMnemonicEntered] = useState<string>();
-  const { rocketpoolValue, updateRocketpoolValue } = React.useContext(RocketpoolContext);
+  const { rocketpoolValue, updateRocketpoolValue } =
+    React.useContext(RocketpoolContext);
 
   const appService = new AppService();
 
-  useEffect(() => {
-    // This code will run when the component mounts
-    // You can use it to fetch data or set up any other initial state
-  }, []);
-
   const handleWalletInitClick = async () => {
-    var seed = await appService.walletInit();
+    const seed = await appService.walletInit();
     setMnemonic(seed);
     setIsRecoverEnabled(false);
   };
@@ -39,87 +35,168 @@ const WalletInit: React.FC<WalletInitProps> = (): JSX.Element => {
         walletStatus,
         nodeStatus,
         rocketpoolValue?.nodeSync,
-        rocketpoolValue?.networkRplPrice,
+        rocketpoolValue?.networkRplPrice
       )
     );
     setIsLoading(false);
   };
 
-  const handleIsRecoverEnabled= (enabled: boolean) => {
+  const handleIsRecoverEnabled = (enabled: boolean) => {
     setIsRecoverEnabled(enabled);
   };
 
+  function areWalletButtonsShown() {
+    return mnemonic === undefined && !isRecoverEnabled;
+  }
+
+  function isValidMnemonic(mnemonic: string): boolean {
+    return /^\b([a-zA-Z]+\b\s+){23}[a-zA-Z]+\b$/.test(mnemonic);
+  }
+
   return (
-    <Box 
-      sx={{ 
-        display: "flex", 
-        flexDirection: "column", 
-        alignItems: "center", 
-        minHeight: "100vh", 
-        '& > * + *': { marginTop: '10px' } 
-      }}>
-      <Typography variant="subtitle1">
-        In order to use Rocket Pool for the first time you need to create a wallet clicking on
-      </Typography>
-      <Button
-        disabled={(mnemonic !== undefined) || isRecoverEnabled}
-        variant="contained"
-        onClick={() => handleWalletInitClick()}
-      >
-        {" "}
-        Init Wallet
-      </Button>
-      <Typography variant="subtitle1">
-        or
-      </Typography>
-      <Button
-        disabled={mnemonic !== undefined || isRecoverEnabled}
-        variant="contained"
-        color="error"
-        onClick={() => handleIsRecoverEnabled(true)}
-      >
-        Recover your Rocket Pool wallet
-      </Button>
-      <br/>
-      {(mnemonic || isRecoverEnabled) && (
-        <>
-          {mnemonic && (
-            <>
-              <Typography variant="subtitle1">
-                Your mnemonic, keep it safe 👇
+    <div>
+      <div className="init-title-container">
+        <Typography
+          variant="h4"
+          style={{
+            fontWeight: "bold",
+          }}
+        >
+          Welcome to the Rocket Pool DAppNode Package!
+        </Typography>
+      </div>
+
+      <div>
+        {areWalletButtonsShown() && (
+          <>
+            <div>
+              <Typography variant="h6">
+                It looks like it's your first time here. You need to create a
+                new wallet or recover an existing one.
               </Typography>
-              <Box sx={{ display: "flex", border: "1px solid rgba(0, 0, 0, 0.87)", borderRadius: "5px", padding: 1 }}>
-                <Typography variant="subtitle1" className="mnemonic" >{mnemonic}</Typography>
-                <CopyToClipboardButton value={mnemonic} />
-              </Box>
+            </div>
+            <div className="button-container">
+              <Button
+                variant="contained"
+                onClick={() => handleWalletInitClick()}
+                endIcon={<LibraryAddIcon />}
+              >
+                Create RP Wallet
+              </Button>
+            </div>
+            <div className="button-container">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handleIsRecoverEnabled(true)}
+                endIcon={<PublishIcon />}
+              >
+                Recover existing RP wallet
+              </Button>
+            </div>
+          </>
+        )}
+
+        {isRecoverEnabled && (
+          <>
+            <div>
+              <Typography variant="h6">
+                Recovering an existing wallet
+              </Typography>
+            </div>
+            <TextField
+              value={mnemonicEntered}
+              onChange={(e) => setMnemonicEntered(e.target.value)}
+              fullWidth
+              label="Enter here your mnemonic"
+              id="fullWidth"
+              multiline
+              sx={{ marginTop: 2 }}
+              error={
+                mnemonicEntered !== undefined &&
+                mnemonicEntered !== "" &&
+                !isValidMnemonic(mnemonicEntered)
+              }
+              helperText={
+                !isValidMnemonic(mnemonicEntered ?? "")
+                  ? "Invalid mnemonic"
+                  : undefined
+              }
+            />
+            <div style={{ marginTop: "1rem" }}>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => handleIsRecoverEnabled(false)}
+              >
+                Cancel
+              </Button>{" "}
+              <Button
+                disabled={!mnemonicEntered || !isValidMnemonic(mnemonicEntered)}
+                variant="contained"
+                color="primary"
+                onClick={() => handleWalletRecoverClick()}
+              >
+                Continue
+              </Button>
+            </div>
+          </>
+        )}
+
+        {!isRecoverEnabled && mnemonic && (
+          <>
+            <Typography variant="subtitle1">
+              This is your mnemonic, <b>keep it safe</b> 👇
+              <div>
+                <TextField
+                  variant="outlined"
+                  label="Mnemonic"
+                  value={mnemonic}
+                  InputProps={{
+                    endAdornment: <CopyToClipboardButton value={mnemonic} />,
+                    sx: {
+                      borderRadius: "5px",
+                      borderColor: "rgba(0, 0, 0, 0.87)",
+                      padding: 1,
+                      color: "red",
+                    },
+                  }}
+                  fullWidth
+                />
+              </div>
+            </Typography>
+            <>
+              <TextField
+                value={mnemonicEntered}
+                onChange={(e) => setMnemonicEntered(e.target.value)}
+                fullWidth
+                label="Enter the mnemonic before continuing"
+                id="fullWidth"
+                multiline
+                sx={{ marginTop: 2 }}
+              />
+              <div style={{ marginTop: "1rem" }}>
+                {" "}
+                <Button
+                  disabled={
+                    (mnemonic !== mnemonicEntered && !isRecoverEnabled) ||
+                    isLoading
+                  }
+                  variant="contained"
+                  onClick={() => handleWalletRecoverClick()}
+                >
+                  {isLoading ? (
+                    <CircularProgress size={24} color="primary" />
+                  ) : (
+                    "I saved the mnemonic, continue"
+                  )}
+                </Button>
+              </div>
             </>
-          )}
-          <TextField
-            value={mnemonicEntered}
-            onChange={(e) => setMnemonicEntered(e.target.value)}
-            fullWidth
-            label="Enter the mnemonic before continue"
-            id="fullWidth"
-            multiline
-            sx={{ marginTop: 2 }}
-          />
-          <Typography variant="subtitle1" sx={{ marginTop: 2 }} >
-            You can backup your wallet and validator keys at any time at
-          </Typography>
-          <Link href="http://my.dappnode/#/packages/rocketpool-testnet.public.dappnode.eth/backup" variant="subtitle1" underline="always" target="_blank" rel="noopener">
-            http://my.dappnode/#/packages/rocketpool-testnet.public.dappnode.eth/backup
-            <OpenInNewIcon fontSize="inherit" />
-          </Link>
-          <Button
-            disabled={((mnemonic !== mnemonicEntered) && !isRecoverEnabled) || (isRecoverEnabled && ((mnemonicEntered?.length ?? 0) === 0)) || isLoading}
-            variant="contained"
-            onClick={() => handleWalletRecoverClick()}
-          >
-             {isLoading ? <CircularProgress size={24} color="primary" /> : 'I saved the mnemonic, continue'}
-          </Button>
-        </>
-      )}
-    </Box>
+          </>
+        )}
+      </div>
+    </div>
   );
 }
 
