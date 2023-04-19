@@ -49,14 +49,6 @@ const MinipoolDetails: React.FC<MinipoolDetailsProps> = ({
             {minipoolStatus?.minipools.map((minipool, index) => (
               <>
                 <MinipoolCard data={minipool} key={index} />
-                <MinipoolCard data={minipool} key={index + 1} />
-                {/*<MinipoolCard data={minipool} key={index + 2} />
-                <MinipoolCard data={minipool} key={index} />
-                <MinipoolCard data={minipool} key={index + 1} />
-                <MinipoolCard data={minipool} key={index + 2} />
-                <MinipoolCard data={minipool} key={index} />
-                <MinipoolCard data={minipool} key={index + 1} />
-            <MinipoolCard data={minipool} key={index + 2} />*/}
               </>
             ))}
           </Grid>
