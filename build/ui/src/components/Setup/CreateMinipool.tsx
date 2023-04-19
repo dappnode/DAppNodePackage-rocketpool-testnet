@@ -55,7 +55,6 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
   }
 
   async function fetchData() {
-    setMinipoolEth(data?.nodeStatus?.isAtlasDeployed ? 8 : 16)
     var networkNodeFee = await appService.getNetworkNodeFee();
     setNodeFee(networkNodeFee.nodeFee);
     refreshData(minipoolEth);
@@ -131,7 +130,6 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
       <Box display="inline">
         <Typography variant="h5">Create minipool{' '}
           <ToggleButtonGroup
-            disabled={!data?.nodeStatus?.isAtlasDeployed}
             color="primary"
             value={minipoolEth.toString()}
             exclusive
@@ -183,7 +181,7 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
         </Typography>
       )}
       <Typography variant="body1" sx={{ marginTop: 2 }}>
-      Deposit 16 ETH to create the minipool (validator key will be imported and configured automatically)
+      Deposit {minipoolEth} ETH to create the minipool (validator key will be imported and configured automatically)
       </Typography>
       <Box>
         <Button
