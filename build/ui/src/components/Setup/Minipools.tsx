@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@mui/material";
 import { AppService } from "../../services/AppService";
 import { RocketpoolData } from "../../types/RocketpoolData";
 import CreateMinipool from "./CreateMinipool";

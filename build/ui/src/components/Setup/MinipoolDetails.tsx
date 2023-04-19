@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Box, Grid, CircularProgress, Alert } from "@mui/material";
+import { Box, Grid, CircularProgress, Alert } from "@mui/material";
 import { AppService } from "../../services/AppService";
 import { RocketpoolData } from "../../types/RocketpoolData";
 import { MinipoolStatus } from "../../types/MinipoolStatus";
 import MinipoolCard from "./MinipoolCard";
-import "./miniPool.css";
-import MinipoolActions from "./MinipooActions";
+import "./minipool.css";
+import MinipoolActions from "./MinipoolActions";
 
 interface MinipoolDetailsProps {
   data?: RocketpoolData;
@@ -47,7 +47,17 @@ const MinipoolDetails: React.FC<MinipoolDetailsProps> = ({
             }}
           >
             {minipoolStatus?.minipools.map((minipool, index) => (
-              <MinipoolCard data={minipool} key={index} />
+              <>
+                <MinipoolCard data={minipool} key={index} />
+                <MinipoolCard data={minipool} key={index + 1} />
+                {/*<MinipoolCard data={minipool} key={index + 2} />
+                <MinipoolCard data={minipool} key={index} />
+                <MinipoolCard data={minipool} key={index + 1} />
+                <MinipoolCard data={minipool} key={index + 2} />
+                <MinipoolCard data={minipool} key={index} />
+                <MinipoolCard data={minipool} key={index + 1} />
+            <MinipoolCard data={minipool} key={index + 2} />*/}
+              </>
             ))}
           </Grid>
           {minipoolStatus?.error && (

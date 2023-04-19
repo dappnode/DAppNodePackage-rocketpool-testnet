@@ -3,11 +3,11 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import AddIcon from "@mui/icons-material/Add";
 
 function MinipoolActions({
-    onAddMinipoolClick,
-    isLoading,
-}:{
-    onAddMinipoolClick: (add: boolean) => void,
-    isLoading: boolean
+  onAddMinipoolClick,
+  isLoading,
+}: {
+  onAddMinipoolClick: (add: boolean) => void;
+  isLoading: boolean;
 }) {
   return (
     <>
