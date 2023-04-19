@@ -1,6 +1,7 @@
 import React from "react";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Card, CardContent, CardHeader } from "@mui/material";
 import { RocketpoolContext } from "../Providers/Context";
+import "./infoTab.css";
 
 interface InfoTabProps {}
 
@@ -12,6 +13,11 @@ const InfoTab: React.FC<InfoTabProps> = (): JSX.Element => {
       <Typography variant="h5" sx={{ fontWeight: "bold" }}>
         Node Info
       </Typography>
+
+      <Card className="network-card">
+        <CardHeader title="Network" className="title" />
+        <CardContent>{/* Your content goes here */}</CardContent>
+      </Card>
 
       <Typography variant="body1" sx={{ marginTop: 2 }}>
         <b>Network:</b> {rocketpoolValue?.network}

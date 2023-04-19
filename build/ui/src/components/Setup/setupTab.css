@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.stepper-container {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 32px;
+}
+
+.step-content {
+  flex: 1; /* Fill remaining space */
+  display: flex; /* Use flexbox layout */
+  align-items: center; /* Vertically center the content */
+  justify-content: center; /* Horizontally center the content */
+  border-left: 1px solid lightgray;
+}
