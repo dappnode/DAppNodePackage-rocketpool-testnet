@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  Typography,
-  Button,
-  Box,
-  Grid,
-  CircularProgress,
-  Link,
-} from "@mui/material";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import AddIcon from "@mui/icons-material/Add";
+import { Typography, Box, Grid, CircularProgress, Alert } from "@mui/material";
 import { AppService } from "../../services/AppService";
 import { RocketpoolData } from "../../types/RocketpoolData";
 import { MinipoolStatus } from "../../types/MinipoolStatus";
 import MinipoolCard from "./MinipoolCard";
+import "./miniPool.css";
+import MinipoolActions from "./MinipooActions";
 
 interface MinipoolDetailsProps {
   data?: RocketpoolData;
@@ -40,60 +33,37 @@ const MinipoolDetails: React.FC<MinipoolDetailsProps> = ({
   }, []);
 
   return (
-    <Box>
-      <div>
-        <Button
-          disabled={isLoading}
-          variant="contained"
-          endIcon={<AddIcon />}
-          onClick={() => onAddMinipoolClick(true)}
-        >
-          Add Minipool
-        </Button>
+    <div className="minipool-container">
+      <div className="validators-container">
+        <Box>
+          {isLoading && <CircularProgress sx={{ marginTop: 1 }} />}
+          <Grid
+            container
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: 2,
+              width: "100%",
+            }}
+          >
+            {minipoolStatus?.minipools.map((minipool, index) => (
+              <MinipoolCard data={minipool} key={index} />
+            ))}
+          </Grid>
+          {minipoolStatus?.error && (
+            <Alert variant="filled" severity="error">
+              {minipoolStatus?.error}
+            </Alert>
+          )}
+        </Box>
       </div>
-      {isLoading && <CircularProgress sx={{ marginTop: 1 }} />}
-      <Grid
-        container
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: 2,
-          width: "100%",
-        }}
-      >
-        {minipoolStatus?.minipools.map((minipool, index) => (
-          <MinipoolCard data={minipool} key={index} />
-        ))}
-      </Grid>
-      {minipoolStatus?.error && (
-        <Typography variant="body1" sx={{ color: "red" }}>
-          ❗️{minipoolStatus?.error}
-        </Typography>
-      )}
-      <Link
-        href="http://brain.web3signer-prater.dappnode/"
-        variant="subtitle1"
-        underline="always"
-        target="_blank"
-        rel="noopener"
-      >
-        Check your validator keys here
-        <OpenInNewIcon fontSize="inherit" />
-      </Link>
-      <Typography variant="subtitle1" sx={{ marginTop: 2 }}>
-        You can backup your wallet and validator keys at any time at
-      </Typography>
-      <Link
-        href="http://my.dappnode/#/packages/rocketpool-testnet.public.dappnode.eth/backup"
-        variant="subtitle1"
-        underline="always"
-        target="_blank"
-        rel="noopener"
-      >
-        http://my.dappnode/#/packages/rocketpool-testnet.public.dappnode.eth/backup
-        <OpenInNewIcon fontSize="inherit" />
-      </Link>
-    </Box>
+      <div className="actions-container">
+        <MinipoolActions
+          onAddMinipoolClick={onAddMinipoolClick}
+          isLoading={isLoading}
+        />
+      </div>
+    </div>
   );
 };
 

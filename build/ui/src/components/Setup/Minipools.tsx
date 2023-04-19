@@ -26,14 +26,14 @@ const Minipools: React.FC<MinipoolsProps> = ({ data }): JSX.Element => {
   }, []);
 
   return (
-    <Box>
+    <>
       {isCreatingMinipool && (
         <CreateMinipool data={data} onAddMinipoolClick={addMinipoolClick} />
       )}
       {!isCreatingMinipool && (
         <MinipoolDetails data={data} onAddMinipoolClick={addMinipoolClick} />
       )}
-    </Box>
+    </>
   );
 };
 

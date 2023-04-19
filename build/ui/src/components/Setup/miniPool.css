@@ -1,0 +1,23 @@
+.minipool-container {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.actions-container {
+  /*display: flex;
+  align-items: center;*/
+  margin-left: 32px;
+}
+
+.validators-container {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid lightgray;
+}
+
+.button-container {
+  margin-top: 1rem;
+}
