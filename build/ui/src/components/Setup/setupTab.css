@@ -10,9 +10,9 @@
 }
 
 .step-content {
-  flex: 1; /* Fill remaining space */
-  display: flex; /* Use flexbox layout */
-  align-items: center; /* Vertically center the content */
-  justify-content: center; /* Horizontally center the content */
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-left: 1px solid lightgray;
 }
