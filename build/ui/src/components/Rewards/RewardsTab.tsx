@@ -96,17 +96,18 @@ const RewardsTab: React.FC<RewardsTabProps> = (): JSX.Element => {
           <Typography variant="body1" sx={{ marginTop: 2 }}>
             These are your available rewards:
             <br />
-            <div>
-              <Chip
-                label={`${nodeRewards.unclaimedEthRewards.toFixed(4)} ETH`}
-                color="success"
-              />{" "}
-              <Chip
-                label={`${nodeRewards.unclaimedRplRewards.toFixed(4)} RPL`}
-                color="success"
-              />
-            </div>
           </Typography>
+
+          <div>
+            <Chip
+              label={`${nodeRewards.unclaimedEthRewards.toFixed(4)} ETH`}
+              color="success"
+            />{" "}
+            <Chip
+              label={`${nodeRewards.unclaimedRplRewards.toFixed(4)} RPL`}
+              color="success"
+            />
+          </div>
           <Box sx={{ marginTop: 3 }}>
             <Button
               disabled={isClaiming || areAnyRewardsAvailable()}
