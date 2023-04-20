@@ -5,13 +5,9 @@ import {
   Chip,
   TextField,
   CircularProgress,
-  Link,
-  ToggleButtonGroup,
-  ToggleButton,
   Tooltip,
   Alert,
 } from "@mui/material";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import CopyToClipboardButton from "../Buttons/CopyToClipboardButton";
 import { AppService } from "../../services/AppService";
 import { RocketpoolData } from "../../types/RocketpoolData";
@@ -26,6 +22,8 @@ import { RocketpoolContext } from "../Providers/Context";
 import { TxResponse } from "../../types/TxResponse";
 import RequiredBalanceInfo from "./RequiredBalanceInfo";
 import "./registerNode.css";
+import MinipoolEthToggle from "./MinipoolEthToggle";
+import TxsLinksBox from "./TxsLinksBox";
 
 interface RegisterNodeProps {
   data?: RocketpoolData;
@@ -68,17 +66,6 @@ const RegisterNode: React.FC<RegisterNodeProps> = ({
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
-
-  const handleMinipoolEthChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newMinipoolEth: string
-  ) => {
-    const minipoolEth = Number(newMinipoolEth);
-
-    if (minipoolEth === 8 || minipoolEth === 16) {
-      setMinipoolEth(minipoolEth);
-    }
-  };
 
   const handleRegisterNodeClick = async () => {
     try {
@@ -201,27 +188,6 @@ const RegisterNode: React.FC<RegisterNodeProps> = ({
     );
   }
 
-  function TxsLinksBox(): JSX.Element {
-    return (
-      <>
-        {txs.map((tx, index) => (
-          <Link
-            href={`https://goerli.etherscan.io/tx/${tx}`}
-            variant="subtitle1"
-            underline="always"
-            target="_blank"
-            rel="noopener"
-            key={index}
-          >
-            View transaction {index + 1} on Etherscan
-            <OpenInNewIcon fontSize="inherit" />
-            <br />
-          </Link>
-        ))}
-      </>
-    );
-  }
-
   return (
     <div className="register-node-container">
       <div className="actions-container">
@@ -266,36 +232,17 @@ const RegisterNode: React.FC<RegisterNodeProps> = ({
             )}
           </Button>
         </div>
-        <TxsLinksBox />
+        <TxsLinksBox txs={txs} />
         <ErrorAlertBox />
       </div>
       <div className="info-container">
         <br />
         <Typography variant="h5">Info</Typography>
         <div className="minipool-eth-button-group-container">
-          <ToggleButtonGroup
-            color="primary"
-            value={minipoolEth.toString()}
-            exclusive
-            onChange={handleMinipoolEthChange}
-            aria-label="minipool"
-            className="minipool-eth-button-group"
-          >
-            <ToggleButton
-              value="8"
-              aria-label="8 ETH"
-              className="minipool-eth-left-button"
-            >
-              8 ETH
-            </ToggleButton>
-            <ToggleButton
-              value="16"
-              aria-label="16 ETH"
-              className="minipool-eth-right-button"
-            >
-              16 ETH
-            </ToggleButton>
-          </ToggleButtonGroup>
+          <MinipoolEthToggle
+            minipoolEth={minipoolEth}
+            setMinipoolEth={setMinipoolEth}
+          />
         </div>
         <div className="rpl-eth-chip-container">
           <Tooltip title="Current RPL price in ETH">
