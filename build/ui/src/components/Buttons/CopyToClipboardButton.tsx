@@ -11,8 +11,8 @@ const CopyToClipboardButton = (props: any) => {
 
   return (
     <>
-      <IconButton onClick={handleClick}>
-        <ContentCopyIcon fontSize={props.fontSize ?? ''} />
+      <IconButton onClick={() => handleClick()}>
+        <ContentCopyIcon fontSize={props.fontSize ?? ""} />
       </IconButton>
       <Snackbar
         open={open}

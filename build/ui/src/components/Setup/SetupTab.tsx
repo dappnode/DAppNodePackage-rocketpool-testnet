@@ -85,45 +85,6 @@ const SetupTab: React.FC<SetupTabProps> = ({
         {activeStep === "Minipools" && <Minipools data={rocketpoolValue} />}
       </Box>
     </div>
-    /*<div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 3fr",
-        height: "100vh",
-      }}
-    >
-      <div className="menu">
-        <div
-          className={`menu-item ${
-            activeTab === "WalletInit" ? "selected" : ""
-          }`}
-        >
-          Init wallet
-        </div>
-        <div
-          className={`menu-item ${
-            activeTab === "RegisterNode" ? "selected" : ""
-          }`}
-        >
-          Register node
-        </div>
-        <div
-          className={`menu-item ${activeTab === "Minipools" ? "selected" : ""}`}
-        >
-          Minipools
-        </div>
-      </div>
-      <Box className="detail">
-        {activeTab === "WalletInit" && <WalletInit />}
-        {activeTab === "RegisterNode" && (
-          <RegisterNode
-            data={rocketpoolValue}
-            onRefreshRockpoolData={onRefreshRockpoolData}
-          />
-        )}
-        {activeTab === "Minipools" && <Minipools data={rocketpoolValue} />}
-      </Box>
-    </div>*/
   );
 };
 
