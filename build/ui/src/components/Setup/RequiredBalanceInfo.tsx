@@ -1,33 +1,38 @@
 import React from "react";
 import { Typography, Box } from "@mui/material";
 import { RocketpoolData } from "../../types/RocketpoolData";
-import { toEther, toEtherString } from "../../utils/Utils";
+import { toEther } from "../../utils/Utils";
 
 interface RequiredBalanceInfoProps {
+  minipoolEth: 8 | 16;
   data?: RocketpoolData;
 }
 
 const RequiredBalanceInfo: React.FC<RequiredBalanceInfoProps> = ({
-    data,
+  data,
+  minipoolEth,
 }): JSX.Element => {
-    const minimumRpl8Eth = data?.networkRplPrice?.minPer8EthMinipoolRplStake ?? 0;
-    const minimumRpl16Eth = data?.networkRplPrice?.minPer16EthMinipoolRplStake ?? 0;
-    const maximumRpl8Eth = data?.networkRplPrice?.maxPer8EthMinipoolRplStake ?? 0;
-    const maximumRpl16Eth = data?.networkRplPrice?.maxPer16EthMinipoolRplStake ?? 0;
+  const minRpl =
+    minipoolEth === 8
+      ? data?.networkRplPrice?.minPer8EthMinipoolRplStake ?? 0
+      : data?.networkRplPrice?.minPer16EthMinipoolRplStake ?? 0;
 
-    return (
-        <Box>
-            <Typography variant="body1">
-                You need at least 8/16 ETH + 0.2 ETH (we recommend 0.5 ETH) to save for gas costs and RPL tokens at the current price 1 RPL = {toEtherString(data?.networkRplPrice?.rplPrice ?? 0)} ETH:
-            </Typography>
-            <Typography variant="subtitle1">
-                <strong>8 ETH minipool:</strong> min {Math.ceil(toEther(minimumRpl8Eth))} RPL - max {Math.ceil(toEther(maximumRpl8Eth))} RPL
-            </Typography>
-            <Typography variant="subtitle1">
-                <strong>16 ETH minipool:</strong> min {Math.ceil(toEther(minimumRpl16Eth))} RPL - max {Math.ceil(toEther(maximumRpl16Eth))} RPL
-            </Typography>
-        </Box>
-    );
+  const maxRpl =
+    minipoolEth === 8
+      ? data?.networkRplPrice?.maxPer8EthMinipoolRplStake ?? 0
+      : data?.networkRplPrice?.maxPer16EthMinipoolRplStake ?? 0;
+
+  return (
+    <Box>
+      <Typography variant="body1">
+        1. At least <b>{minipoolEth} ETH + 0.2 ETH</b> (we recommend{" "}
+        <b>0.5 ETH</b>) for gas costs
+        <br />
+        2. Between <b>{Math.ceil(toEther(minRpl))} RPL</b> and{" "}
+        <b>{Math.ceil(toEther(maxRpl))} RPL</b> for {minipoolEth} ETH minipool
+      </Typography>
+    </Box>
+  );
 };
 
 export default RequiredBalanceInfo;
