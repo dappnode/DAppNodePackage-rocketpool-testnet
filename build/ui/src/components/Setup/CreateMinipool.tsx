@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Button, Box, Link, ToggleButtonGroup, ToggleButton, CircularProgress } from "@mui/material";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import {
+  Typography,
+  Button,
+  Box,
+  CircularProgress,
+  Alert,
+} from "@mui/material";
 import { AppService } from "../../services/AppService";
 import { RocketpoolData } from "../../types/RocketpoolData";
-import { toEther, toEtherString } from "../../utils/Utils";
+import { toEtherString } from "../../utils/Utils";
 import RequiredBalanceInfo from "./RequiredBalanceInfo";
 import { CanDeposit } from "../../types/CanDeposit";
 import { StakeRplApprove } from "../../types/StakeRplApprove";
 import { StakeResponse } from "../../types/StakeResponse";
 import { DepositResponse } from "../../types/DepositResponse";
+import MinipoolEthToggle from "./MinipoolEthToggle";
+import "./minipool.css";
+import TxsLinksBox from "./TxsLinksBox";
 
 interface CreateMinipoolProps {
   data?: RocketpoolData;
@@ -28,7 +36,7 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
   const [depositResponse, setDepositResponse] = useState<DepositResponse>();
   const [canDeposit, setCanDeposit] = useState<CanDeposit>();
   const [nodeFee, setNodeFee] = useState<number>(0);
-  const [minipoolEth, setMinipoolEth] = useState<number>(8);
+  const [minipoolEth, setMinipoolEth] = useState<8 | 16>(8);
 
   const minimumRpl = data?.networkRplPrice?.minPer8EthMinipoolRplStake ?? 0;
   const ethBalance = data?.nodeStatus?.accountBalances.eth ?? 0;
@@ -61,8 +69,9 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
   }
 
   useEffect(() => {
-    console.log("*** create minipool")
+    console.log("*** create minipool");
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleStakeRPLClick = async () => {
@@ -74,15 +83,21 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
         var approveResponse = await appService.stakeRplApprove(rplBalance);
         setStakeTxs([...stakeTxs, approveResponse.approveTxHash]);
         setApprovalResponse(approveResponse);
-        if (approveResponse.status !== "success") { return }
+        if (approveResponse.status !== "success") {
+          return;
+        }
         await appService.wait(approveResponse.approveTxHash);
       }
       var canStakeRpl = await appService.getNodeCanStakeRpl(rplBalance);
-      if (!canStakeRpl.canStake) { return }
+      if (!canStakeRpl.canStake) {
+        return;
+      }
       var stakeResponse = await appService.nodeStakeRpl(rplBalance);
       setStakeTxs([...txs, stakeResponse.stakeTxHash]);
       setStakeResponse(stakeResponse);
-      if (stakeResponse.status !== "success") { return }
+      if (stakeResponse.status !== "success") {
+        return;
+      }
       await appService.wait(stakeResponse.stakeTxHash);
     } finally {
       setIsStakeLoading(false);
@@ -94,58 +109,56 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
     try {
       setTxs([]);
       setIsDepositLoading(true);
-      var despositResponse = await appService.nodeDeposit(minipoolEth, nodeFee, canDeposit?.canUseCredit ?? false);
+      var despositResponse = await appService.nodeDeposit(
+        minipoolEth,
+        nodeFee,
+        canDeposit?.canUseCredit ?? false
+      );
       setTxs([...txs, despositResponse.txHash]);
       setDepositResponse(despositResponse);
-      if (despositResponse.status !== "success") { return }
+      if (despositResponse.status !== "success") {
+        return;
+      }
       var wait = await appService.wait(despositResponse.txHash);
-      if (wait.status !== "success") { return }
+      if (wait.status !== "success") {
+        return;
+      }
       onAddMinipoolClick(false);
     } finally {
       setIsDepositLoading(false);
       refreshData(minipoolEth);
     }
-    
   };
 
-  const handleMinipoolEthChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newMinipoolEth: string,
-  ) => {
-    const minipoolEth = Number(newMinipoolEth);
-    setMinipoolEth(minipoolEth);
-    setCanDeposit(undefined);
-    refreshData(minipoolEth);
-  };
+  function ErrorAlertBox(): JSX.Element {
+    return (
+      <div>
+        {approvalResponse?.error && (
+          <Alert severity="error" variant="filled" sx={{ marginTop: 2 }}>
+            {approvalResponse?.error}
+          </Alert>
+        )}
+        {stakeResponse?.error && (
+          <Alert severity="error" variant="filled" sx={{ marginTop: 2 }}>
+            {stakeResponse?.error}
+          </Alert>
+        )}
+      </div>
+    );
+  }
 
   return (
-    <Box 
-      sx={{ 
-        display: "flex", 
-        flexDirection: "column", 
-        alignItems: "center", 
-        minHeight: "100vh", 
-        '& > * + *': { marginTop: '10px' } 
-      }}>
-      <Box display="inline">
-        <Typography variant="h5">Create minipool{' '}
-          <ToggleButtonGroup
-            color="primary"
-            value={minipoolEth.toString()}
-            exclusive
-            onChange={handleMinipoolEthChange}
-            aria-label="minipool"
-          >
-            <ToggleButton value="8" aria-label="8 ETH">
-              8 ETH
-            </ToggleButton>
-            <ToggleButton value="16" aria-label="16 ETH">
-              16 ETH
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Typography>
-      </Box>
-      <RequiredBalanceInfo data={data} />
+    <div className="create-minipool-container">
+      <Typography variant="h5">Create minipool </Typography>
+      <MinipoolEthToggle
+        minipoolEth={minipoolEth}
+        setMinipoolEth={setMinipoolEth}
+        setCanDeposit={setCanDeposit}
+        refreshData={refreshData}
+      />
+      <div className="required-balance-container">
+        <RequiredBalanceInfo data={data} minipoolEth={minipoolEth} />
+      </div>
       <Typography variant="body1" sx={{ marginTop: 2 }}>
         Stake {toEtherString(rplBalance)} RPL, all you have in your wallet
       </Typography>
@@ -155,68 +168,68 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
         onClick={() => handleStakeRPLClick()}
       >
         {" "}
-        {isStakeLoading ? <CircularProgress size={24} color="primary" /> : `Stake ${toEtherString(rplBalance)} RPL`}
+        {isStakeLoading ? (
+          <CircularProgress size={24} color="primary" />
+        ) : (
+          `Stake ${toEtherString(rplBalance)} RPL`
+        )}
       </Button>
-      {approvalResponse?.error && (
-        <Typography variant="body1" sx={{ color: "red" }}>
-          ❗️{approvalResponse?.error}
-        </Typography>
-      )}
-      {stakeResponse?.error && (
-        <Typography variant="body1" sx={{ color: "red" }}>
-          ❗️{stakeResponse?.error}
-        </Typography>
-      )}
-      {stakeTxs.map((tx, index) => (
-        <Link href={`https://goerli.etherscan.io/tx/${tx}`} variant="subtitle1" underline="always" target="_blank" rel="noopener">
-          View transaction {index + 1} on Etherscan
-          <OpenInNewIcon fontSize="inherit" />
-        </Link>
-      ))}
-      {(data?.nodeStatus?.rplStake ?? 0) > 0 && (
-        <Typography variant="body2">
-          (Total staked: {toEtherString(data?.nodeStatus?.rplStake ?? 0)} RPL)
-          <br />
-          (Available staked: {toEtherString((data?.nodeStatus?.rplStake ?? 0) - (data?.nodeStatus?.minimumRplStake ?? 0))} RPL)
-        </Typography>
-      )}
+      <ErrorAlertBox />
+      <TxsLinksBox txs={stakeTxs} />
+      <div className="staked-container">
+        {(data?.nodeStatus?.rplStake ?? 0) > 0 && (
+          <Typography variant="body2">
+            (Total staked: {toEtherString(data?.nodeStatus?.rplStake ?? 0)} RPL)
+            <br />
+            (Available staked:{" "}
+            {toEtherString(
+              (data?.nodeStatus?.rplStake ?? 0) -
+                (data?.nodeStatus?.minimumRplStake ?? 0)
+            )}{" "}
+            RPL)
+          </Typography>
+        )}
+      </div>
+
       <Typography variant="body1" sx={{ marginTop: 2 }}>
-      Deposit {minipoolEth} ETH to create the minipool (validator key will be imported and configured automatically)
+        Deposit {minipoolEth} ETH to create the minipool (validator key will be
+        imported and configured automatically)
       </Typography>
       <Box>
         <Button
           disabled={(!canDeposit?.canDeposit ?? false) || isDepositLoading}
           variant="contained"
-          onClick={() => handleDepositRPLClick()}>
+          onClick={() => handleDepositRPLClick()}
+        >
           {" "}
-          {isDepositLoading ? <CircularProgress size={24} color="primary" /> : `Deposit ${minipoolEth} ETH`}
+          {isDepositLoading ? (
+            <CircularProgress size={24} color="primary" />
+          ) : (
+            `Deposit ${minipoolEth} ETH`
+          )}
         </Button>
         {(data?.nodeStatus?.minipoolCounts.total ?? 0) > 0 && (
           <Button
             variant="contained"
             color="error"
             onClick={() => onAddMinipoolClick(false)}
-            sx={{ marginLeft: 2 }} >
+            sx={{ marginLeft: 2 }}
+          >
             Cancel
           </Button>
         )}
       </Box>
       {depositResponse?.error && (
-        <Typography variant="body1" sx={{ color: "red" }}>
-          ❗️{depositResponse?.error}
-        </Typography>
+        <Alert severity="error" variant="filled" sx={{ marginTop: 2 }}>
+          {depositResponse?.error}
+        </Alert>
       )}
-      {txs.map((tx, index) => (
-        <Link href={`https://goerli.etherscan.io/tx/${tx}`} variant="subtitle1" underline="always" target="_blank" rel="noopener">
-          View transaction {index + 1} on Etherscan
-          <OpenInNewIcon fontSize="inherit" />
-        </Link>
-      ))}
+      <TxsLinksBox txs={txs} />
       <Typography variant="body2" sx={{ marginTop: 2 }}>
         (Commission Fee: {(nodeFee * 100).toFixed(1)}%)
       </Typography>
-    </Box>
+    </div>
   );
-}
+};
 
 export default CreateMinipool;

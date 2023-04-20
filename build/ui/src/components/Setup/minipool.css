@@ -40,3 +40,11 @@
 .explorer-button {
   font-size: 12px !important;
 }
+
+.required-balance-container {
+  margin-top: 1rem;
+}
+
+.staked-container {
+  margin-top: 1rem;
+}
