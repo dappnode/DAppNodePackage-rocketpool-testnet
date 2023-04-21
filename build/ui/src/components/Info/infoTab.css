@@ -1,6 +1,8 @@
 .network-card {
   position: relative;
-  border-radius: 4px;
+  width: auto;
+  display: inline-flex;
+  padding: 1rem;
 }
 
 .title {
@@ -13,4 +15,9 @@
   font-weight: bold;
   border-radius: 3px;
   font-size: 16px;
+}
+
+.center-elements {
+  justify-content: center;
+  align-items: center;
 }
