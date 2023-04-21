@@ -3,7 +3,7 @@ export interface Config {
   brainAPIUrl: string;
   brainUIUrl: string;
   w3sUrl: string;
-  rpExplorerNodeUrl: string;
+  rpExplorerUrl: string;
   explorerUrl: string;
   package: string;
 }

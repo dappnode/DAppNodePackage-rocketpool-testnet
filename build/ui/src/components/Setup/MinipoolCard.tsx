@@ -1,11 +1,18 @@
 import React from "react";
 import { Card, CardContent, Typography, Chip, Button } from "@mui/material";
 import { Minipool } from "../../types/MinipoolStatus";
-import { minipoolUrl, toEtherString } from "../../utils/Utils";
+import { toEtherString } from "../../utils/Utils";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import "./minipool.css";
 
-function MinipoolCard({ data }: { data: Minipool }): JSX.Element {
+function MinipoolCard({ 
+  data,
+  rpExplorerUrl,
+}: 
+{ 
+  data: Minipool;
+  rpExplorerUrl?: string;
+}): JSX.Element {
   const backgroundColor =
     data.status.status === "Staking"
       ? "#81C784"
@@ -46,7 +53,7 @@ function MinipoolCard({ data }: { data: Minipool }): JSX.Element {
 
         <div className="explorer-button-container">
           <Button
-            href={minipoolUrl(data.address)}
+            href={`${rpExplorerUrl}/minipool/${data.address}`}
             variant="outlined"
             color="primary"
             target="_blank"

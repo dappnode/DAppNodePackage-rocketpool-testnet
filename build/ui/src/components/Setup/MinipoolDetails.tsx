@@ -48,7 +48,7 @@ const MinipoolDetails: React.FC<MinipoolDetailsProps> = ({
           >
             {minipoolStatus?.minipools.map((minipool, index) => (
               <>
-                <MinipoolCard data={minipool} key={index} />
+                <MinipoolCard data={minipool} key={index} rpExplorerUrl={data?.config?.rpExplorerUrl} />
               </>
             ))}
           </Grid>
@@ -61,6 +61,7 @@ const MinipoolDetails: React.FC<MinipoolDetailsProps> = ({
       </div>
       <div className="actions-container">
         <MinipoolActions
+          config={data?.config}
           onAddMinipoolClick={onAddMinipoolClick}
           isLoading={isLoading}
         />

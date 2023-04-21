@@ -1,11 +1,14 @@
 import { Button } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import AddIcon from "@mui/icons-material/Add";
+import { Config } from "../../types/AppConfig";
 
 function MinipoolActions({
+  config,
   onAddMinipoolClick,
   isLoading,
 }: {
+  config?: Config
   onAddMinipoolClick: (add: boolean) => void;
   isLoading: boolean;
 }) {
@@ -23,7 +26,7 @@ function MinipoolActions({
       </div>
       <div className="button-container">
         <Button
-          href="http://brain.web3signer-prater.dappnode/"
+          href={`${config?.brainUIUrl}`}
           variant="contained"
           color="primary"
           target="_blank"
@@ -35,7 +38,7 @@ function MinipoolActions({
       </div>
       <div className="button-container">
         <Button
-          href="http://my.dappnode/#/packages/rocketpool-testnet.public.dappnode.eth/backup"
+          href={`http://my.dappnode/#/packages/${config?.package}.eth/backup`}
           variant="contained"
           color="primary"
           target="_blank"

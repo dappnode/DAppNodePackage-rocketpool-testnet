@@ -14,10 +14,6 @@ export function toEtherString(wei: number): string {
   return toEther(wei).toFixed(4);
 }
 
-export function minipoolUrl(address: string): string {
-  return `https://prater.rocketscan.io/minipool/${address}`;
-}
-
 export function shortenAddress(address: string, chars = 4): string {
   const prefix = address.slice(0, chars);
   const suffix = address.slice(-chars);

@@ -35,7 +35,8 @@ function WalletInit(): JSX.Element {
         walletStatus,
         nodeStatus,
         rocketpoolValue?.nodeSync,
-        rocketpoolValue?.networkRplPrice
+        rocketpoolValue?.networkRplPrice,
+        rocketpoolValue?.config,
       )
     );
     setIsLoading(false);

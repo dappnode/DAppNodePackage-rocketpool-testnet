@@ -20,7 +20,7 @@ import { DepositResponse } from "../types/DepositResponse";
 import { NodeRewards } from "../types/NodeRewards";
 import { GetRewardsInfo } from "../types/GetRewardsInfo";
 import { CanClaimRewards } from "../types/CanClaimRewards";
-import apiBaseUrl from "../types/AppConfig";
+import apiBaseUrl, { Config } from "../types/AppConfig";
 
 export class AppService {
   public api = axios.create({
@@ -212,6 +212,10 @@ export class AppService {
   }
   public async getW3sStatus(): Promise<WaitResponse> {
     const response = await this.api.get(`/api/v1/w3s-status`);
+    return response.data;
+  }
+  public async getConfig(): Promise<Config> {
+    const response = await this.api.get(`/api/v1/config`);
     return response.data;
   }
 }

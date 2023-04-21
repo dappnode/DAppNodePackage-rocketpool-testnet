@@ -44,11 +44,11 @@ const InfoTab: React.FC<InfoTabProps> = (): JSX.Element => {
         {rocketpoolValue?.nodeSync?.bcStatus.primaryEcStatus.syncProgress})
         <br />
         <b>Signer status:</b>{" "}
-        {w3sStatusResponse?.status === "success" ? "OK" : w3sStatusResponse?.error + ""}
+        {w3sStatusResponse?.status === "success" ? "OK" : w3sStatusResponse?.error || ""}
         <br />
         <b>Node:</b>{" "}
         <a
-          href={`https://prater.rocketscan.io/node/${rocketpoolValue?.nodeStatus?.accountAddress}`}
+          href={`${rocketpoolValue?.config?.rpExplorerUrl}/node/${rocketpoolValue?.nodeStatus?.accountAddress}`}
           target="_blank"
           rel="noreferrer"
         >

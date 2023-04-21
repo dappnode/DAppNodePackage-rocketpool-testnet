@@ -11,10 +11,16 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { AppService } from "../../services/AppService";
 import { NodeRewards } from "../../types/NodeRewards";
 import { toWei } from "../../utils/Utils";
+import { Config } from "../../types/AppConfig";
+import TxsLinksBox from "../Setup/TxsLinksBox";
 
-interface RewardsTabProps {}
+interface RewardsTabProps {
+  config?: Config;
+}
 
-const RewardsTab: React.FC<RewardsTabProps> = (): JSX.Element => {
+const RewardsTab: React.FC<RewardsTabProps> = ({
+  config
+}): JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isClaiming, setIsClaiming] = useState<boolean>(false);
   const [txs, setTxs] = useState<string[]>([]);
@@ -137,18 +143,7 @@ const RewardsTab: React.FC<RewardsTabProps> = (): JSX.Element => {
               )}
             </Button>
           </Box>
-          {txs.map((tx, index) => (
-            <Link
-              href={`https://goerli.etherscan.io/tx/${tx}`}
-              variant="subtitle1"
-              underline="always"
-              target="_blank"
-              rel="noopener"
-            >
-              View transaction {index + 1} on Etherscan
-              <OpenInNewIcon fontSize="inherit" />
-            </Link>
-          ))}
+          <TxsLinksBox txs={txs} explorerUrl={config?.explorerUrl} />
         </>
       )}
     </Box>
