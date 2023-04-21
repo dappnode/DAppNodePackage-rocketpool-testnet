@@ -1,7 +1,8 @@
 FROM node:18.15.0-alpine as build-api
+ARG NETWORK
 WORKDIR /app/ui
 COPY ui .
-RUN yarn && yarn build
+RUN yarn && REACT_APP_NETWORK=${NETWORK} yarn build
 
 WORKDIR /app/api
 COPY api .
