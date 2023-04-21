@@ -17,6 +17,7 @@ import { DepositResponse } from "../../types/DepositResponse";
 import MinipoolEthToggle from "./MinipoolEthToggle";
 import "./minipool.css";
 import TxsLinksBox from "./TxsLinksBox";
+import { WaitResponse } from "../../types/WaitResponse";
 
 interface CreateMinipoolProps {
   data?: RocketpoolData;
@@ -34,6 +35,7 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
   const [approvalResponse, setApprovalResponse] = useState<StakeRplApprove>();
   const [stakeResponse, setStakeResponse] = useState<StakeResponse>();
   const [depositResponse, setDepositResponse] = useState<DepositResponse>();
+  const [w3sStatusResponse, setW3sStatusResponse] = useState<WaitResponse>();
   const [canDeposit, setCanDeposit] = useState<CanDeposit>();
   const [nodeFee, setNodeFee] = useState<number>(0);
   const [minipoolEth, setMinipoolEth] = useState<8 | 16>(8);
@@ -109,6 +111,11 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
     try {
       setTxs([]);
       setIsDepositLoading(true);
+      const w3sStatus = await appService.getW3sStatus();
+      setW3sStatusResponse(w3sStatus);
+      if (w3sStatus.status !== "success") {
+        return;
+      }
       var despositResponse = await appService.nodeDeposit(
         minipoolEth,
         nodeFee,
@@ -219,6 +226,11 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
           </Button>
         )}
       </Box>
+      {w3sStatusResponse?.error && (
+        <Alert severity="error" variant="filled" sx={{ marginTop: 2 }}>
+          {w3sStatusResponse?.error}
+        </Alert>
+      )}
       {depositResponse?.error && (
         <Alert severity="error" variant="filled" sx={{ marginTop: 2 }}>
           {depositResponse?.error}

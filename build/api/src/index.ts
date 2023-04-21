@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import shelljs from "shelljs";
 import cors from "cors";
+import appConfig from "./AppConfig";
 const { API_PORT = 3000 } = process.env;
 
 dotenv.config();
@@ -18,6 +19,31 @@ app.get("/api/v1/environment/:key", (req, res) => {
     value: value,
   };
   res.send(response);
+});
+
+app.get("/api/v1/config", (req, res) => {
+  res.send(appConfig.getConfig());
+});
+
+app.get("/api/v1/w3s-status", async (req, res) => {
+  try {
+    const response = await fetch(
+      `${appConfig.getConfig().w3sUrl}/upcheck`,
+    );
+    const responseOK = response.ok && response.statusText === "OK";
+    const responseJson = {
+      "status": responseOK ? "success" : "error",
+      "error": !responseOK ? response.statusText : "",
+    }
+    res.send(responseJson);
+  } catch (error) {
+    console.log(error);
+    const responseJson = {
+      "status": "error",
+      "error": "Web3Signer not available",
+    }
+    res.send(responseJson);
+  }
 });
 
 app.get("/api/v1/version", (req: Request, res: Response) => {
@@ -68,7 +94,7 @@ function importKey(validatorPubkey: string) {
 // async function to POST fetch
 async function postValidatorData(data = {}) {
   const response = await fetch(
-    `http://brain.web3signer-prater.dappnode:3000/eth/v1/keystores`,
+    `${appConfig.getConfig().brainAPIUrl}/eth/v1/keystores`,
     {
       method: "POST",
       body: JSON.stringify(data),
