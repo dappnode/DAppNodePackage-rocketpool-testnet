@@ -20,10 +20,11 @@ import { DepositResponse } from "../types/DepositResponse";
 import { NodeRewards } from "../types/NodeRewards";
 import { GetRewardsInfo } from "../types/GetRewardsInfo";
 import { CanClaimRewards } from "../types/CanClaimRewards";
+import apiBaseUrl from "../types/AppConfig";
 
 export class AppService {
   public api = axios.create({
-    baseURL: "http://rocketpool-testnet.public.dappnode:3000",
+    baseURL: apiBaseUrl,
     // baseURL: "http://localhost:3000",
     timeout: 600000,
     headers: {
@@ -207,6 +208,10 @@ export class AppService {
     const response = await this.api.post(`/api/v1/rocketpool-command`, {
       cmd: `node claim-and-stake-rewards ${indexes} ${amount}`,
     });
+    return response.data;
+  }
+  public async getW3sStatus(): Promise<WaitResponse> {
+    const response = await this.api.get(`/api/v1/w3s-status`);
     return response.data;
   }
 }
