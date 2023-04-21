@@ -125,7 +125,8 @@ const RegisterNode: React.FC<RegisterNodeProps> = ({
           walletStatus,
           nodeStatus,
           rocketpoolValue?.nodeSync,
-          rocketpoolValue?.networkRplPrice
+          rocketpoolValue?.networkRplPrice,
+          rocketpoolValue?.config,
         )
       );
     }
@@ -232,7 +233,7 @@ const RegisterNode: React.FC<RegisterNodeProps> = ({
             )}
           </Button>
         </div>
-        <TxsLinksBox txs={txs} />
+        <TxsLinksBox txs={txs} explorerUrl={data?.config?.explorerUrl} />
         <ErrorAlertBox />
       </div>
       <div className="info-container">

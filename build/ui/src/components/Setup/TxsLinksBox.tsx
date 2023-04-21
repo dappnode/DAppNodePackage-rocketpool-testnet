@@ -1,12 +1,18 @@
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { Link } from "@mui/material";
 
-function TxsLinksBox({ txs }: { txs: string[] }): JSX.Element {
+function TxsLinksBox({ 
+  txs, 
+  explorerUrl 
+}: { 
+  txs: string[];
+  explorerUrl?: String
+}): JSX.Element {
   return (
     <div>
       {txs.map((tx, index) => (
         <Link
-          href={`https://goerli.etherscan.io/tx/${tx}`}
+          href={`${explorerUrl}/tx/${tx}`}
           variant="subtitle1"
           underline="always"
           target="_blank"

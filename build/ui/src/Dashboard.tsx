@@ -32,6 +32,7 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
       appService.getNodeStatus(),
       appService.getNodeSync(),
       appService.getNetworkRplPrice(),
+      appService.getConfig(),
     ])
       .then((values) => {
         updateRocketpoolValue(
@@ -40,7 +41,8 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
             values[1],
             values[2],
             values[3],
-            values[4]
+            values[4],
+            values[5],
           )
         );
         setIsLoading(false);
@@ -135,7 +137,7 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
                   {activeTab === "Setup" && (
                     <SetupTab onRefreshRockpoolData={refreshRocketpoolData} />
                   )}
-                  {activeTab === "Rewards" && <RewardsTab />}
+                  {activeTab === "Rewards" && <RewardsTab config={rocketpoolValue.config} />}
                   {activeTab === "Info" && <InfoTab />}
                 </div>
               </Card>

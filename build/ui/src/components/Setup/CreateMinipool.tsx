@@ -182,7 +182,7 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
         )}
       </Button>
       <ErrorAlertBox />
-      <TxsLinksBox txs={stakeTxs} />
+      <TxsLinksBox txs={stakeTxs} explorerUrl={data?.config?.explorerUrl} />
       <div className="staked-container">
         {(data?.nodeStatus?.rplStake ?? 0) > 0 && (
           <Typography variant="body2">
@@ -236,7 +236,7 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
           {depositResponse?.error}
         </Alert>
       )}
-      <TxsLinksBox txs={txs} />
+      <TxsLinksBox txs={txs} explorerUrl={data?.config?.explorerUrl} />
       <Typography variant="body2" sx={{ marginTop: 2 }}>
         (Commission Fee: {(nodeFee * 100).toFixed(1)}%)
       </Typography>

@@ -5,7 +5,7 @@ interface Config {
   brainAPIUrl: string;
   brainUIUrl: string;
   w3sUrl: string;
-  rpExplorerNodeUrl: string;
+  rpExplorerUrl: string;
   explorerUrl: string;
   package: string;
 }
@@ -23,9 +23,9 @@ class AppConfig {
     this.config = {
       network: network,
       brainAPIUrl: `http://brain.web3signer${w3sSuffix}.dappnode:3000`,
-      brainUIUrl: `http://brain.web3signer${w3sSuffix}.dappnode:3000`,
+      brainUIUrl: `http://brain.web3signer${w3sSuffix}.dappnode`,
       w3sUrl: `http://web3signer.web3signer${w3sSuffix}.dappnode:9000`,
-      rpExplorerNodeUrl: `https://${clPrefix}rocketscan.io`,
+      rpExplorerUrl: `https://${clPrefix}rocketscan.io`,
       explorerUrl: `https://${elPrefix}etherscan.io`,
       package: isMainnet ? `rocketpool.public.dappnode` : `rocketpool-testnet.public.dappnode`,
     };
