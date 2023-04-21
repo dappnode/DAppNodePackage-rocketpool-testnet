@@ -128,7 +128,7 @@ function EthClients(): JSX.Element {
               }}
             >
               <div style={{ alignItems: "center", justifyContent: "center" }}>
-                <Typography sx={{ fontWeight: "bold", p: 2 }}>
+                <Typography sx={{ fontWeight: "bold", pb: 2, px: 1 }}>
                   Execution Client
                 </Typography>
                 <EcStatusComponent />
@@ -163,7 +163,7 @@ function EthClients(): JSX.Element {
               }}
             >
               <div style={{ alignItems: "center", justifyContent: "center" }}>
-                <Typography sx={{ fontWeight: "bold", p: 2 }}>
+                <Typography sx={{ fontWeight: "bold", pb: 2, px: 1 }}>
                   Consensus Client
                 </Typography>
                 <CcStatusComponent />
@@ -199,7 +199,7 @@ function EthClients(): JSX.Element {
               }}
             >
               <div style={{ alignItems: "center", justifyContent: "center" }}>
-                <Typography sx={{ fontWeight: "bold", p: 2 }}>
+                <Typography sx={{ fontWeight: "bold", pb: 2, px: 1 }}>
                   Signer
                 </Typography>
                 <SignerStatusComponent />

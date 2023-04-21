@@ -1,7 +1,13 @@
 import { TextField, Tooltip } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 
-function CopyableAddress({ value }: { value: string }): JSX.Element {
+function CopyableTextField({
+  value,
+  label,
+}: {
+  value: string;
+  label: string;
+}): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null);
   const [copiedAlert, setCopiedAlert] = useState(false);
 
@@ -32,7 +38,7 @@ function CopyableAddress({ value }: { value: string }): JSX.Element {
         <TextField
           inputRef={inputRef}
           value={value}
-          label="Address"
+          label={label}
           id="outlined-size-small"
           defaultValue="Address"
           size="small"
@@ -71,4 +77,4 @@ function CopyableAddress({ value }: { value: string }): JSX.Element {
   );
 }
 
-export default CopyableAddress;
+export default CopyableTextField;

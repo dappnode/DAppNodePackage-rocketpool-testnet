@@ -4,7 +4,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import React from "react";
 import { RocketpoolContext } from "../Providers/Context";
 import "./balanceBox.css";
-import CopyableAddress from "./CopyableAddress";
+import CopyableTextField from "./CopyableAddress";
 
 function BalanceBox({
   setShowBalanceBox,
@@ -30,8 +30,9 @@ function BalanceBox({
 
       {rocketpoolValue?.walletStatus?.accountAddress ? (
         <>
-          <CopyableAddress
+          <CopyableTextField
             value={rocketpoolValue?.walletStatus?.accountAddress}
+            label="Address"
           />
           <Chip
             variant="outlined"
