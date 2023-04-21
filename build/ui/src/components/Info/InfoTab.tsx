@@ -1,25 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Typography, Box, Card, CardContent, CardHeader } from "@mui/material";
+import React from "react";
+import { Typography, Box, Card, Chip } from "@mui/material";
 import { RocketpoolContext } from "../Providers/Context";
 import "./infoTab.css";
-import { WaitResponse } from "../../types/WaitResponse";
-import { AppService } from "../../services/AppService";
+import EthClients from "./EthClients";
 
 interface InfoTabProps {}
 
 const InfoTab: React.FC<InfoTabProps> = (): JSX.Element => {
   const { rocketpoolValue } = React.useContext(RocketpoolContext);
-  const [w3sStatusResponse, setW3sStatusResponse] = useState<WaitResponse>();
-  const appService = new AppService();
-
-  async function fetchData() {
-    const w3sStatus = await appService.getW3sStatus();
-    setW3sStatusResponse(w3sStatus);
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <Box>
@@ -27,25 +15,17 @@ const InfoTab: React.FC<InfoTabProps> = (): JSX.Element => {
         Node Info
       </Typography>
 
-      <Card className="network-card">
-        <CardHeader title="Network" className="title" />
-        <CardContent>{/* Your content goes here */}</CardContent>
+      <Card className="network-card" sx={{ borderRadius: 2 }}>
+        <div className="center-elements">
+          <Chip
+            label={rocketpoolValue?.network?.toUpperCase()}
+            sx={{ fontWeight: "bold" }}
+          />
+          <EthClients />
+        </div>
       </Card>
 
       <Typography variant="body1" sx={{ marginTop: 2 }}>
-        <b>Network:</b> {rocketpoolValue?.network}
-        <br />
-        <b>Execution client synced:</b>{" "}
-        {rocketpoolValue?.nodeSync?.ecStatus.primaryEcStatus.isSynced + ""} (
-        {rocketpoolValue?.nodeSync?.ecStatus.primaryEcStatus.syncProgress})
-        <br />
-        <b>Beacon chain client synced:</b>{" "}
-        {rocketpoolValue?.nodeSync?.bcStatus.primaryEcStatus.isSynced + ""} (
-        {rocketpoolValue?.nodeSync?.bcStatus.primaryEcStatus.syncProgress})
-        <br />
-        <b>Signer status:</b>{" "}
-        {w3sStatusResponse?.status === "success" ? "OK" : w3sStatusResponse?.error || ""}
-        <br />
         <b>Node:</b>{" "}
         <a
           href={`${rocketpoolValue?.config?.rpExplorerUrl}/node/${rocketpoolValue?.nodeStatus?.accountAddress}`}
