@@ -280,7 +280,7 @@ const RegisterNode: React.FC<RegisterNodeProps> = ({
           <Typography variant="h6">Balances</Typography>
           <Chip
             label={`${toEtherString(ethBalance)} ETH`}
-            color={enoughEthBalance() ? "primary" : "error"}
+            color={enoughEthBalance(data?.nodeStatus, data?.networkRplPrice) ? "primary" : "error"}
           />{" "}
           <Chip
             label={`${toEtherString(rplBalance)} RPL`}
