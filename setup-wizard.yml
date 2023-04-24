@@ -11,4 +11,4 @@ fields:
     pattern: "^[A-Za-z0-9@!%*#?&{};=_-]{12,}$"
     patternErrorMessage: "Minimum length of 12 characters and matches ^[A-Za-z0-9@!%*#?&{};=_-]{12,}$"
     description: >-
-      Password to create or open the rocketpool wallet
+      To create a new wallet (recommended) or importing an existing wallet from mnemonic, the password for it will be set to the value you enter in this field.
