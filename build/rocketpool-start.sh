@@ -29,8 +29,8 @@ case $NETWORK in
     _BEACON_NODE_API_4000_TEKU="http://beacon-chain.teku.dappnode:4000"
     _BEACON_NODE_API_3500_LIGHTHOUSE="http://beacon-chain.lighthouse.dappnode:3500"
     _BEACON_NODE_API_4000_LIGHTHOUSE="http://beacon-chain.lighthouse.dappnode:4000"
-    _BEACON_NODE_API_3500_NIMBUS="http://beacon-validator.nimbus.dappnode:3500"
-    _BEACON_NODE_API_4000_NIMBUS="http://beacon-validator.nimbus.dappnode:4000"
+    _BEACON_NODE_API_3500_NIMBUS="http://beacon-validator.nimbus.dappnode:4500"
+    _BEACON_NODE_API_4000_NIMBUS="http://beacon-validator.nimbus.dappnode:4500"
     _BEACON_NODE_API_3500_LODESTAR="http://beacon-chain.lodestar.dappnode:3500"
     _BEACON_NODE_API_4000_LODESTAR="http://beacon-chain.lodestar.dappnode:4000"
     ;;
@@ -49,8 +49,8 @@ case $NETWORK in
     _BEACON_NODE_API_4000_TEKU="http://beacon-chain.teku-prater.dappnode:4000"
     _BEACON_NODE_API_3500_LIGHTHOUSE="http://beacon-chain.lighthouse-prater.dappnode:3500"
     _BEACON_NODE_API_4000_LIGHTHOUSE="http://beacon-chain.lighthouse-prater.dappnode:4000"
-    _BEACON_NODE_API_3500_NIMBUS="http://beacon-validator.nimbus-prater.dappnode:3500"
-    _BEACON_NODE_API_4000_NIMBUS="http://beacon-validator.nimbus-prater.dappnode:4000"
+    _BEACON_NODE_API_3500_NIMBUS="http://beacon-validator.nimbus-prater.dappnode:4500"
+    _BEACON_NODE_API_4000_NIMBUS="http://beacon-validator.nimbus-prater.dappnode:4500"
     _BEACON_NODE_API_3500_LODESTAR="http://beacon-chain.lodestar-prater.dappnode:3500"
     _BEACON_NODE_API_4000_LODESTAR="http://beacon-chain.lodestar-prater.dappnode:4000"
     ;;
