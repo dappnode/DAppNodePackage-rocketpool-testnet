@@ -2,7 +2,7 @@ How Rocket Pool Works. Unlike solo stakers, who are required to put 32 ETH up fo
 
 Start with Rocket Pool at [http://rocketpool-testnet.public.dappnode/](http://rocketpool-testnet.public.dappnode/)
 
-ℹ️ Rocket Pool supports three different Execution clients: Geth, Besu, and Nethermind.
+ℹ️ Rocket Pool supports three different Execution clients: Geth, Besu, Erigon, and Nethermind.
 
 ℹ️ Rocket Pool supports five Consensus clients: Lighthouse, Lodestar, Nimbus, Prysm, and Teku.
 

@@ -22,6 +22,8 @@ case $NETWORK in
     _EXECUTION_LAYER_WS_NETHERMIND="ws://nethermind.dappnode:8546"
     _EXECUTION_LAYER_HTTP_BESU="http://besu.dappnode:8545"
     _EXECUTION_LAYER_WS_BESU="ws://besu.dappnode:8546"
+    _EXECUTION_LAYER_HTTP_ERIGON="http://erigon.dappnode:8545"
+    _EXECUTION_LAYER_WS_ERIGON="ws://erigon.dappnode:8545"
 
     _BEACON_NODE_API_3500_PRYSM="http://beacon-chain.prysm.dappnode:3500"
     _BEACON_NODE_API_4000_PRYSM="http://beacon-chain.prysm.dappnode:4000"
@@ -42,6 +44,8 @@ case $NETWORK in
     _EXECUTION_LAYER_WS_NETHERMIND="ws://goerli-nethermind.dappnode:8546"
     _EXECUTION_LAYER_HTTP_BESU="http://goerli-besu.dappnode:8545"
     _EXECUTION_LAYER_WS_BESU="ws://goerli-besu.dappnode:8546"
+    _EXECUTION_LAYER_HTTP_ERIGON="http://goerli-erigon.dappnode:8545"
+    _EXECUTION_LAYER_WS_ERIGON="ws://goerli-erigon.dappnode:8545"
 
     _BEACON_NODE_API_3500_PRYSM="http://beacon-chain.prysm-prater.dappnode:3500"
     _BEACON_NODE_API_4000_PRYSM="http://beacon-chain.prysm-prater.dappnode:4000"
@@ -74,6 +78,10 @@ case $_DAPPNODE_GLOBAL_EXECUTION_CLIENT_PRATER in
 "goerli-besu.dnp.dappnode.eth")
     _EXECUTION_LAYER_HTTP=$_EXECUTION_LAYER_HTTP_BESU
     _EXECUTION_LAYER_WS=$_EXECUTION_LAYER_WS_BESU
+    ;;
+"goerli-erigon.dnp.dappnode.eth")
+    _EXECUTION_LAYER_HTTP=$_EXECUTION_LAYER_HTTP_ERIGON
+    _EXECUTION_LAYER_WS=$_EXECUTION_LAYER_WS_ERIGON
     ;;
 *)
     echo "Unknown value or unsupported for _DAPPNODE_GLOBAL_EXECUTION_CLIENT_PRATER Please confirm that the value is correct"
