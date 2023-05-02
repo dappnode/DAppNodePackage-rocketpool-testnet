@@ -1,7 +1,7 @@
 version: "3.4"
 services:
-  rocketpool.public.dappnode.eth:
-    image: "rocketpool.public.dappnode.eth:0.1.0"
+  rocketpool.dnp.dappnode.eth:
+    image: "rocketpool.dnp.dappnode.eth:0.1.0"
     build:
       context: ./build
       args:

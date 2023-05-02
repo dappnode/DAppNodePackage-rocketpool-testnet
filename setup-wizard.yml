@@ -4,7 +4,7 @@ fields:
     target:
       type: environment
       name: WALLET_PASSWORD
-      service: rocketpool.public.dappnode.eth
+      service: rocketpool.dnp.dappnode.eth
     title: Wallet password
     secret: true
     required: true
