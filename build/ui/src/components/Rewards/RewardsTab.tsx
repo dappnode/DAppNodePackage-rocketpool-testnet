@@ -5,7 +5,7 @@ import {
   CircularProgress,
   Chip,
   Button,
-  Link,
+  Alert,
 } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { AppService } from "../../services/AppService";
@@ -13,6 +13,8 @@ import { NodeRewards } from "../../types/NodeRewards";
 import { toWei } from "../../utils/Utils";
 import { Config } from "../../types/AppConfig";
 import TxsLinksBox from "../Setup/TxsLinksBox";
+import { CanClaimRewards } from "../../types/CanClaimRewards";
+import { TxResponse } from "../../types/TxResponse";
 
 interface RewardsTabProps {
   config?: Config;
@@ -25,6 +27,8 @@ const RewardsTab: React.FC<RewardsTabProps> = ({
   const [isClaiming, setIsClaiming] = useState<boolean>(false);
   const [txs, setTxs] = useState<string[]>([]);
   const [nodeRewards, setNodeRewards] = useState<NodeRewards>();
+  const [nodeCanClaimRewards, setNodeCanClaimRewards] = useState<CanClaimRewards>();
+  const [txResponse, setTxResponse] = useState<TxResponse>();
 
   const appService = new AppService();
 
@@ -51,26 +55,32 @@ const RewardsTab: React.FC<RewardsTabProps> = ({
       var indexes = rewardsInfo.unclaimedIntervals
         .map((reward) => reward.index)
         .join(",");
+      const sumCollateralRplAmount = rewardsInfo.unclaimedIntervals.reduce(
+        (accumulator, currentValue) => accumulator + Number(currentValue.collateralRplAmount),
+        0
+      );
       var canClainRewards = restake
         ? await appService.getNodeCanClaimAndRestakeRewards(
             indexes,
-            toWei(nodeRewards?.unclaimedRplRewards ?? 0)
+            sumCollateralRplAmount,
           )
         : await appService.getNodeCanClaimRewards(indexes);
+      setNodeCanClaimRewards(canClainRewards);
       if (canClainRewards.status !== "success") {
         return;
       }
-      var claimRewards = restake
+      var tx = restake
         ? await appService.nodeClaimAndRestakeRewards(
             indexes,
-            toWei(nodeRewards?.unclaimedRplRewards ?? 0)
+            sumCollateralRplAmount,
           )
         : await appService.nodeClaimRewards(indexes);
-      setTxs([...txs, claimRewards.txHash]);
-      if (claimRewards.status !== "success") {
+      setTxResponse(tx);
+      setTxs([...txs, tx.txHash]);
+      if (tx.status !== "success") {
         return;
       }
-      await appService.wait(claimRewards.txHash);
+      await appService.wait(tx.txHash);
       fetchData();
     } finally {
       setIsClaiming(false);
@@ -81,6 +91,31 @@ const RewardsTab: React.FC<RewardsTabProps> = ({
     return (
       (nodeRewards?.unclaimedEthRewards ?? 0) === 0 &&
       (nodeRewards?.unclaimedRplRewards ?? 0) === 0
+    );
+  }
+  
+  function ErrorAlertBox(): JSX.Element {
+    return (
+      <>
+        {nodeCanClaimRewards?.error && (
+          <Alert
+            severity="error"
+            sx={{ marginTop: 2, marginBottom: 2 }}
+            variant="filled"
+          >
+            {nodeCanClaimRewards?.error}
+          </Alert>
+        )}
+        {txResponse?.error && (
+          <Alert
+            severity="error"
+            sx={{ marginTop: 2, marginBottom: 2 }}
+            variant="filled"
+          >
+            {txResponse?.error}
+          </Alert>
+        )}
+      </>
     );
   }
 
@@ -144,6 +179,7 @@ const RewardsTab: React.FC<RewardsTabProps> = ({
             </Button>
           </Box>
           <TxsLinksBox txs={txs} explorerUrl={config?.explorerUrl} />
+          <ErrorAlertBox />
         </>
       )}
     </Box>
