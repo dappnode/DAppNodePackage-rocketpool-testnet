@@ -192,7 +192,7 @@ export class AppService {
     });
     return response.data;
   }
-  public async getNodeCanClaimAndRestakeRewards(indexes: string, amount: number): Promise<CanClaimRewards> {
+  public async getNodeCanClaimAndRestakeRewards(indexes: string, amount: string): Promise<CanClaimRewards> {
     const response = await this.api.post(`/api/v1/rocketpool-command`, {
       cmd: `node can-claim-and-stake-rewards ${indexes} ${amount}`,
     });
@@ -204,7 +204,7 @@ export class AppService {
     });
     return response.data;
   }
-  public async nodeClaimAndRestakeRewards(indexes: string, amount: number): Promise<TxResponse> {
+  public async nodeClaimAndRestakeRewards(indexes: string, amount: string): Promise<TxResponse> {
     const response = await this.api.post(`/api/v1/rocketpool-command`, {
       cmd: `node claim-and-stake-rewards ${indexes} ${amount}`,
     });
