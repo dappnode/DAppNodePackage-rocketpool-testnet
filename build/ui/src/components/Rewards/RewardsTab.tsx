@@ -15,6 +15,7 @@ import { Config } from "../../types/AppConfig";
 import TxsLinksBox from "../Setup/TxsLinksBox";
 import { CanClaimRewards } from "../../types/CanClaimRewards";
 import { TxResponse } from "../../types/TxResponse";
+import BigNumber from "bignumber.js";
 
 interface RewardsTabProps {
   config?: Config;
@@ -56,13 +57,13 @@ const RewardsTab: React.FC<RewardsTabProps> = ({
         .map((reward) => reward.index)
         .join(",");
       const sumCollateralRplAmount = rewardsInfo.unclaimedIntervals.reduce(
-        (accumulator, currentValue) => accumulator + Number(currentValue.collateralRplAmount),
-        0
+        (accumulator, currentValue) => accumulator.plus(new BigNumber(currentValue.collateralRplAmount)),
+        new BigNumber(0),
       );
       var canClainRewards = restake
         ? await appService.getNodeCanClaimAndRestakeRewards(
             indexes,
-            sumCollateralRplAmount,
+            sumCollateralRplAmount.toString(),
           )
         : await appService.getNodeCanClaimRewards(indexes);
       setNodeCanClaimRewards(canClainRewards);
@@ -72,7 +73,7 @@ const RewardsTab: React.FC<RewardsTabProps> = ({
       var tx = restake
         ? await appService.nodeClaimAndRestakeRewards(
             indexes,
-            sumCollateralRplAmount,
+            sumCollateralRplAmount.toString(),
           )
         : await appService.nodeClaimRewards(indexes);
       setTxResponse(tx);
