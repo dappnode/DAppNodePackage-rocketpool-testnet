@@ -1,15 +1,22 @@
-import React from "react";
-import { Card, CardContent, Typography, Chip, Button } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Chip,
+  Button,
+  CircularProgress,
+  Alert,
+} from "@mui/material";
 import { Minipool } from "../../types/MinipoolStatus";
 import { toEtherString } from "../../utils/Utils";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import "./minipool.css";
 
-function MinipoolCard({ 
+function MinipoolCard({
   data,
   rpExplorerUrl,
-}: 
-{ 
+}: {
   data: Minipool;
   rpExplorerUrl?: string;
 }): JSX.Element {
@@ -19,6 +26,28 @@ function MinipoolCard({
       : data.status.status === "Dissolved"
       ? "#E57373"
       : "#FFB74D";
+
+  const [importingToSigner, setImportingToSigner] = useState<boolean>(false);
+  const [signerImportErrorMsg, setSignerImportErrorMsg] = useState<string>("");
+  const [showSuccess, setShowSuccess] = useState<boolean>(false);
+  const [showError, setShowError] = useState<boolean>(false);
+
+  const reimportKeystoreToSigner = async () => {
+    setImportingToSigner(true);
+
+    try {
+      // TODO: Import to signer
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 5000); // Hide after 5 sec.
+    } catch (error) {
+      const errorMsg = (error as Error).message;
+      setSignerImportErrorMsg(errorMsg);
+      setShowError(true);
+      setTimeout(() => setShowError(false), 5000); // Hide after 5 sec.
+    } finally {
+      setImportingToSigner(false);
+    }
+  };
 
   return (
     <Card
@@ -59,11 +88,37 @@ function MinipoolCard({
             target="_blank"
             rel="noopener"
             endIcon={<OpenInNewIcon />}
-            className="explorer-button"
+            className="minipool-button"
           >
             View on RocketScan
           </Button>
         </div>
+        {importingToSigner ? (
+          <CircularProgress size="1.5rem" sx={{ marginTop: "1rem" }} />
+        ) : (
+          <div className="button-container">
+            {!showSuccess && !showError && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => reimportKeystoreToSigner()}
+                className="minipool-button"
+              >
+                Reimport to Web3Signer
+              </Button>
+            )}
+            {showSuccess && (
+              <Alert severity="success" className="minipool-alert">
+                Successfully imported to Web3Signer
+              </Alert>
+            )}
+            {showError && (
+              <Alert severity="error" className="minipool-alert">
+                Failed to import to Web3Signer: {signerImportErrorMsg}
+              </Alert>
+            )}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
