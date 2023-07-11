@@ -3,6 +3,8 @@ import { AppService } from "../../services/AppService";
 import { RocketpoolData } from "../../types/RocketpoolData";
 import CreateMinipool from "./CreateMinipool";
 import MinipoolDetails from "./MinipoolDetails";
+import { Minipool } from "../../types/MinipoolStatus";
+import ExitMinipool from "./ExitMinipool";
 
 interface MinipoolsProps {
   data?: RocketpoolData;
@@ -10,6 +12,10 @@ interface MinipoolsProps {
 
 const Minipools: React.FC<MinipoolsProps> = ({ data }): JSX.Element => {
   const [isCreatingMinipool, setIsCreatingMinipool] = useState<boolean>(false);
+  const [minipoolToExit, setMinipoolToExit] = useState<Minipool | undefined>(
+    undefined
+  );
+
   const appService = new AppService();
 
   const addMinipoolClick = (add: boolean) => {
@@ -26,11 +32,16 @@ const Minipools: React.FC<MinipoolsProps> = ({ data }): JSX.Element => {
 
   return (
     <>
-      {isCreatingMinipool && (
+      {minipoolToExit ? (
+        <ExitMinipool data={minipoolToExit} />
+      ) : isCreatingMinipool ? (
         <CreateMinipool data={data} onAddMinipoolClick={addMinipoolClick} />
-      )}
-      {!isCreatingMinipool && (
-        <MinipoolDetails data={data} onAddMinipoolClick={addMinipoolClick} />
+      ) : (
+        <MinipoolDetails
+          data={data}
+          onAddMinipoolClick={addMinipoolClick}
+          setMinipoolToExit={setMinipoolToExit}
+        />
       )}
     </>
   );

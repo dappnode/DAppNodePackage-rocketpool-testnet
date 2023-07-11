@@ -18,6 +18,18 @@
   border-right: 1px solid lightgray;
 }
 
+.exit-info {
+  flex-grow: 1;
+}
+
+.exit-minipool-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
 .button-container {
   margin-top: 1rem;
 }

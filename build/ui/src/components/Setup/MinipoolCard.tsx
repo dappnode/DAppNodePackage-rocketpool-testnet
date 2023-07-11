@@ -16,9 +16,13 @@ import "./minipool.css";
 function MinipoolCard({
   data,
   rpExplorerUrl,
+  setMinipolToExit,
+  hideActions = false,
 }: {
   data: Minipool;
   rpExplorerUrl?: string;
+  setMinipolToExit?: (minipool: Minipool) => void;
+  hideActions?: boolean;
 }): JSX.Element {
   const backgroundColor =
     data.status.status === "Staking"
@@ -93,31 +97,47 @@ function MinipoolCard({
             View on RocketScan
           </Button>
         </div>
-        {importingToSigner ? (
-          <CircularProgress size="1.5rem" sx={{ marginTop: "1rem" }} />
-        ) : (
-          <div className="button-container">
-            {!showSuccess && !showError && (
+        {!hideActions && (
+          <>
+            {importingToSigner ? (
+              <CircularProgress size="1.5rem" sx={{ marginTop: "1rem" }} />
+            ) : (
+              <div className="button-container">
+                {!showSuccess && !showError && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => reimportKeystoreToSigner()}
+                    className="minipool-button"
+                  >
+                    Reimport to Web3Signer
+                  </Button>
+                )}
+                {showSuccess && (
+                  <Alert severity="success" className="minipool-alert">
+                    Successfully imported to Web3Signer
+                  </Alert>
+                )}
+                {showError && (
+                  <Alert severity="error" className="minipool-alert">
+                    Failed to import to Web3Signer: {signerImportErrorMsg}
+                  </Alert>
+                )}
+              </div>
+            )}
+            <div className="button-container">
               <Button
                 variant="contained"
-                color="primary"
-                onClick={() => reimportKeystoreToSigner()}
+                color="error"
+                onClick={() => {
+                  setMinipolToExit && setMinipolToExit(data);
+                }}
                 className="minipool-button"
               >
-                Reimport to Web3Signer
+                Exit Minipool
               </Button>
-            )}
-            {showSuccess && (
-              <Alert severity="success" className="minipool-alert">
-                Successfully imported to Web3Signer
-              </Alert>
-            )}
-            {showError && (
-              <Alert severity="error" className="minipool-alert">
-                Failed to import to Web3Signer: {signerImportErrorMsg}
-              </Alert>
-            )}
-          </div>
+            </div>
+          </>
         )}
       </CardContent>
     </Card>

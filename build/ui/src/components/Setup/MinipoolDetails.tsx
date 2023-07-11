@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Grid, CircularProgress, Alert } from "@mui/material";
 import { AppService } from "../../services/AppService";
 import { RocketpoolData } from "../../types/RocketpoolData";
-import { MinipoolStatus } from "../../types/MinipoolStatus";
+import { Minipool, MinipoolStatus } from "../../types/MinipoolStatus";
 import MinipoolCard from "./MinipoolCard";
 import "./minipool.css";
 import MinipoolActions from "./MinipoolActions";
@@ -10,11 +10,13 @@ import MinipoolActions from "./MinipoolActions";
 interface MinipoolDetailsProps {
   data?: RocketpoolData;
   onAddMinipoolClick: (add: boolean) => void;
+  setMinipoolToExit: (minipool: Minipool) => void;
 }
 
 const MinipoolDetails: React.FC<MinipoolDetailsProps> = ({
   data,
   onAddMinipoolClick,
+  setMinipoolToExit,
 }): JSX.Element => {
   const [minipoolStatus, setMinipoolStatus] = useState<MinipoolStatus>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -48,7 +50,12 @@ const MinipoolDetails: React.FC<MinipoolDetailsProps> = ({
           >
             {minipoolStatus?.minipools.map((minipool, index) => (
               <>
-                <MinipoolCard data={minipool} key={index} rpExplorerUrl={data?.config?.rpExplorerUrl} />
+                <MinipoolCard
+                  data={minipool}
+                  key={index}
+                  rpExplorerUrl={data?.config?.rpExplorerUrl}
+                  setMinipolToExit={setMinipoolToExit}
+                />
               </>
             ))}
           </Grid>
