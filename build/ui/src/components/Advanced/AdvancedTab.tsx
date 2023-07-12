@@ -1,21 +1,23 @@
 import { Alert, AlertTitle, Box, TextField, Button } from "@mui/material";
 import { useState } from "react";
+import { AppService } from "../../services/AppService";
 
 interface AdvancedTabProps {}
 
 const AdvancedTab: React.FC<AdvancedTabProps> = (): JSX.Element => {
   const [command, setCommand] = useState<string>("");
   const [output, setOutput] = useState<string>("");
+  const appService = new AppService();
 
   const handleCommandChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommand(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     // TODO: Replace this with actual command execution
-    const output = "TEST";
+    const output = await appService.runCustomCommand(command);;
 
     // Append the command and output to the output box
     setOutput((prevOutput) => prevOutput + `>> ${command}\n${output}\n\n`);

@@ -40,6 +40,12 @@ export class AppService {
     const response = await this.api.get(`/api/v1/environment/${key}`);
     return response.data.value;
   }
+  public async runCustomCommand(cmd: string): Promise<String> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: cmd,
+    });
+    return JSON.stringify(response.data);
+  }
   public async wait(txHash: string): Promise<WaitResponse> {
     const response = await this.api.post(`/api/v1/rocketpool-command`, {
       cmd: `wait ${txHash}`,
