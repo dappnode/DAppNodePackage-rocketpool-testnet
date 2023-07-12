@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Alert,
   AlertTitle,
@@ -7,7 +7,6 @@ import {
   Button,
   CircularProgress,
 } from "@mui/material";
-import { useState } from "react";
 import { AppService } from "../../services/AppService";
 
 interface AdvancedTabProps {}
@@ -17,6 +16,15 @@ const AdvancedTab: React.FC<AdvancedTabProps> = (): JSX.Element => {
   const [output, setOutput] = useState<string>("");
   const [loadingCommand, setLoadingCommand] = useState<boolean>(false);
   const appService = new AppService();
+
+  const outputRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    // Scroll to the bottom of the TextField whenever the output is updated
+    if (outputRef.current) {
+      outputRef.current.scrollTop = outputRef.current.scrollHeight;
+    }
+  }, [output]);
 
   const handleCommandChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommand(event.target.value);
@@ -60,6 +68,7 @@ const AdvancedTab: React.FC<AdvancedTabProps> = (): JSX.Element => {
           overflow="auto"
           borderRadius={1}
           sx={{ backgroundColor: "grey.200" }}
+          ref={outputRef}
         >
           <pre
             style={{
