@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Alert,
   AlertTitle,
@@ -25,7 +26,6 @@ const AdvancedTab: React.FC<AdvancedTabProps> = (): JSX.Element => {
     setLoadingCommand(true);
     event.preventDefault();
 
-    // TODO: Replace this with actual command execution
     const output = await appService.runCustomCommand(command);
 
     // Append the command and output to the output box
@@ -105,17 +105,18 @@ const AdvancedTab: React.FC<AdvancedTabProps> = (): JSX.Element => {
             }}
             sx={{ backgroundColor: "grey.200" }}
           />
-          {loadingCommand ? (
+          {!loadingCommand ? (
             <Button
               type="submit"
               variant="contained"
               color="primary"
-              style={{ marginLeft: "8px" }}
+              style={{ marginLeft: "1rem" }}
+              disabled={command === ""}
             >
               Submit
             </Button>
           ) : (
-            <CircularProgress size={14} />
+            <CircularProgress style={{ marginLeft: "1rem" }} />
           )}
         </form>
       </Box>
