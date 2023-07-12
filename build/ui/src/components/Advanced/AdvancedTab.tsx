@@ -1,4 +1,11 @@
-import { Alert, AlertTitle, Box, TextField, Button } from "@mui/material";
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  TextField,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import { useState } from "react";
 import { AppService } from "../../services/AppService";
 
@@ -7,6 +14,7 @@ interface AdvancedTabProps {}
 const AdvancedTab: React.FC<AdvancedTabProps> = (): JSX.Element => {
   const [command, setCommand] = useState<string>("");
   const [output, setOutput] = useState<string>("");
+  const [loadingCommand, setLoadingCommand] = useState<boolean>(false);
   const appService = new AppService();
 
   const handleCommandChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,16 +22,18 @@ const AdvancedTab: React.FC<AdvancedTabProps> = (): JSX.Element => {
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
+    setLoadingCommand(true);
     event.preventDefault();
 
     // TODO: Replace this with actual command execution
-    const output = await appService.runCustomCommand(command);;
+    const output = await appService.runCustomCommand(command);
 
     // Append the command and output to the output box
     setOutput((prevOutput) => prevOutput + `>> ${command}\n${output}\n\n`);
 
     // Clear the input field
     setCommand("");
+    setLoadingCommand(false);
   };
 
   return (
@@ -95,14 +105,18 @@ const AdvancedTab: React.FC<AdvancedTabProps> = (): JSX.Element => {
             }}
             sx={{ backgroundColor: "grey.200" }}
           />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            style={{ marginLeft: "8px" }}
-          >
-            Submit
-          </Button>
+          {loadingCommand ? (
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              style={{ marginLeft: "8px" }}
+            >
+              Submit
+            </Button>
+          ) : (
+            <CircularProgress size={14} />
+          )}
         </form>
       </Box>
     </div>
