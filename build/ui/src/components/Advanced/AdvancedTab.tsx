@@ -91,7 +91,7 @@ const AdvancedTab: React.FC<AdvancedTabProps> = (): JSX.Element => {
           style={{ display: "flex", marginTop: "16px" }}
         >
           <TextField
-            label="Enter Command"
+            label="Enter Command (Example: node status)"
             value={command}
             onChange={handleCommandChange}
             fullWidth
