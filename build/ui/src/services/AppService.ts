@@ -41,7 +41,7 @@ export class AppService {
     return response.data.value;
   }
   public async runCustomCommand(cmd: string): Promise<String> {
-    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+    const response = await this.api.post(`/api/v1/rocketpool-command-custom`, {
       cmd: cmd,
     });
     return JSON.stringify(response.data);

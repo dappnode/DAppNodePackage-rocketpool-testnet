@@ -51,6 +51,15 @@ app.get("/api/v1/version", (req: Request, res: Response) => {
   res.send(version);
 });
 
+// POST /api/v1/rocketpool-command-custom
+app.post("/api/v1/rocketpool-command-custom", (req: Request, res: Response) => {
+  console.log(req.body.cmd);
+  var result = shelljs.exec(
+    `/usr/local/bin/rocketpoold --settings /app/rocketpool/user-settings.yml api ${req.body.cmd}`
+  ).stdout;
+  res.send(result);
+});
+
 // POST /api/v1/rocketpool-command
 app.post("/api/v1/rocketpool-command", (req: Request, res: Response) => {
   console.log(req.body.cmd);
