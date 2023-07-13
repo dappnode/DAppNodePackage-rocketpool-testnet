@@ -3,18 +3,19 @@ import "./App.css";
 import TopBar from "./components/TopBar/TopBar";
 import Dashboard from "./Dashboard";
 import { RocketpoolProvider } from "./components/Providers/Context";
+import { Tab } from "./types/Tabs";
 
 function App() {
-  const [activeTab, setActiveTab] = useState<string>("Setup");
+  const [activeTab, setActiveTab] = useState<Tab>("Setup");
 
-  const handleTabClick = (tab: string) => {
+  const handleTabClick = (tab: Tab) => {
     setActiveTab(tab);
   };
   return (
     <RocketpoolProvider>
       <div className="App">
         <header className="App-header">
-          <TopBar onTabClick={(tab: string) => handleTabClick(tab)} />
+          <TopBar onTabClick={(tab: Tab) => handleTabClick(tab)} />
           <Dashboard activeTab={activeTab} />
         </header>
       </div>

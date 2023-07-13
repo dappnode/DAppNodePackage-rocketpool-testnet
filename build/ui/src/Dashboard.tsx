@@ -11,6 +11,7 @@ import { RocketpoolContext } from "./components/Providers/Context";
 import RewardsTab from "./components/Rewards/RewardsTab";
 import BalanceBox from "./components/BalanceBox/BalanceBox";
 import BalanceButton from "./components/Buttons/BalanceButton";
+import AdvancedTab from "./components/Advanced/AdvancedTab";
 
 function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
   const { rocketpoolValue, updateRocketpoolValue } =
@@ -42,7 +43,7 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
             values[2],
             values[3],
             values[4],
-            values[5],
+            values[5]
           )
         );
         setIsLoading(false);
@@ -137,8 +138,11 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
                   {activeTab === "Setup" && (
                     <SetupTab onRefreshRockpoolData={refreshRocketpoolData} />
                   )}
-                  {activeTab === "Rewards" && <RewardsTab config={rocketpoolValue.config} />}
+                  {activeTab === "Rewards" && (
+                    <RewardsTab config={rocketpoolValue.config} />
+                  )}
                   {activeTab === "Info" && <InfoTab />}
+                  {activeTab === "Advanced" && <AdvancedTab />}
                 </div>
               </Card>
             )}
