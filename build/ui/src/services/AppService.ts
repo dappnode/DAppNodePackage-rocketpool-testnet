@@ -40,7 +40,7 @@ export class AppService {
     const response = await this.api.get(`/api/v1/environment/${key}`);
     return response.data.value;
   }
-  public async runCustomCommand(cmd: string): Promise<String> {
+  public async runCustomCommand(cmd: string): Promise<string> {
     const response = await this.api.post(`/api/v1/rocketpool-command-custom`, {
       cmd: cmd,
     });
