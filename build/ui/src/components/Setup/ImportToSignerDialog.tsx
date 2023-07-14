@@ -93,16 +93,18 @@ export default function ImportToSignerDialog({
         >
           {validatorImportStatus === ValidatorImportStatus.Imported ? (
             <Alert severity="success" className="minipool-alert">
-              ✅ Successfully imported validator 0x{shortenAddress(pubkey)} to
+              Successfully imported validator 0x{shortenAddress(pubkey)} to
               Web3Signer
             </Alert>
           ) : validatorImportStatus === ValidatorImportStatus.Error ? (
-            <Alert severity="success" className="minipool-alert">
-              ❌ Found error while importing validator 0x
+            <Alert severity="error" className="minipool-alert">
+              Found error while importing validator 0x
               {shortenAddress(pubkey)} to Web3Signer: {importError}
             </Alert>
           ) : validatorImportStatus === ValidatorImportStatus.Importing ? (
-            <CircularProgress size="1.5rem" sx={{ marginTop: "1rem" }} />
+            <Box sx={{ textAlign: "center" }}>
+              <CircularProgress size="1.5rem" sx={{ marginTop: "1rem" }} />
+            </Box>
           ) : (
             <>
               <DialogContentText
