@@ -53,6 +53,13 @@ export default function ImportToSignerDialog({
     }
   };
 
+  const handleClose = () => {
+    setOpenDialog(false);
+    setValidatorImportStatus(ValidatorImportStatus.NotImported);
+    setImportError("");
+    setUserConfirmText("");
+  };
+
   return (
     <Dialog
       disableEscapeKeyDown={true}
@@ -60,7 +67,7 @@ export default function ImportToSignerDialog({
       fullWidth={true}
       onClose={(event, reason) => {
         if (!reason) {
-          setOpenDialog(false);
+          handleClose();
         }
       }}
       aria-labelledby="alert-dialog-title"
@@ -137,7 +144,7 @@ export default function ImportToSignerDialog({
           </Button>
         )}
         <Button
-          onClick={() => setOpenDialog(false)}
+          onClick={() => handleClose()}
           variant="outlined"
           sx={{ borderRadius: 2 }}
         >
