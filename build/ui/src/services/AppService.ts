@@ -21,6 +21,7 @@ import { NodeRewards } from "../types/NodeRewards";
 import { GetRewardsInfo } from "../types/GetRewardsInfo";
 import { CanClaimRewards } from "../types/CanClaimRewards";
 import apiBaseUrl, { Config } from "../types/AppConfig";
+import { ImportKeyResponseData } from "../types/ImportKeyResponse";
 
 export class AppService {
   public api = axios.create({
@@ -39,6 +40,12 @@ export class AppService {
   public async getEnvironment(key: string): Promise<string> {
     const response = await this.api.get(`/api/v1/environment/${key}`);
     return response.data.value;
+  }
+  public async runCustomCommand(cmd: string): Promise<string> {
+    const response = await this.api.post(`/api/v1/rocketpool-command-custom`, {
+      cmd: cmd,
+    });
+    return JSON.stringify(response.data);
   }
   public async wait(txHash: string): Promise<WaitResponse> {
     const response = await this.api.post(`/api/v1/rocketpool-command`, {
@@ -217,5 +224,11 @@ export class AppService {
   public async getConfig(): Promise<Config> {
     const response = await this.api.get(`/api/v1/config`);
     return response.data;
+  }
+  public async importKey(pubkey: string): Promise<ImportKeyResponseData> {
+    const response = await this.api.post(`/api/v1/minipool/import`, {
+      pubkey: `0x${pubkey}`,
+    });
+    return response;
   }
 }

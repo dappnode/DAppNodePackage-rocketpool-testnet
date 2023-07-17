@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import { SlideTransition } from "../Transitions/Transitions";
 import { shortenAddress } from "../../utils/Utils";
+import { AppService } from "../../services/AppService";
 
 enum ValidatorImportStatus {
   Imported,
@@ -31,6 +32,7 @@ export default function ImportToSignerDialog({
   setOpenDialog: (open: boolean) => void;
   pubkey: string;
 }): JSX.Element {
+  const appService = new AppService();
   const [validatorImportStatus, setValidatorImportStatus] =
     useState<ValidatorImportStatus>(ValidatorImportStatus.NotImported);
 
@@ -44,8 +46,20 @@ export default function ImportToSignerDialog({
     setValidatorImportStatus(ValidatorImportStatus.Importing);
 
     try {
-      // TODO: Import to signer
-      setValidatorImportStatus(ValidatorImportStatus.Imported);
+      const importKeyResponseData = await appService.importKey(pubkey);
+      if (
+        importKeyResponseData.data &&
+        importKeyResponseData.data.length > 0 &&
+        importKeyResponseData.data[0].status !== "error"
+      ) {
+        setValidatorImportStatus(ValidatorImportStatus.Imported);
+        return;
+      }
+      setValidatorImportStatus(ValidatorImportStatus.Error);
+      setImportError(
+        importKeyResponseData.data[0].message ??
+          importKeyResponseData.data[0].status
+      );
     } catch (error) {
       setValidatorImportStatus(ValidatorImportStatus.Error);
       const errorMsg = (error as Error).message;
