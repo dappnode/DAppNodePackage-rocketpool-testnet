@@ -35,8 +35,10 @@ COPY user-settings_template.yml /app/rocketpool/user-settings_template.yml
 COPY rocketpool-start.sh /usr/local/bin/rocketpool-start.sh
 COPY restart-vc.sh /usr/local/bin/restart-vc.sh
 COPY stop-validator.sh /usr/local/bin/stop-validator.sh
+COPY stop-supervisor.sh /usr/local/bin/stop-supervisor.sh
 RUN chmod +x /usr/local/bin/rocketpool-start.sh
 RUN chmod +x /usr/local/bin/restart-vc.sh
 RUN chmod +x /usr/local/bin/stop-validator.sh
+RUN chmod +x /usr/local/bin/stop-supervisor.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
