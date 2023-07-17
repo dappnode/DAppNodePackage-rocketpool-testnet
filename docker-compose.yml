@@ -1,18 +1,18 @@
 version: "3.4"
 services:
-  rocketpool.dnp.dappnode.eth:
-    image: "rocketpool.dnp.dappnode.eth:0.1.0"
+  rocketpool-testnet.public.dappnode.eth:
+    image: "rocketpool-testnet.public.dappnode.eth:0.1.0"
     build:
       context: ./build
       args:
         UPSTREAM_VERSION: v1.9.8
-        NETWORK: mainnet
+        NETWORK: prater
     volumes:
-      - "rocketpool:/rocketpool"
+      - "rocketpool-testnet:/rocketpool"
     environment:
-      - NETWORK=mainnet
+      - NETWORK=prater
       - WALLET_PASSWORD=
       - EXTRA_OPTS=
     restart: unless-stopped
 volumes:
-  rocketpool: {}
+  rocketpool-testnet: {}
