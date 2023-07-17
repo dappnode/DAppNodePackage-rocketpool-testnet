@@ -2,20 +2,19 @@ import Toolbar from "@mui/material/Toolbar";
 import { Box, Chip, ButtonGroup, Button, Tooltip } from "@mui/material";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { RocketpoolData } from "../../types/RocketpoolData";
-
-const pages = ["Setup", "Rewards", "Info"];
+import { Tab, tabs } from "../../types/Tabs";
 
 export default function ToolBar({
   data,
   onTabClick,
 }: {
   data?: RocketpoolData;
-  onTabClick: (tab: string) => void;
+  onTabClick: (tab: Tab) => void;
 }): JSX.Element {
   const ecSynced = data?.nodeSync?.ecStatus.primaryEcStatus.isSynced;
   const bcSynced = data?.nodeSync?.bcStatus.primaryEcStatus.isSynced;
 
-  const handleTabClick = (tab: any) => {
+  const handleTabClick = (tab: Tab) => {
     // setActiveTab(tab);
     onTabClick(tab);
   };
@@ -89,9 +88,9 @@ export default function ToolBar({
             justifyContent: "center",
           }}
         >
-          {pages.map((page, index) => (
-            <Button key={index} onClick={() => handleTabClick(page)}>
-              <b>{page}</b>
+          {tabs.map((tab, index) => (
+            <Button key={index} onClick={() => handleTabClick(tab)}>
+              <b>{tab}</b>
             </Button>
           ))}
         </ButtonGroup>

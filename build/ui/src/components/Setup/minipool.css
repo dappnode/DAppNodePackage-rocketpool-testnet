@@ -37,7 +37,8 @@
   font-weight: bold !important;
 }
 
-.explorer-button {
+.minipool-button,
+.minipool-alert {
   font-size: 12px !important;
 }
 

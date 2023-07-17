@@ -51,6 +51,15 @@ app.get("/api/v1/version", (req: Request, res: Response) => {
   res.send(version);
 });
 
+// POST /api/v1/rocketpool-command-custom
+app.post("/api/v1/rocketpool-command-custom", (req: Request, res: Response) => {
+  console.log(req.body.cmd);
+  var result = shelljs.exec(
+    `/usr/local/bin/rocketpoold --settings /app/rocketpool/user-settings.yml api ${req.body.cmd}`
+  ).stdout;
+  res.send(result);
+});
+
 // POST /api/v1/rocketpool-command
 app.post("/api/v1/rocketpool-command", (req: Request, res: Response) => {
   console.log(req.body.cmd);
@@ -74,8 +83,14 @@ function executeCommand(cmd: string) {
   return result;
 }
 
+// POST /api/v1/minipool/import
+app.post("/api/v1/minipool/import", async (req: Request, res: Response) => {
+  console.log("Try to import key to the brain");
+  res.send(await importKey(req.body.pubkey));
+});
+
 // function that imports the keys from teku to a given url
-function importKey(validatorPubkey: string) {
+async function importKey(validatorPubkey: string): Promise<ImportKeyResponseData> {
   console.log("Import key to the brain");
   var keystoreJson = shelljs.exec(
     `cat /rocketpool/data/validators/teku/keys/${validatorPubkey}.json`
@@ -83,7 +98,7 @@ function importKey(validatorPubkey: string) {
   var password = shelljs.exec(
     `cat /rocketpool/data/validators/teku/passwords/${validatorPubkey}.txt`
   ).stdout;
-  postValidatorData({
+  return await postValidatorData({
     keystores: [keystoreJson],
     passwords: [password],
     tags: ["rocketpool"],
@@ -92,7 +107,7 @@ function importKey(validatorPubkey: string) {
 }
 
 // async function to POST fetch
-async function postValidatorData(data = {}) {
+async function postValidatorData(data = {}): Promise<ImportKeyResponseData> {
   const response = await fetch(
     `${appConfig.getConfig().brainAPIUrl}/eth/v1/keystores`,
     {
@@ -103,9 +118,16 @@ async function postValidatorData(data = {}) {
   );
   console.log(response.ok);
   if (response.ok) {
-    const { data }: { data: IImportKeyResponseData } = await response.json();
+    const { data }: { data: ImportKeyResponseData } = await response.json();
     console.log(data);
+    return data;
   }
+  return {
+    data: [{
+      status: "error",
+      message: "Keystore cannot be imported",
+    }]
+  };
 }
 
 app.listen(API_PORT, () => {
@@ -116,10 +138,10 @@ String.prototype.startsWith = function (str) {
   return this.indexOf(str) === 0;
 };
 
-interface IImportKeyResponseData {
-  data: IImportKeyResponse[];
+interface ImportKeyResponseData {
+  data: ImportKeyResponse[];
 }
-interface IImportKeyResponse {
+interface ImportKeyResponse {
   status: string;
   message?: string;
 }
