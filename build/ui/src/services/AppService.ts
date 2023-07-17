@@ -21,7 +21,7 @@ import { NodeRewards } from "../types/NodeRewards";
 import { GetRewardsInfo } from "../types/GetRewardsInfo";
 import { CanClaimRewards } from "../types/CanClaimRewards";
 import apiBaseUrl, { Config } from "../types/AppConfig";
-import { IImportKeyResponseData } from "../types/ImportKeyResponse";
+import { ImportKeyResponseData } from "../types/ImportKeyResponse";
 
 export class AppService {
   public api = axios.create({
@@ -225,7 +225,7 @@ export class AppService {
     const response = await this.api.get(`/api/v1/config`);
     return response.data;
   }
-  public async importKey(pubkey: string): Promise<IImportKeyResponseData> {
+  public async importKey(pubkey: string): Promise<ImportKeyResponseData> {
     const response = await this.api.post(`/api/v1/minipool/import`, {
       pubkey: `0x${pubkey}`,
     });

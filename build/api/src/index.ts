@@ -90,7 +90,7 @@ app.post("/api/v1/minipool/import", async (req: Request, res: Response) => {
 });
 
 // function that imports the keys from teku to a given url
-async function importKey(validatorPubkey: string): Promise<IImportKeyResponseData> {
+async function importKey(validatorPubkey: string): Promise<ImportKeyResponseData> {
   console.log("Import key to the brain");
   var keystoreJson = shelljs.exec(
     `cat /rocketpool/data/validators/teku/keys/${validatorPubkey}.json`
@@ -107,7 +107,7 @@ async function importKey(validatorPubkey: string): Promise<IImportKeyResponseDat
 }
 
 // async function to POST fetch
-async function postValidatorData(data = {}): Promise<IImportKeyResponseData> {
+async function postValidatorData(data = {}): Promise<ImportKeyResponseData> {
   const response = await fetch(
     `${appConfig.getConfig().brainAPIUrl}/eth/v1/keystores`,
     {
@@ -118,7 +118,7 @@ async function postValidatorData(data = {}): Promise<IImportKeyResponseData> {
   );
   console.log(response.ok);
   if (response.ok) {
-    const { data }: { data: IImportKeyResponseData } = await response.json();
+    const { data }: { data: ImportKeyResponseData } = await response.json();
     console.log(data);
     return data;
   }
@@ -138,10 +138,10 @@ String.prototype.startsWith = function (str) {
   return this.indexOf(str) === 0;
 };
 
-interface IImportKeyResponseData {
-  data: IImportKeyResponse[];
+interface ImportKeyResponseData {
+  data: ImportKeyResponse[];
 }
-interface IImportKeyResponse {
+interface ImportKeyResponse {
   status: string;
   message?: string;
 }
