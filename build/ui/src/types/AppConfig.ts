@@ -9,5 +9,5 @@ export interface Config {
 }
 
 const network = process.env.REACT_APP_NETWORK || "holesky";
-const apiBaseUrl = network === "mainnet" ? "http://rocketpool.public.dappnode:3000" : "http://rocketpool-testnet.public.dappnode:3000";
+const apiBaseUrl = network === "mainnet" ? "http://rocketpool.dappnode:3000" : "http://rocketpool-testnet.public.dappnode:3000";
 export default apiBaseUrl;

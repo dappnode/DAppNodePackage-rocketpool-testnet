@@ -26,7 +26,7 @@ class AppConfig {
       w3sUrl: `http://web3signer.web3signer${w3sSuffix}.dappnode:9000`,
       rpExplorerUrl: `https://${networkPrefix}rocketscan.io`,
       explorerUrl: `https://${networkPrefix}etherscan.io`,
-      package: isMainnet ? `rocketpool.public.dappnode` : `rocketpool-testnet.public.dappnode`,
+      package: isMainnet ? `rocketpool.dnp.dappnode` : `rocketpool-testnet.public.dappnode`,
     };
   }
 

@@ -1,6 +1,6 @@
 {
-  "name": "rocketpool-testnet.public.dappnode.eth",
-  "version": "0.1.3",
+  "name": "rocketpool.dnp.dappnode.eth",
+  "version": "0.1.1",
   "upstreamVersion": "v1.13.2",
   "upstreamRepo": "rocket-pool/smartnode-install",
   "architectures": ["linux/amd64"],
@@ -9,20 +9,20 @@
   "author": "dappnode",
   "categories": ["Developer tools"],
   "links": {
-    "ui": "http://rocketpool-testnet.public.dappnode/",
+    "ui": "http://rocketpool.dappnode/",
     "homepage": "https://rocketpool.net/"
   },
   "globalEnvs": [
     {
-      "envs": ["EXECUTION_CLIENT_HOLESKY", "CONSENSUS_CLIENT_HOLESKY"],
-      "services": ["rocketpool-testnet.public.dappnode.eth"]
+      "envs": ["EXECUTION_CLIENT_MAINNET", "CONSENSUS_CLIENT_MAINNET"],
+      "services": ["rocketpool.dnp.dappnode.eth"]
     }
   ],
   "backup": [
     {
       "name": "data",
       "path": "/rocketpool/data",
-      "service": "rocketpool-testnet.public.dappnode.eth"
+      "service": "rocketpool.dnp.dappnode.eth"
     }
   ],
   "license": "GLP-3.0"
