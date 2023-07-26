@@ -36,3 +36,5 @@ export function enoughEthBalance(
   const is8EthPool = rplBalance >= minimumRpl8Eth;
   return is8EthPool ? ethBalance >= minimum8Eth : ethBalance >= minimum16Eth;
 }
+
+export const escapeNewLine = (text: string) => text.replace(/(\\n)/g, "\n");
