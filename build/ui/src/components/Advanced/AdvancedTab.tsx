@@ -8,6 +8,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { AppService } from "../../services/AppService";
+import { escapeNewLine } from "../../utils/Utils";
 
 interface AdvancedTabProps {}
 
@@ -83,7 +84,7 @@ const AdvancedTab: React.FC<AdvancedTabProps> = (): JSX.Element => {
               wordBreak: "break-all",
             }}
           >
-            {output}
+            {escapeNewLine(output)}
           </pre>
         </Box>
         <form
