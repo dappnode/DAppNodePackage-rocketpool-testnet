@@ -1,0 +1,12 @@
+[
+    {
+        "labels": {
+            "package": "rocketpool-testnet.public.dappnode.eth",
+            "service": "rocketpool-testnet.public.dappnode",
+            "app": "rocketpool-testnet"
+        },
+        "targets": [
+            "rocketpool-testnet.public.dappnode:9102"
+        ]
+    }
+]
