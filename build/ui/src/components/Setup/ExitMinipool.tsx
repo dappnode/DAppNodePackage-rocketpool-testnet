@@ -1,4 +1,4 @@
-import { Box } from "@mui/system";
+import { Box, Typography } from "@mui/material";
 import { Minipool } from "../../types/MinipoolStatus";
 import MinipoolCard from "./MinipoolCard";
 
@@ -13,43 +13,43 @@ function ExitMinipool({
     <div className="minipool-container">
       <div className="validators-container">
         <div className="exit-info">
-          Exiting Minipool #{data.validator.index}
-          <p>
+          <Typography variant="h5">
+            Exiting Minipool #{data.validator.index}
+          </Typography>
+          <Typography variant="body1">
             To stop running a minipool and access the full balance locked on the
-            Beacon Chain, the following steps must be taken:
-            <ol>
-              <li>
-                Send a voluntary exit request for the minipool's validator from
-                the Beacon Chain.
-              </li>
-              <li>Wait for your validator to exit.</li>
-              <li>
-                Wait for your validator's balance to be withdrawn to your
-                minipool on the Execution layer.
-              </li>
-              <li>
-                Close the minipool to distribute the rewards and access the
-                funds.
-              </li>
-            </ol>
-            In this Dappnode Package, you can do this by:
-            <ol>
-              <li>Clicking the "Exit" button on the right</li>
-              <li>
-                Wait until the validator has exited. You can check its status in
-                INSERT_URL_HERE
-              </li>
-              <li>
-                Once the validator has exited, click the "Close" button on the
-                right
-              </li>
-              <li>
-                When the minipool reaches finalized state (INSERT_URL_HERE), you
-                can withdraw the funds by clicking the "Withdraw" button on the
-                right
-              </li>
-            </ol>
-          </p>
+            Beacon Chain, follow the steps below:
+          </Typography>
+          <Box component="ol" sx={{ pl: 2, mt: 1 }}>
+            <Typography variant="body1">
+              <b>1. Initiate exit:</b> Click the "Exit" button on the right to
+              send a voluntary exit for the minipool's validator to the beacon
+              chain.
+            </Typography>
+            <Typography variant="body1">
+              <b>2. Wait for Exit:</b> Wait until the validator has exited. You
+              can check its status at [INSERT URL HERE] (beaconcha.in +
+              validator pk).
+            </Typography>
+            <Typography variant="body1">
+              <b>3. Wait for Funds:</b> Wait until the minipool balance is sent
+              to your minipool address (withdrawable epoch reached).
+            </Typography>
+            <Typography variant="body1">
+              <b>4. Finalize Exit:</b> Once the validator has exited, click the
+              "Close" button on the right.
+            </Typography>
+            <Typography variant="body1">
+              <b>5. Wait for minipool finalization:</b> Wait for the transaction
+              to be validated (check here). ETH will be refunded to your
+              withdrawal address, and the minipool will change to a finalized
+              state.
+            </Typography>
+            <Typography variant="body1">
+              <b>6. Withdraw RPL:</b> Now, you can withdraw the staked RPL by
+              clicking on "Withdraw RPL".
+            </Typography>
+          </Box>
         </div>
         <div className="exit-minipool-card-container">
           <MinipoolCard
