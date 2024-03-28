@@ -101,7 +101,7 @@ async function importKey(validatorPubkey: string): Promise<ImportKeyResponseData
   return await postValidatorData({
     keystores: [keystoreJson],
     passwords: [password],
-    tags: ["rocketpool"],
+    tags: ["stader"],
     feeRecipients: ["0xa347c391bc8f740caba37672157c8aacd08ac567"],
   });
 }
