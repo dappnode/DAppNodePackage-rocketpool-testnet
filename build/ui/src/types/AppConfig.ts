@@ -8,6 +8,6 @@ export interface Config {
   package: string;
 }
 
-const network = process.env.REACT_APP_NETWORK || "prater";
+const network = process.env.REACT_APP_NETWORK || "holesky";
 const apiBaseUrl = network === "mainnet" ? "http://rocketpool.public.dappnode:3000" : "http://rocketpool-testnet.public.dappnode:3000";
 export default apiBaseUrl;
