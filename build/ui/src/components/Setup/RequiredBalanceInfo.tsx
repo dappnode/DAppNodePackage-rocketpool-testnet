@@ -17,10 +17,7 @@ const RequiredBalanceInfo: React.FC<RequiredBalanceInfoProps> = ({
       ? data?.networkRplPrice?.minPer8EthMinipoolRplStake ?? 0
       : data?.networkRplPrice?.minPer16EthMinipoolRplStake ?? 0;
 
-  const maxRpl =
-    minipoolEth === 8
-      ? data?.networkRplPrice?.maxPer8EthMinipoolRplStake ?? 0
-      : data?.networkRplPrice?.maxPer16EthMinipoolRplStake ?? 0;
+  const maxRpl = data?.nodeStatus?.maximumRplStake ?? 0;
 
   return (
     <Box>
@@ -28,8 +25,16 @@ const RequiredBalanceInfo: React.FC<RequiredBalanceInfoProps> = ({
         1. At least <b>{minipoolEth} ETH + 0.2 ETH</b> (we recommend{" "}
         <b>0.5 ETH</b>) for gas costs
         <br />
-        2. Between <b>{Math.ceil(toEther(minRpl))} RPL</b> and{" "}
-        <b>{Math.ceil(toEther(maxRpl))} RPL</b> for {minipoolEth} ETH minipool
+        {maxRpl === 0 ? (
+          <>
+            2. At least <b>{Math.ceil(toEther(minRpl))} RPL</b> for {minipoolEth} ETH minipool
+          </>
+        ) : (
+          <>
+            2. Between <b>{Math.ceil(toEther(minRpl))} RPL</b> and{" "}
+            <b>{Math.ceil(toEther(maxRpl))} RPL</b> for {minipoolEth} ETH minipool
+          </>
+        )}
       </Typography>
     </Box>
   );

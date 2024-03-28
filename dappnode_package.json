@@ -14,7 +14,7 @@
   },
   "globalEnvs": [
     {
-      "envs": ["EXECUTION_CLIENT_PRATER", "CONSENSUS_CLIENT_PRATER"],
+      "envs": ["EXECUTION_CLIENT_HOLESKY", "CONSENSUS_CLIENT_HOLESKY"],
       "services": ["rocketpool-testnet.public.dappnode.eth"]
     }
   ],
