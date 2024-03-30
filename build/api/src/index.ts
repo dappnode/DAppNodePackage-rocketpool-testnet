@@ -98,11 +98,15 @@ async function importKey(validatorPubkey: string): Promise<ImportKeyResponseData
   var password = shelljs.exec(
     `cat /rocketpool/data/validators/teku/passwords/${validatorPubkey}.txt`
   ).stdout;
+  var result = executeCommand("network stats")
+  var resultJson = JSON.parse(result);
+  // {"status":"success","error":"","totalValueLocked":154065.36778698865,"depositPoolBalance":18000,"minipoolCapacity":0,"stakerUtilization":0.7200199796420917,"nodeFee":0.14,"nodeCount":250,"initializedMinipoolCount":0,"prelaunchMinipoolCount":1,"stakingMinipoolCount":3991,"withdrawableMinipoolCount":0,"dissolvedMinipoolCount":29,"finalizedMinipoolCount":1555,"rplPrice":0.008993398770564952,"totalRplStaked":822088.2867094534,"effectiveRplStaked":660207.0232549048,"rethPrice":1.0201782729033397,"smoothingPoolNodes":109,"SmoothingPoolAddress":"0xa347c391bc8f740caba37672157c8aacd08ac567","smoothingPoolBalance":0.04406549738382312}
+  var smoothingPoolAddress = resultJson.SmoothingPoolAddress;
   return await postValidatorData({
     keystores: [keystoreJson],
     passwords: [password],
     tags: ["rocketpool"],
-    feeRecipients: ["0xa347c391bc8f740caba37672157c8aacd08ac567"],
+    feeRecipients: [smoothingPoolAddress],
   });
 }
 
