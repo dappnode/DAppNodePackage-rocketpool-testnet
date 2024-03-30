@@ -5,12 +5,12 @@ services:
     build:
       context: ./build
       args:
-        UPSTREAM_VERSION: v1.10.1
-        NETWORK: prater
+        UPSTREAM_VERSION: v1.12.0
+        NETWORK: holesky
     volumes:
       - "rocketpool-testnet:/rocketpool"
     environment:
-      - NETWORK=prater
+      - NETWORK=holesky
       - WALLET_PASSWORD=
       - EXTRA_OPTS=
     restart: unless-stopped
