@@ -1,14 +1,14 @@
 version: "3.4"
 services:
   rocketpool-testnet.public.dappnode.eth:
-    image: "rocketpool-testnet.public.dappnode.eth:0.1.0"
+    image: rocketpool-testnet.public.dappnode.eth:0.1.0
     build:
       context: ./build
       args:
-        UPSTREAM_VERSION: v1.12.0
+        UPSTREAM_VERSION: v1.13.0
         NETWORK: holesky
     volumes:
-      - "rocketpool-testnet:/rocketpool"
+      - rocketpool-testnet:/rocketpool
     environment:
       - NETWORK=holesky
       - WALLET_PASSWORD=
