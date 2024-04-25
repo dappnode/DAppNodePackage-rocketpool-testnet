@@ -1,4 +1,4 @@
-FROM node:18.15.0-alpine as build-api
+FROM node:20.12.2-alpine as build-api
 ARG NETWORK
 WORKDIR /app/ui
 COPY ui .
