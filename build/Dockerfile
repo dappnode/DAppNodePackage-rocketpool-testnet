@@ -8,7 +8,7 @@ WORKDIR /app/api
 COPY api .
 RUN yarn && yarn build
 
-FROM --platform=linux/amd64 node:18.15.0
+FROM --platform=linux/amd64 node:20.12.2
 ARG UPSTREAM_VERSION
 
 WORKDIR /app
