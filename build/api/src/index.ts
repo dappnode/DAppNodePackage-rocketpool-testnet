@@ -102,7 +102,7 @@ async function importKey(validatorPubkey: string): Promise<ImportKeyResponseData
     keystores: [keystoreJson],
     passwords: [password],
     tags: ["rocketpool"],
-    feeRecipients: ["0xa347c391bc8f740caba37672157c8aacd08ac567"],
+    feeRecipients: ["0xd4e96ef8eee8678dbff4d535e033ed1a4f7605b7"],
   });
 }
 
