@@ -6,4 +6,4 @@ Start with Rocket Pool at [http://rocketpool.dappnode/](http://rocketpool.dappno
 
 ℹ️ Rocket Pool supports five Consensus clients: Lighthouse, Lodestar, Nimbus, Prysm, and Teku.
 
-⚠️ When creating a wallet or adding a minipool, it is crucial to go to the [backup tab](http://my.dappnode/#/packages/rocketpool.dnp.dappnode.eth/backup) and download your backup, as it provides a necessary safety measure in case of any unforeseen circumstances that may cause data loss or corruption, and ensures that you can easily recover your information when required.
+⚠️ When creating a wallet or adding a minipool, it is crucial to go to the [backup tab](http://my.dappnode/packages/my/rocketpool.dnp.dappnode.eth/backup) and download your backup, as it provides a necessary safety measure in case of any unforeseen circumstances that may cause data loss or corruption, and ensures that you can easily recover your information when required.
