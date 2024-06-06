@@ -26,7 +26,7 @@
     }
   ],
   "dependencies": {
-    "web3signer-holesky.dnp.dappnode.eth": "^0.1.4"
+    "web3signer-holesky.dnp.dappnode.eth": "latest"
   },
   "license": "GLP-3.0"
 }
