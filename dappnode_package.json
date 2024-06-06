@@ -25,5 +25,8 @@
       "service": "rocketpool-testnet.public.dappnode.eth"
     }
   ],
+  "dependencies": {
+    "web3signer-holesky.dnp.dappnode.eth": "latest"
+  },
   "license": "GLP-3.0"
 }
