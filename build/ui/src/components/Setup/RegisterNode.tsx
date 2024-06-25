@@ -149,12 +149,6 @@ const RegisterNode: React.FC<RegisterNodeProps> = ({
     }
   };
 
-  const enoughTokens = () => {
-    return (
-      enoughEthBalance(data?.nodeStatus, data?.networkRplPrice) && enoughRpl
-    );
-  };
-
   function ErrorAlertBox(): JSX.Element {
     return (
       <>
@@ -217,7 +211,6 @@ const RegisterNode: React.FC<RegisterNodeProps> = ({
           <Button
             disabled={
               !canRegisterNode?.canRegister ||
-              !enoughTokens() ||
               !isValidAddressEntered(addressEntered) ||
               !actionsEnabled ||
               isLoading
