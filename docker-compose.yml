@@ -5,7 +5,7 @@ services:
     build:
       context: ./build
       args:
-        UPSTREAM_VERSION: v1.13.7
+        UPSTREAM_VERSION: v1.13.10
         NETWORK: holesky
     volumes:
       - rocketpool-testnet:/rocketpool
