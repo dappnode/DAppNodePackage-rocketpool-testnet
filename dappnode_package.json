@@ -1,7 +1,7 @@
 {
   "name": "rocketpool-testnet.public.dappnode.eth",
-  "version": "0.1.8",
-  "upstreamVersion": "v1.14.1",
+  "version": "0.1.9",
+  "upstreamVersion": "v1.15.2",
   "upstreamRepo": "rocket-pool/smartnode-install",
   "architectures": ["linux/amd64"],
   "description": "How Rocket Pool Works. Unlike solo stakers, who are required to put 32 ETH up for deposit to create a new validator, Rocket Pool nodes only need to deposit 8/16 ETH per validator. This will be coupled with 16 ETH from the staking pool (which stakers deposited in exchange for rETH) to create a new Ethereum validator. This new validator is called a minipool.",
