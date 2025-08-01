@@ -14,7 +14,7 @@
   },
   "globalEnvs": [
     {
-      "envs": ["EXECUTION_CLIENT_HOLESKY", "CONSENSUS_CLIENT_HOLESKY"],
+      "envs": ["EXECUTION_CLIENT_HOODI", "CONSENSUS_CLIENT_HOODI"],
       "services": ["rocketpool-testnet.public.dappnode.eth"]
     }
   ],
@@ -26,7 +26,7 @@
     }
   ],
   "dependencies": {
-    "web3signer-holesky.dnp.dappnode.eth": "latest"
+    "web3signer-hoodi.dnp.dappnode.eth": "latest"
   },
   "license": "GLP-3.0"
 }
