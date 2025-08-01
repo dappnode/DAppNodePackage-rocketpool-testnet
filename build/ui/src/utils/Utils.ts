@@ -6,6 +6,10 @@ export function toWei(ether: number): number {
   return ether * 10 ** 18;
 }
 
+export function toWeiString(ether: number): string {
+  return BigInt(ether).toString();
+}
+
 export function toEther(wei: number): number {
   return wei / 10 ** 18;
 }
