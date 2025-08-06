@@ -31,6 +31,10 @@ case $NETWORK in
         _EXECUTION_LAYER_HTTP="http://besu.public.dappnode:8545"
         _EXECUTION_LAYER_WS="ws://besu.public.dappnode:8546"
         ;;
+    "reth.dnp.dappnode.eth")
+        _EXECUTION_LAYER_HTTP="http://reth.dappnode:8545"
+        _EXECUTION_LAYER_WS="ws://reth.dappnode:8546"
+        ;;
     "erigon.dnp.dappnode.eth")
         _EXECUTION_LAYER_HTTP="http://erigon.dappnode:8545"
         _EXECUTION_LAYER_WS="ws://erigon.dappnode:8545"
