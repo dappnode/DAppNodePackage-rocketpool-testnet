@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "Restarting validator... mocked!"
+# echo "Restarting validator... mocked!"
