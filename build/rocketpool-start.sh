@@ -41,7 +41,7 @@ case $NETWORK in
         ;;
     esac
     
-    # Assign proper value to _DAPPNODE_GLOBAL_CONSENSUS_CLIENT_HOLESKY.
+    # Assign proper value to _DAPPNODE_GLOBAL_CONSENSUS_CLIENT_HOODI.
     case "$_DAPPNODE_GLOBAL_CONSENSUS_CLIENT_MAINNET" in
     "prysm.dnp.dappnode.eth")
       _BEACON_NODE_API_3500="http://beacon-chain.prysm.dappnode:3500"
@@ -75,63 +75,63 @@ case $NETWORK in
     esac
 
     ;;
-"holesky")
-    echo "Holesky network"
+"hoodi")
+    echo "Hoodi network"
 
     # https://github.com/dappnode/DAppNodePackage-SSV-Shifu/blob/775dfbc2190b8c3bc7384a2e4c62d83892071001/build/entrypoint.sh#L3
-    # Assign proper value to _DAPPNODE_GLOBAL_EXECUTION_CLIENT_HOLESKY.
-    case $_DAPPNODE_GLOBAL_EXECUTION_CLIENT_HOLESKY in
-    "holesky-geth.dnp.dappnode.eth")
-        _EXECUTION_LAYER_HTTP="http://holesky-geth.dappnode:8545"
-        _EXECUTION_LAYER_WS="ws://holesky-geth.dappnode:8546"
+    # Assign proper value to _DAPPNODE_GLOBAL_EXECUTION_CLIENT_HOODI.
+    case $_DAPPNODE_GLOBAL_EXECUTION_CLIENT_HOODI in
+    "hoodi-geth.dnp.dappnode.eth")
+        _EXECUTION_LAYER_HTTP="http://hoodi-geth.dappnode:8545"
+        _EXECUTION_LAYER_WS="ws://hoodi-geth.dappnode:8546"
         ;;
-    "holesky-nethermind.dnp.dappnode.eth")
-        _EXECUTION_LAYER_HTTP="http://holesky-nethermind.dappnode:8545"
-        _EXECUTION_LAYER_WS="ws://holesky-nethermind.dappnode:8546"
+    "hoodi-nethermind.dnp.dappnode.eth")
+        _EXECUTION_LAYER_HTTP="http://hoodi-nethermind.dappnode:8545"
+        _EXECUTION_LAYER_WS="ws://hoodi-nethermind.dappnode:8546"
         ;;
-    "holesky-besu.dnp.dappnode.eth")
-        _EXECUTION_LAYER_HTTP="http://holesky-besu.dappnode:8545"
-        _EXECUTION_LAYER_WS="ws://holesky-besu.dappnode:8546"
+    "hoodi-besu.dnp.dappnode.eth")
+        _EXECUTION_LAYER_HTTP="http://hoodi-besu.dappnode:8545"
+        _EXECUTION_LAYER_WS="ws://hoodi-besu.dappnode:8546"
         ;;
-    "holesky-erigon.dnp.dappnode.eth")
-        _EXECUTION_LAYER_HTTP="http://holesky-erigon.dappnode:8545"
-        _EXECUTION_LAYER_WS="ws://holesky-erigon.dappnode:8545"
+    "hoodi-erigon.dnp.dappnode.eth")
+        _EXECUTION_LAYER_HTTP="http://hoodi-erigon.dappnode:8545"
+        _EXECUTION_LAYER_WS="ws://hoodi-erigon.dappnode:8545"
         ;;
     *)
-        echo "Unknown value or unsupported for _DAPPNODE_GLOBAL_EXECUTION_CLIENT_HOLESKY Please confirm that the value is correct"
+        echo "Unknown value or unsupported for _DAPPNODE_GLOBAL_EXECUTION_CLIENT_HOODI Please confirm that the value is correct"
         exit 1
         ;;
     esac
 
-    # Assign proper value to _DAPPNODE_GLOBAL_CONSENSUS_CLIENT_HOLESKY.
-    case "$_DAPPNODE_GLOBAL_CONSENSUS_CLIENT_HOLESKY" in
-    "prysm-holesky.dnp.dappnode.eth")
-      _BEACON_NODE_API_3500="http://beacon-chain.prysm-holesky.dappnode:3500"
-      _BEACON_NODE_API_4000="http://beacon-chain.prysm-holesky.dappnode:4000"
+    # Assign proper value to _DAPPNODE_GLOBAL_CONSENSUS_CLIENT_HOODI.
+    case "$_DAPPNODE_GLOBAL_CONSENSUS_CLIENT_HOODI" in
+    "prysm-hoodi.dnp.dappnode.eth")
+      _BEACON_NODE_API_3500="http://beacon-chain.prysm-hoodi.dappnode:3500"
+      _BEACON_NODE_API_4000="http://beacon-chain.prysm-hoodi.dappnode:4000"
       _BEACON_NODE_CLIENT="prysm"
       ;;
-    "teku-holesky.dnp.dappnode.eth")
-      _BEACON_NODE_API_3500="http://beacon-chain.teku-holesky.dappnode:3500"
-      _BEACON_NODE_API_4000="http://beacon-chain.teku-holesky.dappnode:4000"
+    "teku-hoodi.dnp.dappnode.eth")
+      _BEACON_NODE_API_3500="http://beacon-chain.teku-hoodi.dappnode:3500"
+      _BEACON_NODE_API_4000="http://beacon-chain.teku-hoodi.dappnode:4000"
       _BEACON_NODE_CLIENT="teku"
       ;;
-    "lighthouse-holesky.dnp.dappnode.eth")
-      _BEACON_NODE_API_3500="http://beacon-chain.lighthouse-holesky.dappnode:3500"
-      _BEACON_NODE_API_4000="http://beacon-chain.lighthouse-holesky.dappnode:4000"
+    "lighthouse-hoodi.dnp.dappnode.eth")
+      _BEACON_NODE_API_3500="http://beacon-chain.lighthouse-hoodi.dappnode:3500"
+      _BEACON_NODE_API_4000="http://beacon-chain.lighthouse-hoodi.dappnode:4000"
       _BEACON_NODE_CLIENT="lighthouse"
       ;;
-    "nimbus-holesky.dnp.dappnode.eth")
-      _BEACON_NODE_API_3500="http://beacon-validator.nimbus-holesky.dappnode:4500"
-      _BEACON_NODE_API_4000="http://beacon-validator.nimbus-holesky.dappnode:4500"
+    "nimbus-hoodi.dnp.dappnode.eth")
+      _BEACON_NODE_API_3500="http://beacon-validator.nimbus-hoodi.dappnode:4500"
+      _BEACON_NODE_API_4000="http://beacon-validator.nimbus-hoodi.dappnode:4500"
       _BEACON_NODE_CLIENT="nimbus"
       ;;
-    "lodestar-holesky.dnp.dappnode.eth")
-      _BEACON_NODE_API_3500="http://beacon-chain.lodestar-holesky.dappnode:3500"
-      _BEACON_NODE_API_4000="http://beacon-chain.lodestar-holesky.dappnode:4000"
+    "lodestar-hoodi.dnp.dappnode.eth")
+      _BEACON_NODE_API_3500="http://beacon-chain.lodestar-hoodi.dappnode:3500"
+      _BEACON_NODE_API_4000="http://beacon-chain.lodestar-hoodi.dappnode:4000"
       _BEACON_NODE_CLIENT="lodestar"
       ;;
     *)
-      echo "Unknown value or unsupported for _DAPPNODE_GLOBAL_CONSENSUS_CLIENT_HOLESKY Please confirm that the value is correct"
+      echo "Unknown value or unsupported for _DAPPNODE_GLOBAL_CONSENSUS_CLIENT_HOODI Please confirm that the value is correct"
       exit 1
       ;;
     esac
@@ -153,11 +153,11 @@ export BEACON_NODE_CLIENT=$_BEACON_NODE_CLIENT
 # For testing porpuses, uncomment the above lines and comment the following ones
 # BEACON_NODE_CLIENT="prysm"
 
-# EXECUTION_LAYER_HTTP="http://holesky-geth.dappnode:8545"
-# EXECUTION_LAYER_WS="ws://holesky-geth.dappnode:8546"
+# EXECUTION_LAYER_HTTP="http://hoodi-geth.dappnode:8545"
+# EXECUTION_LAYER_WS="ws://hoodi-geth.dappnode:8546"
 
-# BEACON_NODE_API_3500="http://beacon-chain.prysm-holesky.dappnode:3500"
-# BEACON_NODE_API_4000="http://beacon-chain.prysm-holesky.dappnode:4000"
+# BEACON_NODE_API_3500="http://beacon-chain.prysm-hoodi.dappnode:3500"
+# BEACON_NODE_API_4000="http://beacon-chain.prysm-hoodi.dappnode:4000"
 
 NETWORK="${NETWORK}" \
 BEACON_NODE_CLIENT="${BEACON_NODE_CLIENT}" \
