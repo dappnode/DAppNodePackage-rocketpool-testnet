@@ -22,18 +22,22 @@ case $NETWORK in
     "geth.dnp.dappnode.eth")
         _EXECUTION_LAYER_HTTP="http://geth.dappnode:8545"
         _EXECUTION_LAYER_WS="ws://geth.dappnode:8546"
+        _EXECUTION_NODE_CLIENT="geth"
         ;;
     "nethermind.public.dappnode.eth")
         _EXECUTION_LAYER_HTTP="http://nethermind.public.dappnode:8545"
         _EXECUTION_LAYER_WS="ws://nethermind.public.dappnode:8546"
+        _EXECUTION_NODE_CLIENT="nethermind"
         ;;
     "besu.public.dappnode.eth")
         _EXECUTION_LAYER_HTTP="http://besu.public.dappnode:8545"
         _EXECUTION_LAYER_WS="ws://besu.public.dappnode:8546"
+        _EXECUTION_NODE_CLIENT="besu"
         ;;
     "erigon.dnp.dappnode.eth")
         _EXECUTION_LAYER_HTTP="http://erigon.dappnode:8545"
         _EXECUTION_LAYER_WS="ws://erigon.dappnode:8545"
+        _EXECUTION_NODE_CLIENT="erigon"
         ;;
     *)
         echo "Unknown value or unsupported for _DAPPNODE_GLOBAL_EXECUTION_CLIENT_MAINNET Please confirm that the value is correct"
@@ -75,7 +79,7 @@ case $NETWORK in
     esac
 
     ;;
-"hoodi")
+"testnet")
     echo "Hoodi network"
 
     # https://github.com/dappnode/DAppNodePackage-SSV-Shifu/blob/775dfbc2190b8c3bc7384a2e4c62d83892071001/build/entrypoint.sh#L3
@@ -84,18 +88,22 @@ case $NETWORK in
     "hoodi-geth.dnp.dappnode.eth")
         _EXECUTION_LAYER_HTTP="http://hoodi-geth.dappnode:8545"
         _EXECUTION_LAYER_WS="ws://hoodi-geth.dappnode:8546"
+        _EXECUTION_NODE_CLIENT="geth"
         ;;
     "hoodi-nethermind.dnp.dappnode.eth")
         _EXECUTION_LAYER_HTTP="http://hoodi-nethermind.dappnode:8545"
         _EXECUTION_LAYER_WS="ws://hoodi-nethermind.dappnode:8546"
+        _EXECUTION_NODE_CLIENT="nethermind"
         ;;
     "hoodi-besu.dnp.dappnode.eth")
         _EXECUTION_LAYER_HTTP="http://hoodi-besu.dappnode:8545"
         _EXECUTION_LAYER_WS="ws://hoodi-besu.dappnode:8546"
+        _EXECUTION_NODE_CLIENT="besu"
         ;;
     "hoodi-erigon.dnp.dappnode.eth")
         _EXECUTION_LAYER_HTTP="http://hoodi-erigon.dappnode:8545"
         _EXECUTION_LAYER_WS="ws://hoodi-erigon.dappnode:8545"
+        _EXECUTION_NODE_CLIENT="erigon"
         ;;
     *)
         echo "Unknown value or unsupported for _DAPPNODE_GLOBAL_EXECUTION_CLIENT_HOODI Please confirm that the value is correct"
@@ -145,6 +153,7 @@ esac
 
 export EXECUTION_LAYER_HTTP=$_EXECUTION_LAYER_HTTP
 export EXECUTION_LAYER_WS=$_EXECUTION_LAYER_WS
+export EXECUTION_NODE_CLIENT=$_EXECUTION_NODE_CLIENT
 
 export BEACON_NODE_API_3500=$_BEACON_NODE_API_3500
 export BEACON_NODE_API_4000=$_BEACON_NODE_API_4000
@@ -152,6 +161,7 @@ export BEACON_NODE_CLIENT=$_BEACON_NODE_CLIENT
 
 # For testing porpuses, uncomment the above lines and comment the following ones
 # BEACON_NODE_CLIENT="prysm"
+# EXECUTION_NODE_CLIENT="geth"
 
 # EXECUTION_LAYER_HTTP="http://hoodi-geth.dappnode:8545"
 # EXECUTION_LAYER_WS="ws://hoodi-geth.dappnode:8546"
@@ -160,6 +170,7 @@ export BEACON_NODE_CLIENT=$_BEACON_NODE_CLIENT
 # BEACON_NODE_API_4000="http://beacon-chain.prysm-hoodi.dappnode:4000"
 
 NETWORK="${NETWORK}" \
+EXECUTION_NODE_CLIENT="${EXECUTION_NODE_CLIENT}" \
 BEACON_NODE_CLIENT="${BEACON_NODE_CLIENT}" \
 EXECUTION_LAYER_HTTP="${EXECUTION_LAYER_HTTP}" \
 EXECUTION_LAYER_WS="${EXECUTION_LAYER_WS}" \

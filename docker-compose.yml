@@ -10,7 +10,7 @@ services:
     volumes:
       - rocketpool-testnet:/rocketpool
     environment:
-      - NETWORK=hoodi
+      - NETWORK=testnet
       - WALLET_PASSWORD=
       - EXTRA_OPTS=
     restart: unless-stopped
