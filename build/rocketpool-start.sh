@@ -169,7 +169,7 @@ export BEACON_NODE_CLIENT=$_BEACON_NODE_CLIENT
 # BEACON_NODE_API_3500="http://beacon-chain.prysm-hoodi.dappnode:3500"
 # BEACON_NODE_API_4000="http://beacon-chain.prysm-hoodi.dappnode:4000"
 
-if ${NETWORK} == "hoodi"; then
+if [ "$NETWORK" == "hoodi" ]; then
     NETWORK="testnet"
 fi
 NETWORK="${NETWORK}" \
