@@ -15,10 +15,10 @@ class AppConfig {
   private config: Config;
 
   private constructor() {
-    const network = shelljs.exec(`echo $NETWORK`).stdout.trim() || "holesky";
+    const network = shelljs.exec(`echo $NETWORK`).stdout.trim() || "hoodi";
     const isMainnet = network === "mainnet";
-    const w3sSuffix = isMainnet ? "" : "-holesky";
-    const networkPrefix = isMainnet ? "" : "holesky.";
+    const w3sSuffix = isMainnet ? "" : "-hoodi";
+    const networkPrefix = isMainnet ? "" : "hoodi.";
     this.config = {
       network: network,
       brainAPIUrl: `http://brain.web3signer${w3sSuffix}.dappnode:3000`,
