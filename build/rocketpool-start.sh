@@ -191,6 +191,11 @@ if [ -f "/rocketpool/data/wallet" ]; then
 fi
 if [ ! -f /rocketpool/data/password ]; then
     echo "${INFO} set-password"
+    if [ ! -f /.rocketpool/data/password ]; then
+        mkdir -p /.rocketpool/data
+        echo "${WALLET_PASSWORD}" > /.rocketpool/data/password
+        echo "${WALLET_PASSWORD}" > /rocketpool/data/password
+    fi
     /usr/local/bin/rocketpoold --settings /app/rocketpool/user-settings.yml api wallet set-password "${WALLET_PASSWORD}"
 fi
 echo "${INFO} Initializing Rocketpool service"
