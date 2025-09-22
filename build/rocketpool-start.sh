@@ -84,7 +84,7 @@ case $NETWORK in
     esac
 
     ;;
-"hoodi")
+"testnet")
     echo "Hoodi network"
 
     # https://github.com/dappnode/DAppNodePackage-SSV-Shifu/blob/775dfbc2190b8c3bc7384a2e4c62d83892071001/build/entrypoint.sh#L3
@@ -179,9 +179,6 @@ export BEACON_NODE_CLIENT=$_BEACON_NODE_CLIENT
 # BEACON_NODE_API_3500="http://beacon-chain.prysm-hoodi.dappnode:3500"
 # BEACON_NODE_API_4000="http://beacon-chain.prysm-hoodi.dappnode:4000"
 
-if [ "$NETWORK" == "hoodi" ]; then
-    NETWORK="testnet"
-fi
 NETWORK="${NETWORK}" \
 EXECUTION_NODE_CLIENT="${EXECUTION_NODE_CLIENT}" \
 BEACON_NODE_CLIENT="${BEACON_NODE_CLIENT}" \
@@ -201,11 +198,6 @@ if [ -f "/rocketpool/data/wallet" ]; then
 fi
 if [ ! -f /rocketpool/data/password ]; then
     echo "${INFO} set-password"
-    if [ ! -f /.rocketpool/data/password ]; then
-        mkdir -p /.rocketpool/data
-        echo "${WALLET_PASSWORD}" > /.rocketpool/data/password
-        echo "${WALLET_PASSWORD}" > /rocketpool/data/password
-    fi
     /usr/local/bin/rocketpoold --settings /app/rocketpool/user-settings.yml api wallet set-password "${WALLET_PASSWORD}"
 fi
 echo "${INFO} Initializing Rocketpool service"
