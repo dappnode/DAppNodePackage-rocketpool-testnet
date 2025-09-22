@@ -77,36 +77,22 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
   };
 
   const styles = {
-    container: {
-      minHeight: "100vh",
+    loadingOverlay: {
+      position: "fixed" as const,
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      backgroundColor: "rgba(0, 0, 0, 0.55)",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+      zIndex: 9999,
     },
   };
 
   return (
     <div className="App">
-      {isLoading && (
-        <>
-          <div style={styles.container}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <CircularProgress sx={{ marginBottom: "1rem" }} />
-              {!rocketpoolValue?.walletStatus && (
-                <Typography variant="body1">
-                  Loading on-chain Rocket Pool data...
-                </Typography>
-              )}
-            </div>
-          </div>
-        </>
-      )}
       {rocketpoolValue?.walletStatus && (
         <>
           {rocketpoolValue.walletStatus.walletInitialized &&
@@ -115,10 +101,11 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
             )}
           <Box
             sx={{
-              margin: 8,
+              margin: { xs: 1, sm: 2, md: 4, lg: 8 },
               display: "flex",
               flexDirection: "column",
               alignItems: "left",
+              padding: { xs: 1, sm: 2 },
             }}
           >
             {!clientsSynced && activeTab !== "Info" ? (
@@ -129,9 +116,12 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
             ) : (
               <Card
                 sx={{
-                  padding: 4,
+                  padding: { xs: 2, sm: 3, md: 4 },
                   borderRadius: 2,
                   boxShadow: 4,
+                  width: "100%",
+                  maxWidth: "100%",
+                  overflow: "hidden",
                 }}
               >
                 <div className="content">
@@ -151,6 +141,24 @@ function Dashboard({ activeTab }: { activeTab: string }): JSX.Element {
             <BalanceBox setShowBalanceBox={setShowBalanceBox} />
           )}
         </>
+      )}
+      {isLoading && (
+        <div style={styles.loadingOverlay}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress sx={{ marginBottom: "1rem" }} />
+            {!rocketpoolValue?.walletStatus && (
+              <Typography variant="body1" color="white">
+                Loading on-chain Rocket Pool data...
+              </Typography>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

@@ -4,9 +4,20 @@
   flex-grow: 1;
 }
 
+@media (max-width: 768px) {
+  .minipool-container {
+    flex-direction: column;
+  }
+}
+
+.validator-status {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .actions-container {
-  /*display: flex;
-  align-items: center;*/
+  /* display: flex;
+  align-items: center; */
   margin-left: 32px;
 }
 
