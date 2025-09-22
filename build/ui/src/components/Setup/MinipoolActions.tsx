@@ -38,7 +38,7 @@ function MinipoolActions({
       </div>
       <div className="button-container">
         <Button
-          href={`http://my.dappnode/packages/${config?.package}.eth/backup`}
+          href={`http://my.dappnode/packages/my/${config?.package}.eth/backup`}
           variant="contained"
           color="primary"
           target="_blank"

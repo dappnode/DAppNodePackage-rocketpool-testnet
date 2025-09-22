@@ -37,7 +37,7 @@ const AdvancedTab: React.FC<AdvancedTabProps> = (): JSX.Element => {
     event.preventDefault();
 
     const output = await appService.runCustomCommand(command);
-    
+
     // Append the command and output to the output box
     try {
       const jsonOutput = JSON.parse(output);
