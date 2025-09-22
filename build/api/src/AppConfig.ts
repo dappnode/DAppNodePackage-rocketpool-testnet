@@ -6,6 +6,7 @@ interface Config {
   brainUIUrl: string;
   w3sUrl: string;
   rpExplorerUrl: string;
+  beaconchaInUrl: string;
   explorerUrl: string;
   package: string;
 }
@@ -25,6 +26,7 @@ class AppConfig {
       brainUIUrl: `http://brain.web3signer${w3sSuffix}.dappnode`,
       w3sUrl: `http://web3signer.web3signer${w3sSuffix}.dappnode:9000`,
       rpExplorerUrl: `https://${networkPrefix}rocketscan.io`,
+      beaconchaInUrl: `https://${networkPrefix}beaconcha.in`,
       explorerUrl: `https://${networkPrefix}etherscan.io`,
       package: isMainnet ? `rocketpool.public.dappnode` : `rocketpool-testnet.public.dappnode`,
     };

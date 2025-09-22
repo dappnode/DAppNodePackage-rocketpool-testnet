@@ -8,10 +8,12 @@ import ImportToSignerDialog from "./ImportToSignerDialog";
 
 function MinipoolCard({
   data,
-  rpExplorerUrl,
+  beaconchaInUrl,
+  // rpExplorerUrl,  
 }: {
   data: Minipool;
   rpExplorerUrl?: string;
+  beaconchaInUrl?: string;
 }): JSX.Element {
   const [importToSignerDialogOpen, setImportToSignerDialogOpen] =
     React.useState<boolean>(false);
@@ -40,6 +42,12 @@ function MinipoolCard({
             sx={{ backgroundColor: { backgroundColor } }}
           />
         </div>
+        <div className="validator-status">
+          <Chip
+            label={data.validator.active ? "Active" : "Inactive"}
+            sx={{ backgroundColor: data.validator.active ? "#81C784" : "#E57373" }}
+          />
+        </div>
 
         <Typography color="text.secondary" className="minipool-ether">
           {toEtherString(
@@ -56,7 +64,7 @@ function MinipoolCard({
 
         <div className="explorer-button-container">
           <Button
-            href={`${rpExplorerUrl}/minipool/${data.address}`}
+            href={`${beaconchaInUrl}/validator/${data.validatorPubkey}`}
             variant="outlined"
             color="primary"
             target="_blank"
@@ -64,7 +72,7 @@ function MinipoolCard({
             endIcon={<OpenInNewIcon />}
             className="minipool-button"
           >
-            View on RocketScan
+            View on Beaconcha.in
           </Button>
           <Button
             variant="contained"

@@ -47,9 +47,12 @@ const MinipoolDetails: React.FC<MinipoolDetailsProps> = ({
             }}
           >
             {minipoolStatus?.minipools.map((minipool, index) => (
-              <>
-                <MinipoolCard data={minipool} key={index} rpExplorerUrl={data?.config?.rpExplorerUrl} />
-              </>
+              <MinipoolCard
+                key={index}
+                data={minipool}
+                beaconchaInUrl={data?.config?.beaconchaInUrl}
+                rpExplorerUrl={data?.config?.rpExplorerUrl}
+              />
             ))}
           </Grid>
           {minipoolStatus?.error && (
