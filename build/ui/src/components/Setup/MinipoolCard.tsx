@@ -38,14 +38,14 @@ function MinipoolCard({
         <div className="chip-container">
           <Chip label={`#${data.validator.index}`} />
           <Chip
-            label={data.status.status}
-            sx={{ backgroundColor: { backgroundColor } }}
+            label={data.finalised ? "Finalised" : data.status.status}
+            sx={{ backgroundColor: data.finalised ? "#FFC107" : backgroundColor }}
           />
         </div>
         <div className="validator-status">
           <Chip
-            label={data.validator.active ? "Active" : "Inactive"}
-            sx={{ backgroundColor: data.validator.active ? "#81C784" : "#E57373" }}
+            label={data.finalised ? "Exited" : (data.validator.active ? "Active" : "Inactive")}
+            sx={{ backgroundColor: data.finalised || data.validator.active ? "#81C784" : "#E57373" }}
           />
         </div>
 
