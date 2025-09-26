@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Box, Card, Chip, Link, Container } from "@mui/material";
+import { Typography, Box, Card, /*Chip,*/ Link, Container } from "@mui/material";
 import { RocketpoolContext } from "../Providers/Context";
 import "./infoTab.css";
 import EthClients from "./EthClients";

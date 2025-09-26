@@ -6,6 +6,24 @@
   /*background-color: rgba(25, 118, 210, 1);*/
 }
 
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .dismissable-card {
+    bottom: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .dismissable-card {
+    bottom: 5px;
+    right: 5px;
+    left: 5px;
+  }
+}
+
 hr {
   margin: 0 15px; /* adds some space above and below the line */
   border: none; /* removes the default border */

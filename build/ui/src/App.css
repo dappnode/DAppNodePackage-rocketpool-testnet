@@ -2,11 +2,15 @@
   text-align: center;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+  max-height: 200px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -18,9 +22,33 @@
 .App-header {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  font-size: calc(10px + 2vmin);
+  min-height: 100vh;
+  font-size: calc(10px + 1vmin);
   color: black;
+  width: 100%;
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 768px) {
+  .App-header {
+    font-size: calc(8px + 1.5vmin);
+  }
+  
+  .App-logo {
+    height: 30vmin;
+    max-height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .App-header {
+    font-size: calc(6px + 1.2vmin);
+  }
+  
+  .App-logo {
+    height: 25vmin;
+    max-height: 100px;
+  }
 }
 
 .App-link {
@@ -61,6 +89,41 @@
   justify-content: center;
   font-size: 24px;
   padding: 20px;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .menu {
+    padding: 10px;
+    margin-bottom: 16px;
+  }
+  
+  .menu-item {
+    padding: 8px;
+    font-size: 1rem;
+  }
+  
+  .detail {
+    font-size: 18px;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu {
+    padding: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .menu-item {
+    padding: 6px;
+    font-size: 0.9rem;
+  }
+  
+  .detail {
+    font-size: 16px;
+    padding: 10px;
+  }
 }
 
 .error-message {

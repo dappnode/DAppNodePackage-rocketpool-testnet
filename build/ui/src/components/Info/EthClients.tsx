@@ -20,6 +20,7 @@ function EthClients(): JSX.Element {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function EcStatusComponent(): JSX.Element {
@@ -106,8 +107,15 @@ function EthClients(): JSX.Element {
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-evenly",
-            gap: 2,
+            justifyContent: "center",
+            gap: { xs: 1.5, sm: 0.8, md: 0.6 },
+            flexWrap: "wrap",
+            flexDirection: { xs: "column", sm: "row" },
+            "& > *": {
+              flex: { xs: "1 1 100%", sm: "0 0 auto" },
+              minWidth: { xs: "100%", sm: "140px", md: "150px" },
+              maxWidth: { xs: "100%", sm: "160px", md: "170px" },
+            },
           }}
         >
           <Box
@@ -119,16 +127,24 @@ function EthClients(): JSX.Element {
           >
             <Card
               sx={{
-                borderRadius: 2,
-                p: 2,
+                borderRadius: 1.5,
+                p: { xs: 1.2, sm: 1.2, md: 1.3 },
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
+                width: "100%",
+                minHeight: { xs: "auto", sm: "85px", md: "90px" },
+                boxShadow: { xs: 1, sm: 1.5 },
               }}
             >
               <div style={{ alignItems: "center", justifyContent: "center" }}>
-                <Typography sx={{ fontWeight: "bold", pb: 2, px: 1 }}>
+                <Typography sx={{ 
+                  fontWeight: "bold", 
+                  pb: { xs: 1, sm: 1.2 }, 
+                  px: 0.5,
+                  fontSize: { xs: "0.85rem", sm: "0.9rem" }
+                }}>
                   Execution Client
                 </Typography>
                 <EcStatusComponent />
@@ -140,9 +156,11 @@ function EthClients(): JSX.Element {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              justifyContent: "center",
+              minHeight: { xs: "40px", sm: "70px", md: "75px" },
             }}
           >
-            <SyncAltRoundedIcon sx={{ mb: 4, fontSize: 48 }} />
+            <SyncAltRoundedIcon sx={{ mb: { xs: 1.7, sm: 3.4, md: 3.6 }, fontSize: { xs: 27, sm: 41, md: 43 } }} />
           </Box>
 
           <Box
@@ -154,16 +172,24 @@ function EthClients(): JSX.Element {
           >
             <Card
               sx={{
-                borderRadius: 2,
-                p: 2,
+                borderRadius: 1.5,
+                p: { xs: 1.2, sm: 1.2, md: 1.3 },
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
+                width: "100%",
+                minHeight: { xs: "auto", sm: "85px", md: "90px" },
+                boxShadow: { xs: 1, sm: 1.5 },
               }}
             >
               <div style={{ alignItems: "center", justifyContent: "center" }}>
-                <Typography sx={{ fontWeight: "bold", pb: 2, px: 1 }}>
+                <Typography sx={{ 
+                  fontWeight: "bold", 
+                  pb: { xs: 1, sm: 1.2 }, 
+                  px: 0.5,
+                  fontSize: { xs: "0.85rem", sm: "0.9rem" }
+                }}>
                   Consensus Client
                 </Typography>
                 <CcStatusComponent />
@@ -176,9 +202,11 @@ function EthClients(): JSX.Element {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              justifyContent: "center",
+              minHeight: { xs: "40px", sm: "70px", md: "75px" },
             }}
           >
-            <TrendingFlatRoundedIcon sx={{ mb: 4, fontSize: 48 }} />
+            <TrendingFlatRoundedIcon sx={{ mb: { xs: 1.7, sm: 3.4, md: 3.6 }, fontSize: { xs: 27, sm: 41, md: 43 } }} />
           </Box>
 
           <Box
@@ -190,16 +218,24 @@ function EthClients(): JSX.Element {
           >
             <Card
               sx={{
-                borderRadius: 2,
-                p: 2,
+                borderRadius: 1.5,
+                p: { xs: 1.2, sm: 1.2, md: 1.3 },
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
+                width: "100%",
+                minHeight: { xs: "auto", sm: "85px", md: "90px" },
+                boxShadow: { xs: 1, sm: 1.5 },
               }}
             >
               <div style={{ alignItems: "center", justifyContent: "center" }}>
-                <Typography sx={{ fontWeight: "bold", pb: 2, px: 1 }}>
+                <Typography sx={{ 
+                  fontWeight: "bold", 
+                  pb: { xs: 1, sm: 1.2 }, 
+                  px: 0.5,
+                  fontSize: { xs: "0.85rem", sm: "0.9rem" }
+                }}>
                   Signer
                 </Typography>
                 <SignerStatusComponent />

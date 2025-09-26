@@ -204,7 +204,7 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
       </Typography>
       <Box>
         <Button
-          disabled={(!canDeposit?.canDeposit ?? false) || isDepositLoading}
+          disabled={(!canDeposit?.canDeposit || false) || isDepositLoading}
           variant="contained"
           onClick={() => handleDepositRPLClick()}
         >

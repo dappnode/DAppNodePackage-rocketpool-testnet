@@ -4,6 +4,7 @@ export interface Config {
   brainUIUrl: string;
   w3sUrl: string;
   rpExplorerUrl: string;
+  beaconchaInUrl: string;
   explorerUrl: string;
   package: string;
 }

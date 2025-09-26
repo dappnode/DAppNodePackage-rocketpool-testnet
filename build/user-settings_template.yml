@@ -43,6 +43,7 @@ besu:
   jvmHeapSize: "0"
   maxBackLayers: "512"
   maxPeers: "25"
+  archiveMode: "false"
 bitflyNodeMetrics:
   bitflyEndpoint: https://beaconcha.in/api/v1/client/metrics
   bitflyMachineName: Smartnode
@@ -120,6 +121,8 @@ geth:
   containerTag: ethereum/client-go:v1.16.2
   evmTimeout: "5"
   maxPeers: "50"
+  usePebble: "false"
+  archiveMode: "false"
 grafana:
   containerTag: grafana/grafana:9.5.18
   openPort: external
@@ -171,6 +174,16 @@ nethermind:
   fullPruningThresholdMb: "51200"
   maxPeers: "50"
   pruneMemSize: ""
+reth:
+  additionalFlags: ""
+  unsupportedCommonParams: ""
+  unsupportedCommonParams: ""
+  eventLogInterval: "1000"
+  cacheSize: "256"
+  containerTag: ghcr.io/paradigmxyz/reth:v1.6.0
+  maxPeers: "100"
+  maxInboundPeers: "30"
+  archiveMode: "false"
 nimbus:
   additionalBnFlags: ""
   additionalVcFlags: ""
@@ -192,12 +205,6 @@ prysm:
   p2pQuicPort: "8001"
   rpcPort: "5053"
   vcContainerTag: gcr.io/offchainlabs/prysm/validator:v6.0.4
-reth:
-  additionalFlags: ""
-  cache: "16384"
-  containerTag: ghcr.io/paradigmxyz/reth:v1.6.0
-  maxInboundPeers: "30"
-  maxPeers: "100"
 root:
   bnMetricsPort: "9100"
   consensusClient: nimbus
@@ -211,13 +218,13 @@ root:
   executionClientMode: external
   exporterMetricsPort: "9103"
   externalConsensusClient: ${BEACON_NODE_CLIENT}
-  isNative: "false"
+  isNative: "true"
   nodeMetricsPort: "9102"
   reconnectDelay: 60s
   rpDir: /app/rocketpool/
   useFallbackClients: "false"
   vcMetricsPort: "9101"
-  version: v1.17.2
+  version: v1.17.3
   watchtowerMetricsPort: "9104"
 smartnode:
   archiveECUrl: ""

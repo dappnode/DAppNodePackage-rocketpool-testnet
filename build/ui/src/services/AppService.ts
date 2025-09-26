@@ -11,7 +11,7 @@ import { WaitResponse } from "../types/WaitResponse";
 import { NodeCanSetWithdrawalAddress } from "../types/NodeCanSetWithdrawalAddress";
 import { NodeCanSetSmoothingPool } from "../types/NodeCanSetSmoothingPool";
 import { CanDeposit } from "../types/CanDeposit";
-import { toWei } from "../utils/Utils";
+import { toWei, toWeiString } from "../utils/Utils";
 import { NodeFee } from "../types/NodeFee";
 import { StakeRplApprove } from "../types/StakeRplApprove";
 import { CanStake } from "../types/CanStake";
@@ -150,20 +150,23 @@ export class AppService {
     return response.data;
   }
   public async stakeRplApprove(amount: number): Promise<StakeRplApprove> {
+    const amountWei = toWeiString(amount);
     const response = await this.api.post(`/api/v1/rocketpool-command`, {
-      cmd: `node stake-rpl-approve-rpl ${amount}`,
+      cmd: `node stake-rpl-approve-rpl ${amountWei}`,
     });
     return response.data;
   }
   public async getNodeCanStakeRpl(amount: number): Promise<CanStake> {
+    const amountWei = toWeiString(amount);
     const response = await this.api.post(`/api/v1/rocketpool-command`, {
-      cmd: `node can-stake-rpl ${amount}`,
+      cmd: `node can-stake-rpl ${amountWei}`,
     });
     return response.data;
   }
   public async nodeStakeRpl(amount: number): Promise<StakeResponse> {
+    const amountWei = toWeiString(amount);
     const response = await this.api.post(`/api/v1/rocketpool-command`, {
-      cmd: `node stake-rpl ${amount}`,
+      cmd: `node stake-rpl ${amountWei}`,
     });
     return response.data;
   }

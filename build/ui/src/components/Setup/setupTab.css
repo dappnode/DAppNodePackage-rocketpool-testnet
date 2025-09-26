@@ -7,6 +7,7 @@
   display: inline-flex;
   align-items: center;
   margin-right: 32px;
+  margin-bottom: 16px;
 }
 
 .step-content {
@@ -15,4 +16,39 @@
   align-items: center;
   justify-content: center;
   border-left: 1px solid lightgray;
+  width: 100%;
+  padding-left: 16px;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .stepper-container {
+    margin-right: 0;
+    margin-bottom: 16px;
+    justify-content: center;
+  }
+  
+  .step-content {
+    border-left: none;
+    border-top: 1px solid lightgray;
+    padding-left: 0;
+    padding-top: 16px;
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stepper-container {
+    margin-bottom: 12px;
+  }
+  
+  .step-content {
+    padding-top: 12px;
+    margin-top: 12px;
+  }
 }
