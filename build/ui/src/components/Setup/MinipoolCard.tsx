@@ -1,10 +1,12 @@
 import React from "react";
-import { Card, CardContent, Typography, Chip, Button } from "@mui/material";
-import { Minipool } from "../../types/MinipoolStatus";
-import { toEtherString } from "../../utils/Utils";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import "./minipool.css";
+import { Button, Card, CardContent, Chip, Tooltip, Typography } from "@mui/material";
+import CopyToClipboardButton from "../Buttons/CopyToClipboardButton";
+import { Minipool } from "../../types/MinipoolStatus";
+import { ethBalanceGreaterThanMinStake, shortenAddress, toEtherString } from "../../utils/Utils";
 import ImportToSignerDialog from "./ImportToSignerDialog";
+import "./minipool.css";
+
 
 function MinipoolCard({
   data,
@@ -17,6 +19,7 @@ function MinipoolCard({
 }): JSX.Element {
   const [importToSignerDialogOpen, setImportToSignerDialogOpen] =
     React.useState<boolean>(false);
+  const [showAddress, setShowAddress] = React.useState<boolean>(false);
 
   const backgroundColor =
     data.status.status === "Staking"
@@ -24,6 +27,24 @@ function MinipoolCard({
       : data.status.status === "Dissolved"
       ? "#E57373"
       : "#FFB74D";
+
+  const validatorStatus = data.finalised 
+    ? "Exited"
+    : (!data.validator.index && data.status.status === "Staking")
+    ? "Enqueued"
+    : (data.validator.active
+      ? "Active"
+      : (data.status.status === "Staking" && ethBalanceGreaterThanMinStake(data.balances.eth)
+        ? "Ready to Close"
+        : "Inactive"
+      )
+    );
+  const validatorStatusColor =
+    data.finalised || data.validator.active
+      ? "#81C784"
+      : (data.status.status === "Prelaunch" || ["Enqueued", "Ready to Close"].includes(validatorStatus))
+      ? "#FFC107"
+      : "#E57373";
 
   return (
     <Card
@@ -36,7 +57,19 @@ function MinipoolCard({
     >
       <CardContent>
         <div className="chip-container">
-          <Chip label={`#${data.validator.index}`} />
+          <div className="chip-with-clipboard-container">
+            <Tooltip title={showAddress ? "Minipool Address" : "Validator Index"}>
+              <Chip 
+                label={showAddress ? shortenAddress(data.address) : `#${data.validator.index}`}
+                onClick={() => setShowAddress(!showAddress)}
+                sx={{ cursor: 'pointer' }}
+              />
+            </Tooltip>
+            <CopyToClipboardButton 
+              value={showAddress ? data.address : data.validator.index.toString()}
+              fontSize="small"
+            />
+          </div>
           <Chip
             label={data.finalised ? "Finalised" : data.status.status}
             sx={{ backgroundColor: data.finalised ? "#FFC107" : backgroundColor }}
@@ -44,8 +77,8 @@ function MinipoolCard({
         </div>
         <div className="validator-status">
           <Chip
-            label={data.finalised ? "Exited" : (data.validator.active ? "Active" : "Inactive")}
-            sx={{ backgroundColor: data.finalised || data.validator.active ? "#81C784" : "#E57373" }}
+            label={validatorStatus}
+            sx={{ backgroundColor: validatorStatusColor }}
           />
         </div>
 

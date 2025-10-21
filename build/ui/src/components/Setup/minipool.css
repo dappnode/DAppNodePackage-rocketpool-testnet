@@ -39,11 +39,17 @@
   margin-bottom: 0.5rem;
 }
 
+.chip-with-clipboard-container {
+  display: flex;
+  align-items: center;
+}
+
 .explorer-button-container {
   margin-top: 1rem;
 }
 
 .minipool-ether {
+  margin-top: 0.5rem !important;
   margin-bottom: 0.5rem !important;
   font-weight: bold !important;
 }
