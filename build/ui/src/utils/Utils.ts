@@ -41,4 +41,9 @@ export function enoughEthBalance(
   return is8EthPool ? ethBalance >= minimum8Eth : ethBalance >= minimum16Eth;
 }
 
+export function ethBalanceGreaterThanMinStake(ethBalance: number): boolean {
+  const minStake = BigInt(32 * 10 ** 18);
+  return BigInt(ethBalance) > minStake;
+}
+
 export const escapeNewLine = (text: string) => text.replace(/(\\n)/g, "\n");
