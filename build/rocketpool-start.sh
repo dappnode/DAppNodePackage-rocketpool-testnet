@@ -84,7 +84,7 @@ case $NETWORK in
     esac
 
     ;;
-"testnet")
+"testnet"|"hoodi")
     echo "Hoodi network"
 
     # https://github.com/dappnode/DAppNodePackage-SSV-Shifu/blob/775dfbc2190b8c3bc7384a2e4c62d83892071001/build/entrypoint.sh#L3
