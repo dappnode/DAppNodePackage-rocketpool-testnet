@@ -197,8 +197,27 @@ if [ -f "/rocketpool/data/wallet" ]; then
     echo "${INFO} Wallet already created"
 fi
 if [ ! -f /rocketpool/data/password ]; then
+    echo "${INFO} Initializing Rocketpool service before setting password"
+    /usr/local/bin/rocketpoold --settings /app/rocketpool/user-settings.yml node &
+    ROCKETPOOL_PID=$!
+
+    echo "${INFO} Waiting for Rocketpool HTTP API"
+    for i in $(seq 1 60); do
+        if curl -fsS http://127.0.0.1:8280/api/version >/dev/null 2>&1; then
+            break
+        fi
+        if ! kill -0 "$ROCKETPOOL_PID" >/dev/null 2>&1; then
+            echo "${ERROR} Rocketpool service exited before HTTP API became available"
+            wait "$ROCKETPOOL_PID"
+            exit $?
+        fi
+        sleep 1
+    done
+
     echo "${INFO} set-password"
-    /usr/local/bin/rocketpoold --settings /app/rocketpool/user-settings.yml api wallet set-password "${WALLET_PASSWORD}"
+    curl -fsS -X POST --data-urlencode "password=${WALLET_PASSWORD}" http://127.0.0.1:8280/api/wallet/set-password || true
+    wait "$ROCKETPOOL_PID"
+    exit $?
 fi
 echo "${INFO} Initializing Rocketpool service"
 exec /usr/local/bin/rocketpoold --settings /app/rocketpool/user-settings.yml node
