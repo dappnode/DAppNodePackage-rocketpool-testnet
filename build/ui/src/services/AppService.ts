@@ -22,6 +22,10 @@ import { CanClaimRewards } from "../types/CanClaimRewards";
 import apiBaseUrl, { Config } from "../types/AppConfig";
 import { ImportKeyResponseData } from "../types/ImportKeyResponse";
 import { NextValidatorBond } from "../types/NextValidatorBond";
+import { CanExit } from "../types/CanExit";
+import { CanDistribute } from "../types/CanDistribute";
+import { CanClaimRefund } from "../types/CanClaimRefund";
+import { MegapoolRewards } from "../types/MegapoolRewards";
 
 export class AppService {
   public api = axios.create({
@@ -186,6 +190,76 @@ export class AppService {
     });
     return response.data;
   }
+  // --- Megapool exit lifecycle ---
+  public async canExitQueue(validatorIndex: number): Promise<CanExit> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool can-exit-queue ${validatorIndex}`,
+    });
+    return response.data;
+  }
+  public async exitQueue(validatorIndex: number): Promise<TxResponse> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool exit-queue ${validatorIndex}`,
+    });
+    return response.data;
+  }
+  public async canExitValidator(validatorId: number): Promise<CanExit> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool can-exit-validator ${validatorId}`,
+    });
+    return response.data;
+  }
+  public async exitValidator(validatorId: number): Promise<TxResponse> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool exit-validator ${validatorId}`,
+    });
+    return response.data;
+  }
+  public async canNotifyValidatorExit(validatorId: number): Promise<CanExit> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool can-notify-validator-exit ${validatorId}`,
+    });
+    return response.data;
+  }
+  public async notifyValidatorExit(validatorId: number): Promise<TxResponse> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool notify-validator-exit ${validatorId}`,
+    });
+    return response.data;
+  }
+
+  // --- Megapool claim / withdraw lifecycle ---
+  public async getMegapoolPendingRewards(): Promise<MegapoolRewards> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool pending-rewards`,
+    });
+    return response.data;
+  }
+  public async canDistributeMegapool(): Promise<CanDistribute> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool can-distribute`,
+    });
+    return response.data;
+  }
+  public async distributeMegapool(): Promise<TxResponse> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool distribute`,
+    });
+    return response.data;
+  }
+  public async canClaimRefund(): Promise<CanClaimRefund> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool can-claim-refund`,
+    });
+    return response.data;
+  }
+  public async claimRefund(): Promise<TxResponse> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool claim-refund`,
+    });
+    return response.data;
+  }
+
   public async getNodeRewards(): Promise<NodeRewards> {
     const response = await this.api.post(`/api/v1/rocketpool-command`, {
       cmd: `node rewards`,
