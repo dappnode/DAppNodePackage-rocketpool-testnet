@@ -236,7 +236,7 @@ smartnode:
   distributeThreshold: "1"
   manualMaxFee: "0"
   minipoolStakeGasThreshold: "150"
-  network: ${NETWORK}
+  network: ${SMARTNODE_NETWORK}
   priceBalanceSubmissionReferenceTimestamp: "1713420000"
   priorityFee: "2"
   projectName: rocketpool

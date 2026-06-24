@@ -16,6 +16,9 @@ fi
 case $NETWORK in
 "mainnet")
     echo "Mainnet network"
+    # Smartnode's internal network identifier (mainnet|testnet); the dappnode
+    # package keeps using $NETWORK (mainnet/hoodi) for its own identity.
+    SMARTNODE_NETWORK="mainnet"
 
     # Assign proper value to _DAPPNODE_GLOBAL_EXECUTION_CLIENT_MAINNET.
     case $_DAPPNODE_GLOBAL_EXECUTION_CLIENT_MAINNET in
@@ -86,6 +89,11 @@ case $NETWORK in
     ;;
 "testnet"|"hoodi")
     echo "Hoodi network"
+    # Smartnode only accepts mainnet|testnet|devnet; "testnet" IS Hoodi
+    # (chainId 560048). Mapping hoodi -> testnet here so the daemon can resolve
+    # the RocketStorage address; without it every on-chain call fails with
+    # "The Rocket Pool storage contract was not found".
+    SMARTNODE_NETWORK="testnet"
 
     # https://github.com/dappnode/DAppNodePackage-SSV-Shifu/blob/775dfbc2190b8c3bc7384a2e4c62d83892071001/build/entrypoint.sh#L3
     # Assign proper value to _DAPPNODE_GLOBAL_EXECUTION_CLIENT_HOODI.
@@ -180,6 +188,7 @@ export BEACON_NODE_CLIENT=$_BEACON_NODE_CLIENT
 # BEACON_NODE_API_4000="http://beacon-chain.prysm-hoodi.dappnode:4000"
 
 NETWORK="${NETWORK}" \
+SMARTNODE_NETWORK="${SMARTNODE_NETWORK}" \
 EXECUTION_NODE_CLIENT="${EXECUTION_NODE_CLIENT}" \
 BEACON_NODE_CLIENT="${BEACON_NODE_CLIENT}" \
 EXECUTION_LAYER_HTTP="${EXECUTION_LAYER_HTTP}" \
