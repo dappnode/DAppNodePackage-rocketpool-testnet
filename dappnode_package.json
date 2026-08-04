@@ -1,23 +1,8 @@
 {
-  "name": "rocketpool-testnet.public.dappnode.eth",
-  "version": "0.1.11",
-  "upstreamVersion": "v1.20.2",
-  "upstreamRepo": "rocket-pool/smartnode",
-  "architectures": ["linux/amd64"],
-  "description": "How Rocket Pool Works. Unlike solo stakers, who are required to put 32 ETH up for deposit to create a new validator, Rocket Pool nodes only need to deposit 8/16 ETH per validator. This will be coupled with 16 ETH from the staking pool (which stakers deposited in exchange for rETH) to create a new Ethereum validator. This new validator is called a minipool.",
-  "type": "service",
-  "author": "dappnode",
-  "categories": ["Developer tools"],
-  "links": {
-    "ui": "http://rocketpool-testnet.public.dappnode/",
-    "homepage": "https://rocketpool.net/"
-  },
-  "globalEnvs": [
-    {
-      "envs": ["EXECUTION_CLIENT_HOODI", "CONSENSUS_CLIENT_HOODI"],
-      "services": ["rocketpool-testnet.public.dappnode.eth"]
-    }
+  "architectures": [
+    "linux/amd64"
   ],
+  "author": "dappnode",
   "backup": [
     {
       "name": "data",
@@ -25,8 +10,32 @@
       "service": "rocketpool-testnet.public.dappnode.eth"
     }
   ],
+  "categories": [
+    "Developer tools"
+  ],
   "dependencies": {
     "web3signer-hoodi.dnp.dappnode.eth": "latest"
   },
-  "license": "GLP-3.0"
+  "description": "How Rocket Pool Works. Unlike solo stakers, who are required to put 32 ETH up for deposit to create a new validator, Rocket Pool nodes only need to deposit 8/16 ETH per validator. This will be coupled with 16 ETH from the staking pool (which stakers deposited in exchange for rETH) to create a new Ethereum validator. This new validator is called a minipool.",
+  "globalEnvs": [
+    {
+      "envs": [
+        "EXECUTION_CLIENT_HOODI",
+        "CONSENSUS_CLIENT_HOODI"
+      ],
+      "services": [
+        "rocketpool-testnet.public.dappnode.eth"
+      ]
+    }
+  ],
+  "license": "GLP-3.0",
+  "links": {
+    "homepage": "https://rocketpool.net/",
+    "ui": "http://rocketpool-testnet.public.dappnode/"
+  },
+  "name": "rocketpool-testnet.public.dappnode.eth",
+  "type": "service",
+  "upstreamRepo": "rocket-pool/smartnode",
+  "upstreamVersion": "v1.20.8",
+  "version": "0.1.11"
 }
