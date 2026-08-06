@@ -16,6 +16,9 @@ fi
 case $NETWORK in
 "mainnet")
     echo "Mainnet network"
+    # Smartnode's internal network identifier (mainnet|testnet); the dappnode
+    # package keeps using $NETWORK (mainnet/hoodi) for its own identity.
+    SMARTNODE_NETWORK="mainnet"
 
     # Assign proper value to _DAPPNODE_GLOBAL_EXECUTION_CLIENT_MAINNET.
     case $_DAPPNODE_GLOBAL_EXECUTION_CLIENT_MAINNET in
@@ -84,8 +87,13 @@ case $NETWORK in
     esac
 
     ;;
-"testnet")
+"testnet"|"hoodi")
     echo "Hoodi network"
+    # Smartnode only accepts mainnet|testnet|devnet; "testnet" IS Hoodi
+    # (chainId 560048). Mapping hoodi -> testnet here so the daemon can resolve
+    # the RocketStorage address; without it every on-chain call fails with
+    # "The Rocket Pool storage contract was not found".
+    SMARTNODE_NETWORK="testnet"
 
     # https://github.com/dappnode/DAppNodePackage-SSV-Shifu/blob/775dfbc2190b8c3bc7384a2e4c62d83892071001/build/entrypoint.sh#L3
     # Assign proper value to _DAPPNODE_GLOBAL_EXECUTION_CLIENT_HOODI.
@@ -180,6 +188,7 @@ export BEACON_NODE_CLIENT=$_BEACON_NODE_CLIENT
 # BEACON_NODE_API_4000="http://beacon-chain.prysm-hoodi.dappnode:4000"
 
 NETWORK="${NETWORK}" \
+SMARTNODE_NETWORK="${SMARTNODE_NETWORK}" \
 EXECUTION_NODE_CLIENT="${EXECUTION_NODE_CLIENT}" \
 BEACON_NODE_CLIENT="${BEACON_NODE_CLIENT}" \
 EXECUTION_LAYER_HTTP="${EXECUTION_LAYER_HTTP}" \
@@ -197,8 +206,27 @@ if [ -f "/rocketpool/data/wallet" ]; then
     echo "${INFO} Wallet already created"
 fi
 if [ ! -f /rocketpool/data/password ]; then
+    echo "${INFO} Initializing Rocketpool service before setting password"
+    /usr/local/bin/rocketpoold --settings /app/rocketpool/user-settings.yml node &
+    ROCKETPOOL_PID=$!
+
+    echo "${INFO} Waiting for Rocketpool HTTP API"
+    for i in $(seq 1 60); do
+        if curl -fsS http://127.0.0.1:8280/api/version >/dev/null 2>&1; then
+            break
+        fi
+        if ! kill -0 "$ROCKETPOOL_PID" >/dev/null 2>&1; then
+            echo "${ERROR} Rocketpool service exited before HTTP API became available"
+            wait "$ROCKETPOOL_PID"
+            exit $?
+        fi
+        sleep 1
+    done
+
     echo "${INFO} set-password"
-    /usr/local/bin/rocketpoold --settings /app/rocketpool/user-settings.yml api wallet set-password "${WALLET_PASSWORD}"
+    curl -fsS -X POST --data-urlencode "password=${WALLET_PASSWORD}" http://127.0.0.1:8280/api/wallet/set-password || true
+    wait "$ROCKETPOOL_PID"
+    exit $?
 fi
 echo "${INFO} Initializing Rocketpool service"
 exec /usr/local/bin/rocketpoold --settings /app/rocketpool/user-settings.yml node

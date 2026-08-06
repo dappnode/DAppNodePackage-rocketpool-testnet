@@ -2,18 +2,25 @@ import React from "react";
 import { Typography, Box } from "@mui/material";
 import { RocketpoolData } from "../../types/RocketpoolData";
 import { toEther } from "../../utils/Utils";
+import { ValidatorDepositMode } from "./MinipoolEthToggle";
 
 interface RequiredBalanceInfoProps {
-  minipoolEth: 8 | 16;
+  depositMode: ValidatorDepositMode;
+  requiredBondWei?: string;
   data?: RocketpoolData;
 }
 
 const RequiredBalanceInfo: React.FC<RequiredBalanceInfoProps> = ({
   data,
-  minipoolEth,
+  depositMode,
+  requiredBondWei,
 }): JSX.Element => {
-  const minRpl =
-    minipoolEth === 8
+  const isMegapool = depositMode === "megapool";
+  const minipoolEth = depositMode === "16" ? 16 : 8;
+  const requiredEth = isMegapool ? toEther(requiredBondWei ?? "4000000000000000000") : minipoolEth;
+  const minRpl = isMegapool
+    ? data?.nodeStatus?.minimumRplStake ?? 0
+    : minipoolEth === 8
       ? data?.networkRplPrice?.minPer8EthMinipoolRplStake ?? 0
       : data?.networkRplPrice?.minPer16EthMinipoolRplStake ?? 0;
 
@@ -22,10 +29,14 @@ const RequiredBalanceInfo: React.FC<RequiredBalanceInfoProps> = ({
   return (
     <Box>
       <Typography variant="body1">
-        1. At least <b>{minipoolEth} ETH + 0.2 ETH</b> (we recommend{" "}
+        1. At least <b>{requiredEth.toFixed(2)} ETH + 0.2 ETH</b> (we recommend{" "}
         <b>0.5 ETH</b>) for gas costs
         <br />
-        {maxRpl === 0 ? (
+        {isMegapool ? (
+          <>
+            2. Enough RPL collateral for the node's current megapool bond requirement
+          </>
+        ) : maxRpl === 0 ? (
           <>
             2. At least <b>{Math.ceil(toEther(minRpl))} RPL</b> for {minipoolEth} ETH minipool
           </>
