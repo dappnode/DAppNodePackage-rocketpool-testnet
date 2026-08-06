@@ -10,7 +10,7 @@ import { WaitResponse } from "../types/WaitResponse";
 import { NodeCanSetWithdrawalAddress } from "../types/NodeCanSetWithdrawalAddress";
 import { NodeCanSetSmoothingPool } from "../types/NodeCanSetSmoothingPool";
 import { CanDeposit } from "../types/CanDeposit";
-import { toWei, toWeiString } from "../utils/Utils";
+import { ethToWeiString, toWeiString } from "../utils/Utils";
 import { NodeFee } from "../types/NodeFee";
 import { StakeRplApprove } from "../types/StakeRplApprove";
 import { CanStake } from "../types/CanStake";
@@ -21,6 +21,11 @@ import { GetRewardsInfo } from "../types/GetRewardsInfo";
 import { CanClaimRewards } from "../types/CanClaimRewards";
 import apiBaseUrl, { Config } from "../types/AppConfig";
 import { ImportKeyResponseData } from "../types/ImportKeyResponse";
+import { NextValidatorBond } from "../types/NextValidatorBond";
+import { CanExit } from "../types/CanExit";
+import { CanDistribute } from "../types/CanDistribute";
+import { CanClaimRefund } from "../types/CanClaimRefund";
+import { MegapoolRewards } from "../types/MegapoolRewards";
 
 export class AppService {
   public api = axios.create({
@@ -163,20 +168,98 @@ export class AppService {
     });
     return response.data;
   }
+  public async getMegapoolNextValidatorBond(): Promise<NextValidatorBond> {
+    const response = await this.api.get(`/api/v1/megapool/next-validator-bond`);
+    return response.data;
+  }
   public async canDeposit(ethPool: number, nodeFee: number): Promise<CanDeposit> {
-    const amount = toWei(ethPool);
+    return this.canDepositAmountWei(ethToWeiString(ethPool), nodeFee);
+  }
+  public async canDepositAmountWei(amountWei: string, nodeFee: number): Promise<CanDeposit> {
     const response = await this.api.post(`/api/v1/rocketpool-command`, {
-      cmd: `node can-deposit ${amount} ${nodeFee} 0 false`,
+      cmd: `node can-deposit ${amountWei} ${nodeFee} 0 0`,
     });
     return response.data;
   }
   public async nodeDeposit(ethPool: number, nodeFee: number, useCreditBalance: boolean): Promise<DepositResponse> {
-    const amount = toWei(ethPool);
+    return this.nodeDepositAmountWei(ethToWeiString(ethPool), nodeFee, useCreditBalance);
+  }
+  public async nodeDepositAmountWei(amountWei: string, nodeFee: number, useCreditBalance: boolean): Promise<DepositResponse> {
     const response = await this.api.post(`/api/v1/rocketpool-command`, {
-      cmd: `node deposit ${amount} ${nodeFee} 0 ${useCreditBalance} false true`,
+      cmd: `node deposit ${amountWei} ${nodeFee} 0 ${useCreditBalance} 0 true`,
     });
     return response.data;
   }
+  // --- Megapool exit lifecycle ---
+  public async canExitQueue(validatorIndex: number): Promise<CanExit> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool can-exit-queue ${validatorIndex}`,
+    });
+    return response.data;
+  }
+  public async exitQueue(validatorIndex: number): Promise<TxResponse> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool exit-queue ${validatorIndex}`,
+    });
+    return response.data;
+  }
+  public async canExitValidator(validatorId: number): Promise<CanExit> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool can-exit-validator ${validatorId}`,
+    });
+    return response.data;
+  }
+  public async exitValidator(validatorId: number): Promise<TxResponse> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool exit-validator ${validatorId}`,
+    });
+    return response.data;
+  }
+  public async canNotifyValidatorExit(validatorId: number): Promise<CanExit> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool can-notify-validator-exit ${validatorId}`,
+    });
+    return response.data;
+  }
+  public async notifyValidatorExit(validatorId: number): Promise<TxResponse> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool notify-validator-exit ${validatorId}`,
+    });
+    return response.data;
+  }
+
+  // --- Megapool claim / withdraw lifecycle ---
+  public async getMegapoolPendingRewards(): Promise<MegapoolRewards> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool pending-rewards`,
+    });
+    return response.data;
+  }
+  public async canDistributeMegapool(): Promise<CanDistribute> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool can-distribute`,
+    });
+    return response.data;
+  }
+  public async distributeMegapool(): Promise<TxResponse> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool distribute`,
+    });
+    return response.data;
+  }
+  public async canClaimRefund(): Promise<CanClaimRefund> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool can-claim-refund`,
+    });
+    return response.data;
+  }
+  public async claimRefund(): Promise<TxResponse> {
+    const response = await this.api.post(`/api/v1/rocketpool-command`, {
+      cmd: `megapool claim-refund`,
+    });
+    return response.data;
+  }
+
   public async getNodeRewards(): Promise<NodeRewards> {
     const response = await this.api.post(`/api/v1/rocketpool-command`, {
       cmd: `node rewards`,

@@ -22,7 +22,7 @@ import { RocketpoolContext } from "../Providers/Context";
 import { TxResponse } from "../../types/TxResponse";
 import RequiredBalanceInfo from "./RequiredBalanceInfo";
 import "./registerNode.css";
-import MinipoolEthToggle from "./MinipoolEthToggle";
+import MinipoolEthToggle, { ValidatorDepositMode } from "./MinipoolEthToggle";
 import TxsLinksBox from "./TxsLinksBox";
 
 interface RegisterNodeProps {
@@ -43,7 +43,7 @@ const RegisterNode: React.FC<RegisterNodeProps> = ({
     useState<NodeCanSetWithdrawalAddress>();
   const [addressEntered, setAddressEntered] = useState<string>("");
   const [addressError, setAddressError] = useState<string>("");
-  const [minipoolEth, setMinipoolEth] = useState<8 | 16>(8);
+  const [minipoolEth, setMinipoolEth] = useState<ValidatorDepositMode>("8");
   const { rocketpoolValue, updateRocketpoolValue } =
     React.useContext(RocketpoolContext);
 
@@ -234,8 +234,9 @@ const RegisterNode: React.FC<RegisterNodeProps> = ({
         <Typography variant="h5">Info</Typography>
         <div className="minipool-eth-button-group-container">
           <MinipoolEthToggle
-            minipoolEth={minipoolEth}
-            setMinipoolEth={setMinipoolEth}
+            depositMode={minipoolEth}
+            setDepositMode={setMinipoolEth}
+            includeMegapool={false}
           />
         </div>
         <div className="rpl-eth-chip-container">
@@ -256,7 +257,7 @@ const RegisterNode: React.FC<RegisterNodeProps> = ({
         </div>
         <br />
         <div>
-          <RequiredBalanceInfo data={data} minipoolEth={minipoolEth} />
+          <RequiredBalanceInfo data={data} depositMode={minipoolEth} />
         </div>
         <br />
         <Typography variant="body1">
