@@ -1,53 +1,70 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { CanDeposit } from "../../types/CanDeposit";
 
+export type ValidatorDepositMode = "megapool" | "8" | "16";
+
 function MinipoolEthToggle({
-  minipoolEth,
-  setMinipoolEth,
+  depositMode,
+  setDepositMode,
   setCanDeposit,
   refreshData,
+  includeMegapool = true,
+  includeLegacyMinipools = true,
 }: {
-  minipoolEth: 8 | 16;
-  setMinipoolEth: (minipoolEth: 8 | 16) => void;
+  depositMode: ValidatorDepositMode;
+  setDepositMode: (depositMode: ValidatorDepositMode) => void;
   setCanDeposit?: React.Dispatch<React.SetStateAction<CanDeposit | undefined>>;
-  refreshData?: (selectedEth: number) => void;
+  refreshData?: (selectedMode: ValidatorDepositMode) => void;
+  includeMegapool?: boolean;
+  includeLegacyMinipools?: boolean;
 }): JSX.Element {
   const handleMinipoolEthChange = (
     event: React.MouseEvent<HTMLElement>,
-    newMinipoolEth: string
+    newDepositMode: ValidatorDepositMode | null
   ) => {
-    const minipoolEth = Number(newMinipoolEth);
-
-    if (minipoolEth === 8 || minipoolEth === 16) {
-      setMinipoolEth(minipoolEth);
+    if (newDepositMode) {
+      setDepositMode(newDepositMode);
       setCanDeposit && setCanDeposit(undefined);
-      refreshData && refreshData(minipoolEth);
+      refreshData && refreshData(newDepositMode);
     }
   };
 
   return (
     <ToggleButtonGroup
       color="primary"
-      value={minipoolEth.toString()}
+      value={depositMode}
       exclusive
       onChange={handleMinipoolEthChange}
       aria-label="minipool"
       className="minipool-eth-button-group"
     >
-      <ToggleButton
-        value="8"
-        aria-label="8 ETH"
-        className="minipool-eth-left-button"
-      >
-        8 ETH
-      </ToggleButton>
-      <ToggleButton
-        value="16"
-        aria-label="16 ETH"
-        className="minipool-eth-right-button"
-      >
-        16 ETH
-      </ToggleButton>
+      {includeMegapool && (
+        <ToggleButton
+          value="megapool"
+          aria-label="4 ETH megapool validator"
+          className="minipool-eth-left-button"
+        >
+          4 ETH Megapool
+        </ToggleButton>
+      )}
+      {includeLegacyMinipools && (
+        <ToggleButton
+          value="8"
+          aria-label="8 ETH minipool"
+          className={includeMegapool ? undefined : "minipool-eth-left-button"}
+        >
+          8 ETH Minipool
+        </ToggleButton>
+      )}
+      {includeLegacyMinipools && (
+        <ToggleButton
+          value="16"
+          aria-label="16 ETH minipool"
+          className="minipool-eth-right-button"
+        >
+          16 ETH Minipool
+        </ToggleButton>
+      )}
     </ToggleButtonGroup>
   );
 }

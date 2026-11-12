@@ -14,10 +14,11 @@ import { CanDeposit } from "../../types/CanDeposit";
 import { StakeRplApprove } from "../../types/StakeRplApprove";
 import { StakeResponse } from "../../types/StakeResponse";
 import { DepositResponse } from "../../types/DepositResponse";
-import MinipoolEthToggle from "./MinipoolEthToggle";
+import MinipoolEthToggle, { ValidatorDepositMode } from "./MinipoolEthToggle";
 import "./minipool.css";
 import TxsLinksBox from "./TxsLinksBox";
 import { WaitResponse } from "../../types/WaitResponse";
+import { NextValidatorBond } from "../../types/NextValidatorBond";
 
 interface CreateMinipoolProps {
   data?: RocketpoolData;
@@ -38,36 +39,57 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
   const [w3sStatusResponse, setW3sStatusResponse] = useState<WaitResponse>();
   const [canDeposit, setCanDeposit] = useState<CanDeposit>();
   const [nodeFee, setNodeFee] = useState<number>(0);
-  const [minipoolEth, setMinipoolEth] = useState<8 | 16>(8);
+  const [depositMode, setDepositMode] = useState<ValidatorDepositMode>("megapool");
+  const [nextValidatorBond, setNextValidatorBond] = useState<NextValidatorBond>();
 
-  const minimumRpl = data?.networkRplPrice?.minPer8EthMinipoolRplStake ?? 0;
-  const ethBalance = data?.nodeStatus?.accountBalances.eth ?? 0;
   const rplBalance = data?.nodeStatus?.accountBalances.rpl ?? 0;
   const appService = new AppService();
 
-  async function refreshData(selectedEth: number) {
+  async function getDepositAmountWei(selectedMode: ValidatorDepositMode): Promise<string> {
+    if (selectedMode === "megapool") {
+      const bond = await appService.getMegapoolNextValidatorBond();
+      setNextValidatorBond(bond);
+      if (bond.status !== "success") {
+        throw new Error(bond.error || "Unable to get the next megapool validator bond requirement");
+      }
+      return bond.bondRequirement;
+    }
+    return selectedMode === "8" ? "8000000000000000000" : "16000000000000000000";
+  }
+
+  async function refreshData(selectedMode: ValidatorDepositMode) {
     setIsDepositLoading(true);
-    var canDeposit = await appService.canDeposit(selectedEth, nodeFee);
-    setCanDeposit(canDeposit);
-    setIsDepositLoading(false);
-
-    // if ((data?.nodeStatus?.rplStake ?? 0) < minimumRpl) {
-    //   setIsDepositETHEnabled(false);
-    //   var allowance = await appService.getNodeStakeRplAllowance();
-    //   setIsApproveRPLEnabled(allowance < (data?.nodeStatus?.accountBalances.rpl ?? 0));
-    //   setIsStakeRPLEnabled(allowance >= (data?.nodeStatus?.accountBalances.rpl ?? 0));
-    // } else {
-    //   setIsApproveRPLEnabled(false);
-    //   setIsStakeRPLEnabled(false);
-
-    //   setIsDepositETHEnabled(false);
-    // }
+    try {
+      const amountWei = await getDepositAmountWei(selectedMode);
+      const canDeposit = await appService.canDepositAmountWei(amountWei, nodeFee);
+      setCanDeposit(canDeposit);
+    } catch (error) {
+      setCanDeposit({
+        status: "error",
+        error: String(error),
+        canDeposit: false,
+        creditBalance: 0,
+        depositBalance: 0,
+        canUseCredit: false,
+        nodeBalance: 0,
+        insufficientBalance: false,
+        insufficientBalanceWithoutCredit: false,
+        insufficientRplStake: false,
+        invalidAmount: false,
+        depositDisabled: false,
+        inConsensus: false,
+        isAtlasDeployed: false,
+        gasInfo: { estGasLimit: 0, safeGasLimit: 0 },
+      });
+    } finally {
+      setIsDepositLoading(false);
+    }
   }
 
   async function fetchData() {
-    var networkNodeFee = await appService.getNetworkNodeFee();
+    const networkNodeFee = await appService.getNetworkNodeFee();
     setNodeFee(networkNodeFee.nodeFee);
-    refreshData(minipoolEth);
+    refreshData(depositMode);
   }
 
   useEffect(() => {
@@ -80,9 +102,9 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
     try {
       setStakeTxs([]);
       setIsStakeLoading(true);
-      var allowance = await appService.getNodeStakeRplAllowance();
+      const allowance = await appService.getNodeStakeRplAllowance();
       if (allowance < rplBalance) {
-        var approveResponse = await appService.stakeRplApprove(rplBalance);
+        const approveResponse = await appService.stakeRplApprove(rplBalance);
         setStakeTxs([...stakeTxs, approveResponse.approveTxHash]);
         setApprovalResponse(approveResponse);
         if (approveResponse.status !== "success") {
@@ -90,11 +112,11 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
         }
         await appService.wait(approveResponse.approveTxHash);
       }
-      var canStakeRpl = await appService.getNodeCanStakeRpl(rplBalance);
+      const canStakeRpl = await appService.getNodeCanStakeRpl(rplBalance);
       if (!canStakeRpl.canStake) {
         return;
       }
-      var stakeResponse = await appService.nodeStakeRpl(rplBalance);
+      const stakeResponse = await appService.nodeStakeRpl(rplBalance);
       setStakeTxs([...txs, stakeResponse.stakeTxHash]);
       setStakeResponse(stakeResponse);
       if (stakeResponse.status !== "success") {
@@ -103,7 +125,7 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
       await appService.wait(stakeResponse.stakeTxHash);
     } finally {
       setIsStakeLoading(false);
-      refreshData(minipoolEth);
+      refreshData(depositMode);
     }
   };
 
@@ -116,24 +138,25 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
       if (w3sStatus.status !== "success") {
         return;
       }
-      var despositResponse = await appService.nodeDeposit(
-        minipoolEth,
+      const amountWei = await getDepositAmountWei(depositMode);
+      const depositResponse = await appService.nodeDepositAmountWei(
+        amountWei,
         nodeFee,
         canDeposit?.canUseCredit ?? false
       );
-      setTxs([...txs, despositResponse.txHash]);
-      setDepositResponse(despositResponse);
-      if (despositResponse.status !== "success") {
+      setTxs([...txs, depositResponse.txHash]);
+      setDepositResponse(depositResponse);
+      if (depositResponse.status !== "success") {
         return;
       }
-      var wait = await appService.wait(despositResponse.txHash);
+      const wait = await appService.wait(depositResponse.txHash);
       if (wait.status !== "success") {
         return;
       }
       onAddMinipoolClick(false);
     } finally {
       setIsDepositLoading(false);
-      refreshData(minipoolEth);
+      refreshData(depositMode);
     }
   };
 
@@ -154,17 +177,28 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
     );
   }
 
+  const depositLabel = depositMode === "megapool" ? "Megapool validator" : `${depositMode} ETH minipool`;
+  const depositAmountLabel = depositMode === "megapool"
+    ? `${toEtherString(nextValidatorBond?.bondRequirement ?? "4000000000000000000")} ETH`
+    : `${depositMode} ETH`;
+
   return (
     <div className="create-minipool-container">
-      <Typography variant="h5">Create minipool </Typography>
+      <Typography variant="h5">Create validator </Typography>
       <MinipoolEthToggle
-        minipoolEth={minipoolEth}
-        setMinipoolEth={setMinipoolEth}
+        depositMode={depositMode}
+        setDepositMode={setDepositMode}
         setCanDeposit={setCanDeposit}
         refreshData={refreshData}
+        includeLegacyMinipools={false}
       />
+      {depositMode === "megapool" && (
+        <Alert severity="info" sx={{ marginTop: 2 }}>
+          Uses the stable Smartnode v1.20 HTTP API to create a Saturn megapool validator. The UI asks Smartnode for the current bond requirement before depositing.
+        </Alert>
+      )}
       <div className="required-balance-container">
-        <RequiredBalanceInfo data={data} minipoolEth={minipoolEth} />
+        <RequiredBalanceInfo data={data} depositMode={depositMode} requiredBondWei={nextValidatorBond?.bondRequirement} />
       </div>
       <Typography variant="body1" sx={{ marginTop: 2 }}>
         Stake {toEtherString(rplBalance)} RPL, all you have in your wallet
@@ -174,7 +208,6 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
         variant="contained"
         onClick={() => handleStakeRPLClick()}
       >
-        {" "}
         {isStakeLoading ? (
           <CircularProgress size={24} color="primary" />
         ) : (
@@ -199,7 +232,7 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
       </div>
 
       <Typography variant="body1" sx={{ marginTop: 2 }}>
-        Deposit {minipoolEth} ETH to create the minipool (validator key will be
+        Deposit {depositAmountLabel} to create the {depositLabel} (validator key will be
         imported and configured automatically)
       </Typography>
       <Box>
@@ -208,11 +241,10 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
           variant="contained"
           onClick={() => handleDepositRPLClick()}
         >
-          {" "}
           {isDepositLoading ? (
             <CircularProgress size={24} color="primary" />
           ) : (
-            `Deposit ${minipoolEth} ETH`
+            `Deposit ${depositAmountLabel}`
           )}
         </Button>
         {(data?.nodeStatus?.minipoolCounts.total ?? 0) > 0 && (
@@ -229,6 +261,16 @@ const CreateMinipool: React.FC<CreateMinipoolProps> = ({
       {w3sStatusResponse?.error && (
         <Alert severity="error" variant="filled" sx={{ marginTop: 2 }}>
           {w3sStatusResponse?.error}
+        </Alert>
+      )}
+      {canDeposit?.error && (
+        <Alert severity="error" variant="filled" sx={{ marginTop: 2 }}>
+          {canDeposit?.error}
+        </Alert>
+      )}
+      {canDeposit?.nodeHasDebt && (
+        <Alert severity="error" variant="filled" sx={{ marginTop: 2 }}>
+          The node has megapool debt. Repay debt before creating a new validator.
         </Alert>
       )}
       {depositResponse?.error && (

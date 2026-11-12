@@ -6,7 +6,8 @@ export interface DepositResponse {
     status: Status;
     error: string;
     txHash: string;
-    minipoolAddress: string;
-    validatorPubkey: string;
+    minipoolAddress?: string;
+    validatorPubkey?: string;
+    validatorPubkeys?: string[];
     scrubPeriod: number;
 }

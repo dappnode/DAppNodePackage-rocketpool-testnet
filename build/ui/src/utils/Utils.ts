@@ -6,15 +6,19 @@ export function toWei(ether: number): number {
   return ether * 10 ** 18;
 }
 
-export function toWeiString(ether: number): string {
-  return BigInt(ether).toString();
+export function toWeiString(wei: number | string): string {
+  return BigInt(wei).toString();
 }
 
-export function toEther(wei: number): number {
-  return wei / 10 ** 18;
+export function ethToWeiString(ether: number): string {
+  return (BigInt(Math.round(ether * 1000000)) * BigInt(10 ** 12)).toString();
 }
 
-export function toEtherString(wei: number): string {
+export function toEther(wei: number | string): number {
+  return Number(wei) / 10 ** 18;
+}
+
+export function toEtherString(wei: number | string): string {
   return toEther(wei).toFixed(4);
 }
 

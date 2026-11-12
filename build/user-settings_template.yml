@@ -138,6 +138,7 @@ lodestar:
   additionalVcFlags: ""
   containerTag: chainsafe/lodestar:v1.33.0
   maxPeers: "100"
+  p2pQuicPort: "8001"
 mevBoost:
   additionalFlags: ""
   aestusEnabled: "false"
@@ -207,6 +208,7 @@ prysm:
   vcContainerTag: gcr.io/offchainlabs/prysm/validator:v6.0.4
 root:
   bnMetricsPort: "9100"
+  enableIPv6: "false"
   consensusClient: nimbus
   consensusClientMode: external
   ecMetricsPort: "9105"
@@ -224,16 +226,17 @@ root:
   rpDir: /app/rocketpool/
   useFallbackClients: "false"
   vcMetricsPort: "9101"
-  version: v1.17.3
+  version: v1.20.3
   watchtowerMetricsPort: "9104"
 smartnode:
+  apiPort: "8280"
   archiveECUrl: ""
   autoInitVPThreshold: "5"
   dataPath: /rocketpool/data
   distributeThreshold: "1"
   manualMaxFee: "0"
   minipoolStakeGasThreshold: "150"
-  network: ${NETWORK}
+  network: ${SMARTNODE_NETWORK}
   priceBalanceSubmissionReferenceTimestamp: "1713420000"
   priorityFee: "2"
   projectName: rocketpool

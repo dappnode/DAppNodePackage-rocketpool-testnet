@@ -15,10 +15,13 @@ export interface CanDeposit {
     insufficientBalanceWithoutCredit: boolean;
     insufficientRplStake: boolean;
     invalidAmount: boolean;
-    unbondedMinipoolsAtMax: boolean;
+    unbondedMinipoolsAtMax?: boolean;
     depositDisabled: boolean;
     inConsensus: boolean;
     isAtlasDeployed: boolean;
-    minipoolAddress: string;
+    nodeHasDebt?: boolean;
+    minipoolAddress?: string;
+    megapoolAddress?: string;
+    validatorPubkeys?: string[];
     gasInfo: GasInfo;
 }
