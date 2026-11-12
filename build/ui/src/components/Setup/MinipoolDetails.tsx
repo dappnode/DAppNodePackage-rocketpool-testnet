@@ -6,6 +6,7 @@ import { MinipoolStatus } from "../../types/MinipoolStatus";
 import MinipoolCard from "./MinipoolCard";
 import "./minipool.css";
 import MinipoolActions from "./MinipoolActions";
+import MegapoolActions from "./MegapoolActions";
 
 interface MinipoolDetailsProps {
   data?: RocketpoolData;
@@ -68,6 +69,9 @@ const MinipoolDetails: React.FC<MinipoolDetailsProps> = ({
           onAddMinipoolClick={onAddMinipoolClick}
           isLoading={isLoading}
         />
+      </div>
+      <div className="actions-container">
+        <MegapoolActions config={data?.config} />
       </div>
     </div>
   );

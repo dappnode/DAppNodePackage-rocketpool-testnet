@@ -125,10 +125,23 @@ async function executeCommand(cmd: string) {
       for (const validatorPubkey of validatorPubkeys) {
         await importKey(ensureHexPrefix(validatorPubkey));
       }
+    } else if (TX_COMMANDS.some((prefix) => cmd.startsWith(prefix)) && resultJson.txHash) {
+      // Exit / distribute / claim-refund all broadcast an on-chain tx and
+      // return a txHash; wait for it to be mined before reporting success.
+      await executeCommand(`wait ${resultJson.txHash}`);
     }
   }
   return resultJson;
 }
+
+// Megapool commands that submit an on-chain transaction returning a txHash to wait on.
+// (megapool exit-validator is a beacon voluntary exit and returns no txHash.)
+const TX_COMMANDS = [
+  "megapool exit-queue",
+  "megapool notify-validator-exit",
+  "megapool distribute",
+  "megapool claim-refund",
+];
 
 async function executeRocketpoolCommand(cmd: string) {
   const parts = splitCommand(cmd);
@@ -179,6 +192,31 @@ async function executeRocketpoolCommand(cmd: string) {
   if (group === "megapool") {
     if (action === "status") return callRocketpoolApi("/api/megapool/status");
     if (action === "get-new-validator-bond-requirement") return callRocketpoolApi("/api/megapool/get-new-validator-bond-requirement");
+
+    // --- Exit lifecycle ---
+    // Exit a validator that is still in the entry queue (before it stakes).
+    if (action === "can-exit-queue") return callRocketpoolApi("/api/megapool/can-exit-queue", { validatorIndex: args[0] });
+    if (action === "exit-queue") return callRocketpoolApi("/api/megapool/exit-queue", { validatorIndex: args[0] }, "POST");
+    // Exit an active validator (initiates the beacon-chain exit).
+    if (action === "can-exit-validator") return callRocketpoolApi("/api/megapool/can-exit-validator", { validatorId: args[0] });
+    if (action === "exit-validator") return callRocketpoolApi("/api/megapool/exit-validator", { validatorId: args[0] }, "POST");
+    // Notify the protocol of a validator exit (post beacon exit).
+    if (action === "can-notify-validator-exit") return callRocketpoolApi("/api/megapool/can-notify-validator-exit", { validatorId: args[0] });
+    if (action === "notify-validator-exit") return callRocketpoolApi("/api/megapool/notify-validator-exit", { validatorId: args[0] }, "POST");
+
+    // --- Claim / withdraw lifecycle ---
+    // Read: rewards currently pending for the node's megapool.
+    if (action === "pending-rewards") return callRocketpoolApi("/api/megapool/pending-rewards");
+    // Read helper: estimate the node operator's share for a given amount.
+    if (action === "calculate-rewards") return callRocketpoolApi("/api/megapool/calculate-rewards", { amountWei: args[0] });
+    // Read helper: estimate time for funds to clear the beacon withdrawal queue.
+    if (action === "beacon-withdrawal-queue-estimate") return callRocketpoolApi("/api/megapool/beacon-withdrawal-queue-estimate");
+    // Distribute (claim) accrued megapool ETH/rewards to the node.
+    if (action === "can-distribute") return callRocketpoolApi("/api/megapool/can-distribute");
+    if (action === "distribute") return callRocketpoolApi("/api/megapool/distribute", {}, "POST");
+    // Claim the node's refund (returned bond) after an exit.
+    if (action === "can-claim-refund") return callRocketpoolApi("/api/megapool/can-claim-refund");
+    if (action === "claim-refund") return callRocketpoolApi("/api/megapool/claim-refund", {}, "POST");
   }
 
   return { status: "error", error: `Unsupported Rocket Pool command: ${cmd}` };
